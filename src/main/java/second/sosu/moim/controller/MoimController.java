@@ -63,6 +63,7 @@ public class MoimController {
 	public ModelAndView insertForm(CommandMap commandMap) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/moim/moimRegister");
+		mv.setViewName("moim/moimRegister");
 
 		return mv;
 	}
@@ -93,7 +94,8 @@ public class MoimController {
 	public ModelAndView modifyForm(@PathVariable int MO_IDX, CommandMap commandMap) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/moim/moimModify");
-
+		mv.setViewName("moim/moimModify");
+		
 		commandMap.put("MO_IDX", MO_IDX);
 
 		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());

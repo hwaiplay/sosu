@@ -14,7 +14,7 @@
 	</div>
 	
 	<!-- body -->
-	<div id="container">
+	<div style="text-align: center;">
 		<tiles:insertAttribute name="body"/>
 	</div>
 	

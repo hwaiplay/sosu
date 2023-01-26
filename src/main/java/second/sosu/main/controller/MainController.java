@@ -42,8 +42,7 @@ public class MainController {
 	@RequestMapping(value = "/main.sosu")
 	public String main() {
 		
-		
-		return "main";
+		return "main_layout";
 	}
 	
 	@RequestMapping( "/{MO_CATEGORY}.sosu")
@@ -52,7 +51,8 @@ public class MainController {
 		commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
 		
 		ModelAndView mv = new ModelAndView("/mainlist");
-		System.out.println("+++++++++++++++++"+commandMap.getMap());
+		mv.setViewName("mainlist");
+		
 				
 		List<Map<String, Object>> molist  = mainService.moimList(commandMap.getMap(), session, commandMap);
 		List<Map<String, Object>> frlist  = mainService.freeList(commandMap.getMap(), session);

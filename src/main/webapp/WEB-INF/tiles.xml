@@ -8,50 +8,35 @@
  <!-- 1. 기본 템플릿 생성
     	header, body, footer를 가진 layout.jsp라는 기본 레이아웃을 정의
      -->
+	<!-- 메인 레이아웃 -->
 	<definition name="main_layout" template="/WEB-INF/views/layout/layout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/main.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
 	</definition>
 	
-	
-<!-- 	<definition name="goods/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/goods/{1}.jsp"/>
+	<!-- 메인 리스트 -->
+	<definition name="mainlist" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/mainlist.jsp"/>
 	</definition>
-	
-	
-	<definition name="member/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/member/{1}.jsp"/>
-	</definition>
-	
-	
-   <definition name="notice/*" extends="main_layout">
-      <put-attribute name="body" value="/WEB-INF/views/notice/{1}.jsp"/>
-   </definition>
-	
-	<definition name="basket/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/basket/{1}.jsp"/>
-	</definition>
-	
-	<definition name="basket1/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/basket1/{1}.jsp"/>
-	</definition>
-	
-	<definition name="order/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/order/{1}.jsp"/>
-	</definition>
-	
-	<definition name="popupView/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/popupView/{1}.jsp"/>
-	</definition>
-	
 
+	<!-- 모임 관련 -->
+	<definition name="moim/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/moim/{1}.jsp"/>
+	</definition>
+	
+	<!-- 회원가입 -->
+	<definition name="com/join/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/com/join/{1}.jsp"/>
+	</definition>
+	
+	<!-- 로그인 관련 -->
+	<definition name="com/login/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/com/login/{1}.jsp"/>
+	</definition>
 	
 	
-	
-
-
-	
+<!-- 	
 	  관리자 페이지
    <definition name="admin_layout" template="/WEB-INF/views/layout/layout.jsp">
       <put-attribute name="header" value="/WEB-INF/views/layout/admin_header.jsp" />
