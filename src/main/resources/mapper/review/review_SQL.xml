@@ -32,7 +32,7 @@
    <!-- 모임리스트에서 리뷰 보여주기 -->   
    <select id="reviewList" resultType="hashmap" parameterType="hashmap">
       
-      SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, M.*
+      SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, MO.MO_CATEGORY, M.*
         FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
         WHERE
         F.F_TABLE(+) = 'R'

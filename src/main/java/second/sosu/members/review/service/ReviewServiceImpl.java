@@ -26,7 +26,14 @@ public class ReviewServiceImpl implements ReviewService{
 	public Map<String, Object> selectReview(Map<String, Object> map, HttpSession session) throws Exception {
 		
 		return reviewDAO.selectReview(map);
-	  }
+	}
+	
+//	리뷰 상세보기
+	@Override
+	public Map<String, Object> reviewDetail(Map<String, Object> map) throws Exception {
+		
+		return reviewDAO.reviewDetail(map);
+	}
 
 	@Override
 	public void insertReview(Map<String, Object> map) throws Exception {
@@ -35,13 +42,13 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public void updateReview(Map<String, Object> map, HttpSession session) throws Exception {
+	public void updateReview(Map<String, Object> map) throws Exception {
 		
 		reviewDAO.updateReview(map);
 	}
 
 	@Override
-	public void deleteReview(Map<String, Object> map, HttpSession session) throws Exception {
+	public void deleteReview(Map<String, Object> map) throws Exception {
 		
 		reviewDAO.deleteReview(map);
 	}

@@ -1,13 +1,14 @@
 package second.sosu.members.review.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import second.sosu.common.domain.CommandMap;
@@ -20,6 +21,30 @@ public class ReviewController {
 	
 	@Resource(name="reviewService")
 	private ReviewService reviewService;
+	
+	/** 리뷰 상세보기
+	 * 
+	 * @param commandMap
+	 * @return
+	 * @throws Exception
+	 */
+	
+	@GetMapping("/review/{MO_CATEGORY}/{RV_IDX}.sosu")
+	public ModelAndView reviewDetail(@PathVariable int RV_IDX, 
+			@PathVariable String MO_CATEGORY, CommandMap commandMap) throws Exception {
+
+		commandMap.put("RV_IDX", RV_IDX);
+		
+		commandMap.put("MO_CATEGORY", MO_CATEGORY);
+		
+		ModelAndView mv = new ModelAndView("/members/review/reviewDetail");
+		
+		Map<String, Object> map = reviewService.reviewDetail(commandMap.getMap());
+		
+		mv.addObject("detail", map);
+		
+		return mv;
+	}
 	
 	/** 리뷰 작성폼
 	 * 
