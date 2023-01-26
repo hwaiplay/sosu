@@ -61,6 +61,22 @@ public class MoimDao extends AbstractDAO {
 		return (Map<String, Object>) selectOne("moim.moimDetail", map);
 	}
 
+	// 모임에 참가한 인원 리스트
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> moimMemberList(Map<String, Object> map, CommandMap commandMap) throws Exception {
+
+		List<Map<String, Object>> moimMemberList = (List<Map<String, Object>>) selectList("moim.moimMemberList");
+
+		// 프사
+		for (int i = 0; i < moimMemberList.size(); i++) {
+			Map<String, Object> memberProfile = (Map<String, Object>) selectOne("file.memberProfile",
+					moimMemberList.get(i).get("M_IDX"));
+			moimMemberList.get(i).put("PROFILE", memberProfile.get("PROFILE"));
+		}
+
+		return moimMemberList;
+	}
+
 	// 모임 작성
 	public void moimRegister(Map<String, Object> map, HttpSession seesion) throws Exception {
 		insert("moim.moimRegister", map);
@@ -77,7 +93,7 @@ public class MoimDao extends AbstractDAO {
 	}
 
 	// 모임 참가
-	public void moimJoin(Map<String, Object> map, HttpServletRequest request) throws Exception {
+	public void moimJoin(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
 		insert("moim.moimJoin", map);
 	}
 
