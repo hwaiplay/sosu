@@ -141,6 +141,19 @@
       AND M.MO_IDX = #{MO_IDX}
          ]]>
 	</select>
+	
+	<!-- 모임에 참여한 참여 인원 -->
+	<select id="moimMemberList" resultType="hashmap"
+		parameterType="hashmap">
+         <![CDATA[
+     SELECT P.*, M.*
+	FROM PARTYMEM P, MOIM MO, MEMBER M
+	WHERE MO.M_IDX != P.M_IDX 
+	AND MO.MO_IDX = P.MO_IDX 
+	AND  M.M_IDX = P.M_IDX
+	AND MO.MO_IDX = #{MO_IDX}
+         ]]>
+	</select>
 
 
 	<!-- 모임 스크랩 수 -->
@@ -184,13 +197,12 @@
             ]]>
 	</insert>
 
-	<select id="moimJoin" parameterType="hashmap"
-		resultType="hashmap">
+	<insert id="moimJoin" parameterType="hashmap">
          <![CDATA[
       INSERT INTO PARTYMEM (P_IDX, MO_IDX, M_IDX, P_BAN_YN, P_FINAL_YN)
-      VALUES (P_IDX.NEXTVAL, #{MO_IDX}, #{M_IDX},'N','Y');
+      VALUES (P_IDX.NEXTVAL, #{MO_IDX}, #{M_IDX},'N','Y')
             ]]>
-	</select>
+	</insert>
 
 
 	<!-- 개설한 모임 수정 : 승인 허가 여부, 참여 성별 수정 불가능 -->

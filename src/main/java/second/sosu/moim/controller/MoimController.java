@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -37,45 +36,50 @@ public class MoimController {
 
 		List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
 		mv.addObject("list", list);
-		mv.addObject("sessionss",session.getAttribute("M_IDX"));
-		
+		mv.addObject("sessionss", session.getAttribute("M_IDX"));
+
 		return mv;
 	}
 
 	// 모임 상세보기
 	@RequestMapping("/moim/{MO_CATEGORY}/{MO_IDX}.sosu")
-	public ModelAndView moimDetail(@PathVariable int MO_IDX, @PathVariable String MO_CATEGORY, CommandMap commandMap)
-			throws Exception {
+	public ModelAndView moimDetail(@PathVariable int MO_IDX, @PathVariable String MO_CATEGORY, CommandMap commandMap,
+			HttpSession session) throws Exception {
 
 		commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
 		commandMap.getMap().put("MO_IDX", MO_IDX);
-
-		ModelAndView mv = new ModelAndView("/moim/moimDetail");
-
+		commandMap.put("MO_IDX", commandMap.get("MO_IDX"));
+		
 		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
+		//모임에 참여한 인원 리스트
+		List<Map<String, Object>> list = moimService.moimMemberList(commandMap.getMap(), commandMap);
+		
+		ModelAndView mv = new ModelAndView("/moim/moimDetail");
+		mv.addObject("list", list);
 		mv.addObject("Detail", map);
+		mv.addObject("sessionss", session.getAttribute("M_IDX"));
 
 		return mv;
 	}
 
 	// 모임작성 폼
 	@RequestMapping(value = "/moim/moimRegister.sosu")
-	public ModelAndView insertForm(CommandMap commandMap) throws Exception {
+	public ModelAndView insertForm(CommandMap commandMap, HttpSession session) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/moim/moimRegister");
+		mv.addObject("M_IDX", session.getAttribute("M_IDX"));
 
 		return mv;
 	}
 
 	// 모임작성 구동
 	@RequestMapping("/moim/moimRegister.pro")
-	public ModelAndView moimRegister(CommandMap commandMap, HttpSession session)
-			throws Exception {
+	public ModelAndView moimRegister(CommandMap commandMap, HttpSession session) throws Exception {
 
 		List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
 
 		commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
-		// 개행을 위한...
+		// 개행을 위한...(구현 안됨)
 		String MO_DETAIL = (String) (commandMap.getMap().replace("\r\n", "<br>"));
 		commandMap.setMap(MO_DETAIL);
 
@@ -131,6 +135,26 @@ public class MoimController {
 		ModelAndView mv = new ModelAndView("redirect:/moim/" + cate + ".sosu");
 
 		moimService.moimDelete(commandMap.getMap());
+
+		return mv;
+	}
+
+	// 모임 참가
+	@RequestMapping("/moim/moimJoin.sosu")
+	public ModelAndView moimJoin(CommandMap commandMap, HttpSession session) throws Exception {
+
+		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
+
+		commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
+
+		commandMap.put("MO_IDX", commandMap.get("MO_IDX"));
+
+		String cate = map.get("MO_CATEGORY").toString();
+		String idx = map.get("MO_IDX").toString();
+
+		ModelAndView mv = new ModelAndView("redirect:/moim/" + cate + "/" + idx + ".sosu");
+
+		moimService.moimJoin(commandMap.getMap(), session, commandMap);
 
 		return mv;
 	}
