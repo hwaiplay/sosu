@@ -7,6 +7,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align:center;
+	width: 403px;
 }
 
 .input-form tbody th {
@@ -37,15 +38,17 @@
 
 /*로그인 버튼*/
 .btn-login{
-	width:100%;
-	background-color: #fd8731;
-	color:#fff;
-	border:0px;
-	height:30px;
+	margin-top: 10px;
+    width: 85%;
+    background-color: #fd8731;
+    color: #fff;
+    border: 0px;
+    height: 35px;
+    margin-right: 15px;
 }
 
 /*기본 상태, 사용자가 이미 방문한 상태*/
-.class a:link, a:visited {
+.btn-a:link, .btn-a:visited {
      /* background-color: #FFA500; */
      color: #F16F19;
      padding: 15px 25px;
@@ -53,10 +56,9 @@
      text-decoration: none;
      display: inline-block;
 }
-
 /*마우스 올려져 있을 때, 마우스로 클릭할 때*/
-.class a:hover, a:active {
-   /*   background-color:#F16F19; */
+ .btn-a:hover, .btn-a:active {
+     background-color:#F16F19;
      color: #fff;
 }  
 
@@ -69,4 +71,16 @@
 
 .find-contents input {
     width: 88%;
+}
+
+.find-p{
+	font-size:15px;
+	vertical-align:middle;
+}
+
+.find-result{
+	font-size:20px;
+	color:#ff6100;
+	vertical-align:middle;
+	
 }

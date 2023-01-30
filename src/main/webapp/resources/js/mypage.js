@@ -1,11 +1,18 @@
 //mypage.jsp 카테고리 클릭 시 필요한 값 받아오기
+
 history.replaceState({},null,location.pathname);
 $(document).ready(function(){
    $('#check1').on('click', function(){
-      $('#category').val(1);
+		$('.btn').removeClass("on");
+		$(this).addClass("on");
+		$('#category').val(1);
+		console.log(1);
    });
    $('#check2').on('click', function(){
       $('#category').val(2);
+      $('.btn').removeClass("on");
+		$(this).addClass("on");
+		console.log(2);
    });
    $('#check3').on('click', function(){
       $('#category').val(3);
@@ -26,7 +33,12 @@ $(document).ready(function(){
    $('#check8').on('click', function(){
       $('#zzim').val(8);
    });
+  
+   
 });
+
+
+
 
 //mypagemodify.jsp 사진 삭제 클릭 시, 기본 이미지 넣기
 $(document).ready(function(){
@@ -46,18 +58,7 @@ $(document).ready(function(){
       var file = document.getElementById("file");
       file.setAttribute("type","hidden");
    });
-   
-   //여자남자 버튼 활성화
-   var m_gender = $('#m_gender').val();
-   var b_male = document.getElementById("male");
-   var b_female = document.getElementById("female");
-   if(m_gender == 1 || m_gender==3){
-      b_female.setAttribute("disabled", "disabled");
-      b_male.setAttribute("onClick", "return(false);");
-   }else{
-      b_male.setAttribute("disabled", "disabled");
-      b_female.setAttribute("onClick", "return(false);");
-   }
+
 });
 
 

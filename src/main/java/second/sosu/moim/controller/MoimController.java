@@ -51,7 +51,8 @@ public class MoimController {
 		commandMap.getMap().put("MO_IDX", MO_IDX);
 
 		ModelAndView mv = new ModelAndView("/moim/moimDetail");
-
+		mv.setViewName("moim/moimDetail");
+		
 		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
 		mv.addObject("Detail", map);
 

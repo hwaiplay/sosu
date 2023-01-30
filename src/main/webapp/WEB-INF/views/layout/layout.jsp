@@ -14,9 +14,7 @@
 	</div>
 	
 	<!-- body -->
-	<div style="text-align: center;">
-		<tiles:insertAttribute name="body"/>
-	</div>
+	<tiles:insertAttribute name="body"/>
 	
 	<!-- footer --> 
 	<tiles:insertAttribute name="footer"/>

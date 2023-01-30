@@ -3,10 +3,15 @@
 
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
+
 <link href="/resources/css/main.css" rel="stylesheet">
 
 <div style="height: 90px;"
-	class="parent fixed-top">
+	class="parent">
 
 	<!--============== 로고  ==============-->
 	<div class="first">
