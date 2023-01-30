@@ -26,13 +26,19 @@
 	</definition>
 	
 	<!-- 회원가입 -->
-	<definition name="com/join/*" extends="main_layout">
+	<definition name="/com/join/*" extends="main_layout">
 		<put-attribute name="body" value="/WEB-INF/views/com/join/{1}.jsp"/>
 	</definition>
 	
 	<!-- 로그인 관련 -->
-	<definition name="com/login/*" extends="main_layout">
+	<definition name="/com/login/*" extends="main_layout">
 		<put-attribute name="body" value="/WEB-INF/views/com/login/{1}.jsp"/>
+	</definition>
+	
+	
+	<!-- 모임 관련 -->
+	<definition name="members/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
 	</definition>
 	
 	

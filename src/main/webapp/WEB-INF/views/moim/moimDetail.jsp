@@ -89,8 +89,14 @@
 		인원 제한 없음
 		</c:if>
 		</p>
-		
 	</div>
+	
+	<!-- 
+	if ${Detail.MO_GENDER == 'W' && session.m_gender == '2' && session.m_gender == '4' } button display 
+	
+	
+	
+	 -->
 	
 	<div class="kingArea">
 		<hr>

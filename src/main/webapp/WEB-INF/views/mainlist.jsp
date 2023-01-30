@@ -53,7 +53,10 @@
 	<!--============== 모임 리스트 4개 ==============-->		
       <c:choose>
 		<c:when test="${fn:length(molist) > 0 }">
-		<p class="ct">모임</p>
+		<p class="ct">모임
+			<span><a href="/moim/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
+		</p>
+		
          <c:forEach items="${molist}" var="m" end="3">
             <div class="col-lg-3 menu-item">
 			<div class="row gy-5"  onclick="location.href='/moim/${m.MO_CATEGORY}/${m.MO_IDX}.sosu'" style="cursor: pointer;">
@@ -97,10 +100,12 @@
       <div class="row gy-5" style="margin-bottom: 90px;">
       <c:choose>
 		<c:when test="${fn:length(relist) > 0 }">
-         <p class="ct">리뷰</p>
+         <p class="ct">리뷰
+         	<span><a href="/review/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
+         </p>
          <c:forEach items="${relist}" var="r" end="3">
          <div class="col-lg-3 menu-item">
-			<div class="row gy-5"  onclick="/review/${r.MO_CATEGORY}/${r.RV_IDX}.sosu'" style="cursor: pointer;">
+			<div class="row gy-5"  onclick="location.href='/review/${r.MO_CATEGORY}/${r.RV_IDX}.sosu'" style="cursor: pointer;">
 			<input type="hidden" name="M_IDX" value="${r.RV_IDX}">
             <input type="hidden" name="MO_IDX" value="${r.M_IDX}">
             
@@ -113,21 +118,28 @@
                  	<img src="/resources/img/icons/list.png"  style='width: 300px; height: 300px'>
                  </c:if> 
                      <br />
-					<p class="rmoim-title">${r.MO_TITLE}
+					<p class="rmoim-title">${r.RV_TITLE}
 					<span class="rdetail-cate">
 					<fmt:formatDate value="${r.RV_REGDATE}" pattern ="yyyy/MM/dd" />
 					</span></p>
-					<hr style="width:300px;">
-					<c:if test="${m.MO_COST != null }">
-					<p class="mo-cost">${m.MO_COST}원
-						<span class="hhh">♡</span>
-					</p>
-					</c:if>
-					<c:if test="${m.MO_COST == null }">
-					<p class="mo-cost">0원
-						<span class="hhh">♡</span>
+					<span class="review-star" style="color: #ffc81e;text-align: left;margin-top: -27px; font-size: 21px;">
+								<c:if test="${r.RV_STAR eq 1}"><c:out value="★☆☆☆☆"/></c:if> 
+								<c:if test="${r.RV_STAR eq 2}"><c:out value="★★☆☆☆" /></c:if> 
+								<c:if test="${r.RV_STAR eq 3}"><c:out value="★★★☆☆" /></c:if> 
+								<c:if test="${r.RV_STAR eq 4}"><c:out value="★★★★☆" /></c:if>
+								<c:if test="${r.RV_STAR eq 5}"><c:out value="★★★★★" /></c:if>
+					</span>
+					<p class="ddd" style="margin-top: 14px;">
+					<%-- <img class="kingimg" src="${pageContext.request.contextPath}/resources/assets/img/image/${r.PROFILE}"
+			                     alt="profile"> --%>
+			             <!-- ▼임시사진 -->
+			             <img class="kingimg" src="/resources/img/category/basketball.jpg"
+			                     alt="profile">
+						<span style="padding-left: 6px">
+						${r.M_NICKNAME}
+						</span>
+						<span class="hhh" style="margin-top: -7px;">♡</span>
 					</p>	
-					</c:if>
 				</div>
 			</div>
       
@@ -139,7 +151,7 @@
        <div class="none">
 			조회된 결과가 없습니다.
 		</div>	
-		</div>
+	   </div>
 		 </c:otherwise>
       </c:choose>
      </div> 
@@ -148,32 +160,49 @@
       <!--============== 자유게시판 4개 ==============-->
       <c:choose>
 		<c:when test="${fn:length(frlist) > 0 }">
-		<p class="ct">자유게시판</p>
+		<p class="ct">자유게시판
+			<span><a href="/freeboard/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
+		</p>
          <c:forEach items="${frlist}" var="f" end="3">
-      		<div class="col-lg-3 menu-item" onclick="/freeboard/${f.MO_CATEGORY}/${f.FR_IDX}.sosu'">
-                 <c:if test="${f.f_svname != null }">
-                 <img
-                     src="${pageContext.request.contextPath}/resources/assets/img/image/${f.F_SVNAME }" class="radius_img"
+         	<div class="col-lg-3 menu-item" onclick="location.href='/freeboard/${f.MO_CATEGORY}/${f.FR_IDX}.sosu'">
+                <c:if test="${f.f_svname != null }">
+                <img
+                     src="${pageContext.request.contextPath}/resources/assets/img/image/${f.F_SVNAME }"
                      alt="" style='width: 300px; height: 300px'>
                  </c:if>
                  <c:if test="${f.f_svname == null }">
-                 	<img src="/resources/img/basic.png" >
+                 	<img src="/resources/img/icons/list.png"  style='width: 300px; height: 300px'>
                  </c:if> 
                      <br />
-               <span style="text-align: left;" class="title" >
-                  <c:out value="${f.FR_TITLE}" />
+                     
+                    <p class="ddd" style="margin-top: 14px; width:100%;">
+					<%-- <img class="kingimg" src="${pageContext.request.contextPath}/resources/assets/img/image/${r.PROFILE}"
+			                     alt="profile"> --%>
+			             <!-- ▼임시사진 -->
+			             <img class="kingimg" src="/resources/img/category/basketball.jpg"
+			                     alt="profile">
+						<span style="padding-left: 6px">
+						${f.M_NICKNAME}
+						</span>
+					</p>	
+                     
+					<p class="moim-title" style="margin-top: 2px; width:100%; padding-left: 2px;">
+					${f.FR_TITLE}
+						<span class="hhh" style="">♡</span>
+					</p>
                   <input type="hidden" value="${f.FR_IDX}">
                   <input type="hidden" value="${f.M_IDX}">
-               </span>
-               
             </div>
       
       </c:forEach>
       </c:when>
        <c:otherwise>
-			<tr>
-				<td colspan="4">조회된 결과가 없습니다.</td>
-			</tr>
+		<div class="row gy-5" style="height: 165px; margin-bottom: 12px;">
+       <p class="ct">자유게시판</p>
+       <div class="none">
+			조회된 결과가 없습니다.
+		</div>	
+	   </div>
 		 </c:otherwise>
       </c:choose>
       

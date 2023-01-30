@@ -98,5 +98,3 @@
 </script> 
 
 
-<%@ include file="/WEB-INF/include/common-footer.jspf" %>
-	

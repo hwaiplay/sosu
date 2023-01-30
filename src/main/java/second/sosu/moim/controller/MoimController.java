@@ -33,7 +33,7 @@ public class MoimController {
 		commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
 
 		ModelAndView mv = new ModelAndView("/moim/moimlist");
-		System.out.println("+++++++++++++++++" + commandMap.getMap());
+		mv.setViewName("moim/moimlist");
 
 		List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
 		mv.addObject("list", list);
