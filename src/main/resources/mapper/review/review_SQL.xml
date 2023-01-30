@@ -29,6 +29,22 @@
       
    </select> -->
    
+	<!-- 모임리스트에서 리뷰 상세보기 보여주기 -->   
+   <select id="reviewDetail" resultType="hashmap" parameterType="hashmap">
+      
+      SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, MO.MO_CATEGORY, M.*
+        FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
+        WHERE
+        F.F_TABLE(+) = 'R'
+        AND F.F_MAIN_YN(+) = 'Y'
+        AND F.F_ARTICLE(+) = R.RV_IDX
+        AND F.F_DEL_YN(+) = 'N'
+        AND R.RV_DEL_YN(+) = 'N'
+        AND R.MO_IDX = MO.MO_IDX 
+        AND M.M_IDX = R.M_IDX
+        AND R.RV_IDX = #{RV_IDX}
+   </select>  
+   
    <!-- 모임리스트에서 리뷰 보여주기 -->   
    <select id="reviewList" resultType="hashmap" parameterType="hashmap">
       
@@ -43,16 +59,16 @@
         AND R.MO_IDX = MO.MO_IDX 
         AND M.M_IDX = R.M_IDX
         AND MO.MO_CATEGORY = #{MO_CATEGORY}
-      <!-- <if test="mo_region != '전체'">
+      <!-- <if test="MO_REGION != '전체'">
       AND
-            M.MO_REGION = #{mo_region}      
-      </if>; -->
+            MO.MO_REGION = #{MO_REGION}      
+      </if> -->
       
    </select>
    
    <!-- 후기 전체보기에서 리뷰 보여주기 -->
    <select id="selectAllReview" resultType="hashmap" parameterType="hashmap">
-      <include refid="common.pagingPre"/> 
+      <!-- <include refid="common.pagingPre"/>  -->
           SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, M.*
         FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
         WHERE
@@ -64,17 +80,13 @@
         AND R.MO_IDX = MO.MO_IDX 
         AND M.M_IDX = R.M_IDX
         AND MO.MO_CATEGORY = #{MO_CATEGORY}
-         <if test="mo_region != '전체'">
-         AND
-            M.MO_REGION = #{mo_region}      
-         </if>      
-          ORDER BY 
+        ORDER BY 
                 F.F_REG_DATE DESC
       
-      <include refid="common.pagingPost" />
+      <!-- <include refid="common.pagingPost" /> -->
    </select>
    
-   <!-- 좋아요 수 -->
+    <!-- 좋아요 수 -->
 	<select id="reviewZzimCount" parameterType="hashmap" resultType="hashmap">
 		SELECT COUNT(Z.Z_ARTICLE) AS RZ_COUNT
         FROM ZZIM Z, REVIEW R
@@ -142,16 +154,16 @@
         UPDATE 
               REVIEW
       SET 
-            RV_STAR = #{rv_star},
-            RV_TITLE = #{rv_title},
-            RV_CONTENT = #{rv_contents},
+            RV_STAR = #{RV_STAR},
+            RV_TITLE = #{RV_TITLE},
+            RV_CONTENT = #{RV_CONTENT},
             RV_REGDATE = sysdate
       WHERE 
-            RV_IDX = #{rv_idx}
+            RV_IDX = #{RV_IDX}
       AND 
-            M_IDX = #{m_idx}
+            M_IDX = #{M_IDX}
       AND      
-            MO_IDX = #{mo_idx}
+            MO_IDX = #{MO_IDX}
     
    </update>
    

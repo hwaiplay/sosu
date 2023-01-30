@@ -10,12 +10,12 @@
 <header>
 	<div class="header_wrap slim_scroll layoutCenter flexBetween">
 		<div class="logo_wrap">
-			<a href="/main">
+			<a href="/main.sosu">
 				<img class="logo" alt="Honey Dream Logo" src="/resources/image/logo.png">
 				<img class="logo_w" alt="Honey Dream Logo" src="/resources/image/logo_w.png">
 			</a>
 		</div>
-		<form id="search" class="flexCenter flexWrap" name="search" method="post" action="/main">
+		<form id="search" class="flexCenter flexWrap" name="search" method="post" action="/main.sosu">
 			<ul class="types flexBetween">
 				<li><input type="radio" class="fa search" name="search_type" value="search" ${(empty search_type || search_type == 'search')?'checked':''}></li>
 				<li><input type="radio" class="fa gps" name="search_type" value="gps" ${(search_type == 'gps')?'checked':''}></li>

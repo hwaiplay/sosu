@@ -1,13 +1,14 @@
 package second.sosu.members.review.service;
 
+import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 public interface ReviewService {
 
 	
-	Map<String, Object> selectReview(Map<String, Object> map, HttpSession session) throws Exception;
+//	Map<String, Object> selectReview(Map<String, Object> map, HttpSession session) throws Exception;
+	
+	List<Map<String, Object>> selectAllReview(Map<String, Object> map) throws Exception;
 	
 	Map<String, Object> reviewDetail(Map<String, Object> map) throws Exception;
 	

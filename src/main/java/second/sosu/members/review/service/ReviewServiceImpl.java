@@ -1,9 +1,9 @@
 package second.sosu.members.review.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,16 @@ public class ReviewServiceImpl implements ReviewService{
 	private ReviewDAO reviewDAO;
 
 	//리뷰 페이징 리스트
+//	@Override 
+//	public Map<String, Object> selectReview(Map<String, Object> map, HttpSession session) throws Exception {
+//		
+//		return reviewDAO.selectReview(map);
+//	}
+	
 	@Override 
-	public Map<String, Object> selectReview(Map<String, Object> map, HttpSession session) throws Exception {
+	public List<Map<String, Object>> selectAllReview(Map<String, Object> map) throws Exception {
 		
-		return reviewDAO.selectReview(map);
+		return reviewDAO.selectAllReview(map);
 	}
 	
 //	리뷰 상세보기
