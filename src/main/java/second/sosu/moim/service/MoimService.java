@@ -15,20 +15,31 @@ public interface MoimService {
 			throws Exception;
 
 	// 모임에 참가한 인원 리스트
-	List<Map<String, Object>> moimMemberList(Map<String, Object> map, CommandMap commandMap)
-			throws Exception;
+	List<Map<String, Object>> moimMemberList(Map<String, Object> map, CommandMap commandMap) throws Exception;
+
+	// 모임참여에 대기중인 인원 리스트
+	List<Map<String, Object>> moimMemberWait(Map<String, Object> map, CommandMap commandMap) throws Exception;
+
+	// 모임 참여승인
+	void moimWaitApprove(Map<String, Object> map) throws Exception;
+
+	// 모임 맴버 강퇴
+	void moimMemberBan(Map<String, Object> map) throws Exception;
 
 	// 모임 상세보기
 	Map<String, Object> moimDetail(Map<String, Object> map) throws Exception;
 
 	// 모임 개설
-	void moimRegister(Map<String, Object> map, HttpSession session) throws Exception; // 추후 세션추가
+	void moimRegister(Map<String, Object> map, HttpSession session) throws Exception;
 
 	// 모임 참가
-	void moimJoin(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception; // 추후 세션추가
+	void moimJoin(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception;
+
+	// 모임 참가 요청
+	void moimJoinPermit(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception;
 
 	// 모임 수정
-	void moimModify(Map<String, Object> map) throws Exception; // 추후 세션추가
+	void moimModify(Map<String, Object> map) throws Exception;
 
 	// 모임 삭제
 	void moimDelete(Map<String, Object> map) throws Exception; // 추후 세션추가

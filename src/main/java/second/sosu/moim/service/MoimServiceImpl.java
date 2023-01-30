@@ -43,6 +43,13 @@ public class MoimServiceImpl implements MoimService {
 		return moimDao.moimMemberList(map, commandMap);
 	}
 
+	// 모임참여에 대기중인 인원 리스트
+	@Override
+	public List<Map<String, Object>> moimMemberWait(Map<String, Object> map, CommandMap commandMap) throws Exception {
+		// TODO Auto-generated method stub
+		return moimDao.moimMemberWait(map, commandMap);
+	}
+
 	// 모임 작성
 	@Override
 	public void moimRegister(Map<String, Object> map, HttpSession session) throws Exception {
@@ -60,10 +67,31 @@ public class MoimServiceImpl implements MoimService {
 
 	}
 
+	// 모임 참가
+	@Override
+	public void moimJoinPermit(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception {
+		// TODO Auto-generated method stub
+
+		moimDao.moimJoinPermit(map, session, commandMap);
+
+	}
+
 	// 모임 수정
 	@Override
 	public void moimModify(Map<String, Object> map) throws Exception {
 		moimDao.moimModify(map);
+	}
+
+	// 모임 참여승인
+	@Override
+	public void moimWaitApprove(Map<String, Object> map) throws Exception {
+		moimDao.moimWaitApprove(map);
+	}
+
+	// 모임 맴버 강퇴
+	@Override
+	public void moimMemberBan(Map<String, Object> map) throws Exception {
+		moimDao.moimMemberBan(map);
 	}
 
 	// 모임 삭제

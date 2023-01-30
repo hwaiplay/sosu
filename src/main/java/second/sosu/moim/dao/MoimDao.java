@@ -65,7 +65,7 @@ public class MoimDao extends AbstractDAO {
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> moimMemberList(Map<String, Object> map, CommandMap commandMap) throws Exception {
 
-		List<Map<String, Object>> moimMemberList = (List<Map<String, Object>>) selectList("moim.moimMemberList");
+		List<Map<String, Object>> moimMemberList = (List<Map<String, Object>>) selectList("moim.moimMemberList", map);
 
 		// 프사
 		for (int i = 0; i < moimMemberList.size(); i++) {
@@ -75,6 +75,32 @@ public class MoimDao extends AbstractDAO {
 		}
 
 		return moimMemberList;
+	}
+
+	// 모임에 대기중인 인원 리스트
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> moimMemberWait(Map<String, Object> map, CommandMap commandMap) throws Exception {
+
+		List<Map<String, Object>> moimMemberWait = (List<Map<String, Object>>) selectList("moim.moimMemberWait", map);
+
+		// 프사
+		for (int i = 0; i < moimMemberWait.size(); i++) {
+			Map<String, Object> memberProfile = (Map<String, Object>) selectOne("file.memberProfile",
+					moimMemberWait.get(i).get("M_IDX"));
+			moimMemberWait.get(i).put("PROFILE", memberProfile.get("PROFILE"));
+		}
+
+		return moimMemberWait;
+	}
+
+	// 모임 참여 승인
+	public void moimWaitApprove(Map<String, Object> map) throws Exception {
+		update("moim.moimWaitApprove", map);
+	}
+
+	// 모임 맴버 강퇴
+	public void moimMemberBan(Map<String, Object> map) throws Exception {
+		update("moim.moimMemberBan", map);
 	}
 
 	// 모임 작성
@@ -92,9 +118,14 @@ public class MoimDao extends AbstractDAO {
 		update("moim.moimDelete", map);
 	}
 
-	// 모임 참가
+	// 모임 참가 (요청이 필요하지 않은 경우)
 	public void moimJoin(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
 		insert("moim.moimJoin", map);
+	}
+
+	// 모임 참가 요청 (요청이 필요하지 않은 경우)
+	public void moimJoinPermit(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
+		insert("moim.moimJoinPermit", map);
 	}
 
 }

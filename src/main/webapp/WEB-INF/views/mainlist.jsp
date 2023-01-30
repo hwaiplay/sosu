@@ -30,7 +30,7 @@
          <c:choose>
             <c:when test="${fn:length(molist) > 0 }">
                <c:forEach items="${molist}" var = "m" end = "3">
-                  <tr align="center" onclick= "location.href='/moim/${m.MO_CATEGORY}/${m.MO_IDX}.sosu'">
+                   <tr align="center" onclick= "location.href='/moim/${m.MO_CATEGORY}/${m.MO_IDX}.sosu'">
                      <td>${m.MO_IDX}<input type="hidden" name="MO_IDX" value="${m.MO_IDX}"></td>
                      <td>${m.MO_TITLE}<input type="hidden" name="M_IDX" value="${m.M_IDX}"></td>
                      <td>${m.MO_REGION}</td>
@@ -40,10 +40,10 @@
                      <c:if test ="${sessionss ne null}">
                      <td>${m.MZ_CHECK}</td>
                      </c:if>
-                     <c:if test ="${sessionScope.M_IDX eq null}">
+                     <c:if test ="${sessionss eq null}">
                      </c:if>
                      <td>${m.MF_SVNAME}</td>
-                  </tr>
+                     </tr>
                </c:forEach>
             </c:when>
             <c:otherwise>
