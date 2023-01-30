@@ -1,18 +1,18 @@
 function check() {
 	
-	let category = $("#category").text();
-	let idx = $("#RV_IDX").text();
+	let category = $("#category").val();
+	let idx = $("#RV_IDX").val();
+
+    let result = confirm("게시글을 삭제 하시겠습니까?");
 	
-    if (confirm("게시글을 삭제 하시겠습니까?"))
+    if (result)
     {
         alert("삭제 되었습니다.");
 
-        location.href="/review/reviewDelete.sosu";
+        return true;
 
     } else 
     {
-        location.href="/review/" + category + "/" + idx + ".sosu";
-
-		return false;
+	    return false;
 	}
 }

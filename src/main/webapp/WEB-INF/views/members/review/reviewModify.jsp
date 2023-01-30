@@ -13,11 +13,11 @@
 		
 		<fieldset>
 		    <legend>별점을 선택해주세요</legend>
-		    <input type="radio" name="rv_star" value="5" id="rate1"><label for="rate1">⭐</label>
-		    <input type="radio" name="rv_star" value="4" id="rate2"><label for="rate2">⭐</label>
-		    <input type="radio" name="rv_star" value="3" id="rate3"><label for="rate3">⭐</label>
-		    <input type="radio" name="rv_star" value="2" id="rate4"><label for="rate4">⭐</label>
-		    <input type="radio" name="rv_star" value="1" id="rate5"><label for="rate5">⭐</label>
+		    <input type="radio" name="RV_STAR" value="5" id="rate1"><label for="rate1">⭐</label>
+		    <input type="radio" name="RV_STAR" value="4" id="rate2"><label for="rate2">⭐</label>
+		    <input type="radio" name="RV_STAR" value="3" id="rate3"><label for="rate3">⭐</label>
+		    <input type="radio" name="RV_STAR" value="2" id="rate4"><label for="rate4">⭐</label>
+		    <input type="radio" name="RV_STAR" value="1" id="rate5"><label for="rate5">⭐</label>
 		</fieldset>
 		
 		<h3>제목</h3>
@@ -26,9 +26,10 @@
 		<h3>내용</h3>
 		<textarea name="rv_content" id="rv_content" placeholder="후기 내용을 작성해주세요.">${reviewMap.RV_CONTENT}</textarea>
 		
-		<!-- 회원번호 모임번호 -->
-		<input type="hidden" name="rv_m_idx" value="${reviewMap.M_IDX}"> <!-- ${m_idx} -->
-		<input type="hidden" name="rv_mo_idx" value="${reviewMap.MO_IDX}"> <!-- ${mo_idx} -->
+		<!-- 회원번호 -->
+		<input type="hidden" name="rv_m_idx" value="${reviewMap.M_IDX}">
+		<!-- 모임번호 --> 
+		<input type="hidden" name="rv_mo_idx" value="${reviewMap.MO_IDX}"> 
 		
 		<input type="file" id="review_file" accept="image/jpeg, image/png, image/jpg"> <!-- accept로 이미지파일 확장자 제한 가능 -->
 		

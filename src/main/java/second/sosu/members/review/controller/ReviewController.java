@@ -102,7 +102,7 @@ public class ReviewController {
 	@PostMapping("/members/reviewForm.sosu")
 	public ModelAndView reviewForm_insert(CommandMap commandMap) throws Exception {
 		
-		ModelAndView mv = new ModelAndView("redirect:/members/mypage");
+		ModelAndView mv = new ModelAndView("redirect:/members/review/reviewDetail");
 		
 		reviewService.insertReview(commandMap.getMap());
 		
@@ -146,15 +146,13 @@ public class ReviewController {
 		
 		commandMap.put("RV_IDX", RV_IDX);
 		
-//		commandMap.put("MO_CATEGORY", commandMap.get("MO_CATEGORY"));
-		
-		ModelAndView mv = new ModelAndView("redirect:/review/{MO_CATEGORY}.sosu");
+		ModelAndView mv = new ModelAndView("redirect:/members/review/reviewList");
 		
 		reviewService.updateReview(commandMap.getMap());
 		
-		mv.addObject("RV_IDX", commandMap.get("RV_IDX"));
-		mv.addObject("M_IDX", commandMap.get("M_IDX"));
-		mv.addObject("MO_IDX", commandMap.get("MO_IDX"));
+//		mv.addObject("RV_IDX", commandMap.get("RV_IDX"));
+//		mv.addObject("M_IDX", commandMap.get("M_IDX"));
+//		mv.addObject("MO_IDX", commandMap.get("MO_IDX"));
 		
 		return mv;
 	}
@@ -166,8 +164,10 @@ public class ReviewController {
 	 * @throws Exception
 	 */
 	
-	@PostMapping("/review/reviewDelete.sosu")
-	public ModelAndView reviewDelete(CommandMap commandMap) throws Exception {
+	@PostMapping("/review/{MO_CATEGORY}.sosu")
+	public ModelAndView reviewDelete(@PathVariable String MO_CATEGORY, CommandMap commandMap) throws Exception {
+		
+		commandMap.put("MO_CATEGORY", MO_CATEGORY); 
 		
 		ModelAndView mv = new ModelAndView("redirect:/members/review/reviewList");
 		

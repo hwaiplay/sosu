@@ -117,13 +117,13 @@
       VALUES
       (
          RV_IDX.NEXTVAL,
-         #{m_idx}, 
-         #{mo_idx},
-         #{rv_content},
+         #{M_IDX}, 
+         #{MO_IDX},
+         #{RV_CONTENT},
          sysdate,
-         #{rv_title},
+         #{RV_TITLE},
          'N',
-         #{rv_star}
+         #{RV_STAR}
                   )
    
    </insert>
@@ -137,10 +137,10 @@
       (
          F_IDX.NEXTVAL, 
          'F', 
-         #{rv_idx}, 
-         #{f_ogname}, 
-         #{f_svname}, 
-         #{f_size}, 
+         #{RV_IDX}, 
+         #{F_OGNAME}, 
+         #{F_SVNAME}, 
+         #{F_SIZE}, 
          'N', 
          'N', 
          sysdate
@@ -151,8 +151,8 @@
    <!-- 리뷰수정하기 -->
    <update id="updateReview" parameterType="hashmap">
    
-        UPDATE 
-              REVIEW
+      UPDATE 
+            REVIEW
       SET 
             RV_STAR = #{RV_STAR},
             RV_TITLE = #{RV_TITLE},
@@ -170,17 +170,17 @@
    <!-- 리뷰삭제하기 -->
    <update id="deleteReview" parameterType="hashmap">
    
-       UPDATE 
+      UPDATE 
              REVIEW
       SET 
             RV_DEL_YN = 'Y',
             RV_REGDATE = sysdate
       WHERE 
-            RV_IDX = #{rv_idx}
+            RV_IDX = #{RV_IDX}
       AND 
-            M_IDX = #{m_idx}
+            M_IDX = #{M_IDX}
       AND      
-            MO_IDX = #{mo_idx}
+            MO_IDX = #{MO_IDX}
     
    </update>
 
