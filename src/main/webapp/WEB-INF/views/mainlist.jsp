@@ -76,19 +76,19 @@
             <c:when test="${fn:length(relist) > 0 }">
                <c:forEach items="${relist}" var = "r"  end = "4" varStatus="status">
                    <tr align="center" onclick= "location.href='/review/${r.MO_CATEGORY}/${r.RV_IDX}.sosu'">
-                     <td>${r.RV_IDX}<input type = "hidden" value = "${r.RV_IDX}"></td>
-                     <td>${r.RF_SVNAME}<input type = "hidden" value = "${r.M_IDX}"></td>
-                     <td>${r.MO_TITLE}</td>
-                     <td>${r.RV_STAR}</td>
-                     <td>${r.PROFILE}</td>
-                     <td>${r.M_NICKNAME}</td>
-                      <td>${r.RZ_COUNT}</td>
-                     <c:if test ="${sessionss ne null}">
-                     <td>${r.RZ_CHECK}</td>
-                     </c:if>
-                     <c:if test ="${sessionScope.M_IDX eq null}">
-                     </c:if>
-                     <td>${r.RV_REGDATE}</td>
+                     	<td>${r.RV_IDX}<input type = "hidden" value = "${r.RV_IDX}"></td>
+                     	<td>${r.RF_SVNAME}<input type = "hidden" value = "${r.M_IDX}"></td>
+                     	<td>${r.MO_TITLE}</td>
+                     	<td>${r.RV_STAR}</td>
+                     	<td>${r.PROFILE}</td>
+                     	<td>${r.M_NICKNAME}</td>
+                     	<td>${r.RZ_COUNT}</td>
+                     	<c:if test ="${sessionss ne null}">
+                     	<td>${r.RZ_CHECK}</td>
+                     	</c:if>
+                     	<c:if test ="${sessionScope.M_IDX eq null}">
+                     	</c:if>
+                     	<td>${r.RV_REGDATE}</td>
                   </tr>
                </c:forEach>
             </c:when>

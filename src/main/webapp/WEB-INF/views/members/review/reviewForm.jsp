@@ -8,7 +8,7 @@
 
 <main class="container">
 <article>
-	<form action="/members/reviewForm" method="post" onsubmit="return check()" name="insertReview" id="insertReview">
+	<form action="/members/reviewForm.sosu" method="post" onsubmit="return check()" name="insertReview" id="insertReview">
 		<h1>리뷰 작성하기</h1>
 		
 		<fieldset>
@@ -26,9 +26,10 @@
 		<h3>내용</h3>
 		<textarea name="rv_content" id="rv_content" placeholder="후기 내용을 작성해주세요."></textarea>
 		
-		<!-- 회원번호 모임번호 -->
-		<input type="hidden" name="rv_m_idx" value="1"> <!-- ${m_idx} -->
-		<input type="hidden" name="rv_mo_idx" value="1"> <!-- ${mo_idx} -->
+		<!-- 회원번호 -->
+		<input type="hidden" name="rv_m_idx" value="${M_IDX}">
+		<!-- 모임번호 --> 
+		<input type="hidden" name="rv_mo_idx" value="${MO_IDX}"> 
 		
 		<input type="file" id="review_file" accept="image/jpeg, image/png, image/jpg"> <!-- accept로 이미지파일 확장자 제한 가능 -->
 		
