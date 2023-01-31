@@ -35,11 +35,21 @@
 		<put-attribute name="body" value="/WEB-INF/views/com/login/{1}.jsp"/>
 	</definition>
 	
-	
-	<!-- 모임 관련 -->
+	<!-- 멤버 관련 -->
 	<definition name="members/*" extends="main_layout">
 		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
 	</definition>
+	
+	<!-- 리뷰 관련 -->
+	<!-- <definition name="review/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
+	</definition>
+	
+	자유게시판 관련
+	<definition name="freeboard/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
+	</definition> -->
+	
 	
 	
 <!-- 	
