@@ -41,7 +41,6 @@ Logger log = Logger.getLogger(this.getClass());
 
 		List<Map<String,Object>> list= freeboardService.freeList(commandMap.getMap(), session);
 		
-		
 		mv.addObject("list",list);
 		
 		return mv; 
@@ -49,7 +48,8 @@ Logger log = Logger.getLogger(this.getClass());
 	
 	//게시판 상세보기
 	@RequestMapping(value="/freeboard/{FR_CATEGORY}/{FR_IDX}.sosu")
-	public ModelAndView freeDetail(@PathVariable String FR_CATEGORY, @PathVariable int FR_IDX, CommandMap commandMap, HttpSession session) throws Exception {
+	public ModelAndView freeDetail(@PathVariable String FR_CATEGORY, 
+			@PathVariable int FR_IDX, CommandMap commandMap, HttpSession session) throws Exception {
 	
 		ModelAndView mv = new ModelAndView("/board/freeDetail");
 		//상세내용은 리스트가 아니라 하나의 행만 조회하기 때문에 Map형태의 결과값을 받도록 설정

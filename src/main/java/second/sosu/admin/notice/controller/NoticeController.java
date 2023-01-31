@@ -53,7 +53,7 @@ Logger log = Logger.getLogger(this.getClass());
 	@GetMapping("/notice") 
 	public ModelAndView noticeList(CommandMap commandMap) throws Exception {
 		
-		ModelAndView mv = new ModelAndView("/com/notice/notice");
+		ModelAndView mv = new ModelAndView("/notice/notice");
 		
 		List<Map<String, Object>> list = noticeService.noticeList(commandMap.getMap());
 		

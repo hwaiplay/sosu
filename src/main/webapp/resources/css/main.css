@@ -1,0 +1,175 @@
+@charset "UTF-8";
+
+/* Fonts */
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+/*=========================== 
+		 	header.jsp              
+  =========================== 	*/
+.logo {
+	margin-top: 14px;
+}
+
+.parent{
+    width: 100%;
+    margin: 10px auto;
+}
+
+.first {
+   float: left;
+    width:33%;
+    margin-left: 80px;
+    box-sizing: border-box;
+}
+
+.second{
+    float: left;
+    margin-left: 2%;
+    width:30%;
+    box-sizing: border-box;
+     margin-top: 15px;
+}
+
+
+#searchList input {
+	width: 375px;
+	height: 27px;
+	margin-top: 10px;
+	padding: 2px 0 2px 12px;
+}
+
+#searchList input::placeholder {
+	font-size: 1em;
+}
+
+#searchList input:focus {
+	outline: none;
+}
+
+#searchList button {
+	position : absolute;
+	border: none;
+	background-color: #ffffff
+}	
+
+#searchList img {
+	position : absolute;
+	width: 17px;
+	height: 17px;
+    margin-top: 17px;
+}
+
+.third{
+    float: right;
+   /*  width:20%; */
+    box-sizing: border-box;
+    display: flex;
+    justify-content : center;
+    align-items : center;
+    margin-right: 40px;
+}
+
+
+#header_navi > li {
+  display: inline-block;
+  position: relative;
+      /*   top: 10px;
+        left: 260px; */
+}
+
+#header_navi > li > a {
+  display:block;
+  position:relative; 
+  padding-bottom:19px;
+  margin: 6px;
+}
+      
+#header_navi > li > a > img {
+  width:25px;
+}
+
+#header_navi > li > a > span {
+  position:absolute;
+  bottom:0;
+  left:48%;
+  color:#666;
+  font-size: 12px;
+  line-height:1.462em;
+  white-space:nowrap;
+  transform:translate(-50%, 0)
+}
+
+
+.imgg {
+	width: 35px;
+	padding: 0 7px 0 7px;	
+}
+
+
+/*=========================== 
+		 	main.jsp              
+  =========================== 	*/
+a {
+	color: #fff;
+}  
+
+.cate {
+	display: grid;
+	gap: 12px;
+	justify-content: center;
+}
+  
+.cate1 img {
+	width: 330px;
+	border-radius: 10px;
+	margin : 15px;
+}
+
+.cate2 img {
+	width: 330px;
+	border-radius: 10px;
+	margin : 15px;
+}
+
+#c1 {
+   float: left;
+    width:30%;
+    box-sizing: border-box;
+}
+
+#c2{
+    float: left;
+    margin-left: 5%;
+    width:30%;
+    box-sizing: border-box;
+}
+
+#c3{
+    float: right;
+    width:30%;
+    box-sizing: border-box;
+}
+
+#c4 {
+    float: left;
+    width:30%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+#c5{
+    float: left;
+    margin-left: 5%;
+    width:30%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+#c6{
+    float: right;
+    width:30%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}

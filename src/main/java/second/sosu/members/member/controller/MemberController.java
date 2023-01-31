@@ -56,6 +56,7 @@ public class MemberController {
    public ModelAndView join(CommandMap commandMap, HttpServletRequest request) throws Exception {
 
       ModelAndView mv = new ModelAndView("/main");
+      mv.setViewName("main_layout");
 
       memberService.join(commandMap.getMap());
 
@@ -95,7 +96,7 @@ public class MemberController {
       // 로그인 성공 시 세션값 저장
       if (memberService.login(commandMap.getMap()) != null) {
          Map<String, Object> map = memberService.login(commandMap.getMap());
-         mv.setViewName("/main");
+         mv.setViewName("main_layout");
 
          session.setAttribute("M_IDX", map.get("M_IDX"));
          session.setAttribute("M_NAME", map.get("M_NAME"));
@@ -257,7 +258,7 @@ public class MemberController {
       ModelAndView mv = new ModelAndView();
 
       session.invalidate();
-      mv.setViewName("/main");
+      mv.setViewName("main_layout");
 
       return mv;
    }
@@ -272,7 +273,7 @@ public class MemberController {
       memberService.mypageDelete(commandMap.getMap());
       session.invalidate();
 
-      mv.setViewName("/main");
+      mv.setViewName("main_layout");
 
       return mv;
    }

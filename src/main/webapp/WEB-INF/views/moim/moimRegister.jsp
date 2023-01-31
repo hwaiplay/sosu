@@ -1,66 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/include/admin-header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
+<link href="/resources/css/form.css" rel="stylesheet">
 <meta charset="UTF-8" name="viewport"
    content="width=device-width, initial-scale=1">
-<style type="text/css">
-.MR { 
-   padding:50;
-   margin-top: 190px;
-   margin-bottom: 150px;
-   text-align: center;
-} 
-</style>
-
 <script type="text/javascript">
 history.replaceState({}, null, location.pathname);
 </script>
 
 </head>
 <body>
-   <section class="MR">
-      <div class="container">
-         <h3>모임 개설하기</h3>
-      </div>
-
-      <div class="container" style="align: left; width: 700px">
-         <form action="/moim/moimRegister.pro" method="post" id="f"
-            encType="multipart/form-data" name="moimR">
+<div class="container" style="text-align:center; margin-bottom: 100px;">
+<h2 style=" margin-top: 90px; margin-bottom: 50px;">모임 개설하기</h2>
+	<form action="/moim/moimRegister.pro" method="post" id="f" encType="multipart/form-data" name="moimR">
             
+    <input type="hidden" name="M_IDX" value = "${M_IDX}">
             
-            <input type="hidden" name="M_IDX" value = "${M_IDX}">
-            
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">제목</p>
-               <input type="text" class="form-control" name="MO_TITLE"
-                  placeholder="제목 입력(4-70)" maxlength="100" required="required">
-            </div>
-            <div class="form-group" style="margin-bottom: 30px;">
-               <span>
-               <label for="mo_cate">카테고리</label>
-                  <select name="MO_CATEGORY" class="mo_cate">
-                     <option value="culture">문화/예술</option>
-                     <option value="sports">운동/스포츠</option>
-                     <option value="game">게임/오락</option>
-                     <option value="outdoor">아웃도어/여행</option>
-                     <option value="food">음식</option>
-                     <option value="etc">기타</option>
-                  </select>
-                  </span>
-               <span>
-                  <label for="mo_detailca">카테고리</label>
-                  <input type="text" name="MO_DETAILCATEGORY" class="mo_detailca" placeholder="예) 뮤지컬" required="required">
-               </span>   
-            </div>         
-            
-            <!-- 지역과 세부지역 선택  -->
-            <div class="form-group" style="margin-bottom: 30px;">
-               <span>
-                  <label for="selectRegion">지역</label>
-                  <select name="MO_REGION" id="selectRegion" class="selectRegion" onchange="addressKindChange(this)">
+    <table class="input-form" >
+		<colgroup>
+		<col style="width:150px;">
+		<col style="width:auto;"> 
+		</colgroup>
+   
+   		<tbody>
+   			<tr>
+   				<th class="header"><label for="MO_TITLE" >제목</label><span style="color:#fd8731;">*</span></th>
+            	<td class="contents"><input type="text" class="form-control" name="MO_TITLE" id="MO_TITLE"
+                  placeholder="제목 입력(4-70)" style="width: 754px;" required="required"></td>
+   			</tr>
+   			
+   			<tr>
+   				<th class="header"><label for="MO_CATEGORY" >카테고리</label><span style="color:#fd8731;">*</span></th>
+            	<td class="contents">
+	            	<select name="MO_CATEGORY" class="mo_cate" id="MO_CATEGORY">
+	                     <option value="culture">문화/예술</option>
+	                     <option value="sports">운동/스포츠</option>
+	                     <option value="game">게임/오락</option>
+	                     <option value="outdoor">아웃도어/여행</option>
+	                     <option value="food">음식</option>
+	                     <option value="etc">기타</option>
+	                  </select>
+	                  
+	            	<label for="mo_detailca" style="padding:0 5px 0 25px; font-size: 15px;">세부 카테고리</label>
+	                <input type="text" name="MO_DETAILCATEGORY" class="mo_detailca" placeholder="예) 뮤지컬" required="required">
+            	</td>
+   			</tr>
+   			
+   			<tr>
+   				<th class="header"><label for="selectRegion" >지역</label><span style="color:#fd8731;">*</span></th>
+            	<td class="contents">
+	            	<select name="MO_REGION" id="selectRegion" class="selectRegion" onchange="addressKindChange(this)">
                      <option>지역을 선택해주세요.</option>
                      <option value="중부">중부</option>
                      <option value="동부">동부</option>
@@ -68,88 +59,117 @@ history.replaceState({}, null, location.pathname);
                      <option value="남부">남부</option>
                      <option value="북부">북부</option>
                   </select>
-               </span>
-               <span>
-                  <label for="selectRDetail">세부 지역</label>
+	                  
+	            	<label for="selectRDetail" style="padding:0 5px 0 25px; font-size: 15px;">세부 지역</label>
                     	<select name="MO_DETAILREGION" class="form-control" id="selectRDetail">
                                 <option>선택해주세요.</option>
                             </select>
-               </span>   
-            </div>         
+               </td>
+   			</tr>
+			
+			<tr>
+   				<th class="header"><label for="MO_PERMIT" >승인 허가 여부</label></th>
+            	<td class="gc"><input type="checkbox" name="MO_PERMIT" id="MO_PERMIT">
+            	</td>
+   			</tr>
+			<tr>
+				<th></th>
+            	<td style="text-align: left; font-size: small; color: red; padding-bottom: 15px;">*체크 하시면 직접 승인하셔야 합니다.</td>
+   			</tr>
+   			
+			<tr>
+   				<th class="header"><label for="MO_GENDER" >참가 성별</label><span style="color:#fd8731;">*</span></th>
+            	<td class="gc">
+            	<label for="MO_GENDER" style="vertical-align: middle;">여성</label><input style="vertical-align: middle;" type="radio" name="MO_GENDER" value="W">
+               <label for="MO_GENDER" style="vertical-align: middle;">남성</label><input style="vertical-align: middle;" type="radio" name="MO_GENDER" value="M">
+               <label for="MO_GENDER" style="vertical-align: middle;">제한없음</label><input style="vertical-align: middle;" type="radio" name="MO_GENDER" value="0">
+               
+            	</td>
+   			</tr>
+   			<tr>
+   				<th></th>
+   				<td style="text-align: left; font-size: small; color: red; padding-bottom: 15px;">
+   				*참가 성별은 모임 개설 후 수정이 불가능합니다.
+   				</td>
+   			</tr>
             
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">승인 허가 여부</p>
-               <input type="checkbox" name="MO_PERMIT">
-               <p style="font-size: small; color: red;">*체크 하시면 직접 승인하셔야 합니다. </p>
-            </div>
-            
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">참가 성별</p>
-               <label for="MO_GENDER">여성</label><input type="radio" name="MO_GENDER" value="W">
-               <label for="MO_GENDER">남성</label><input type="radio" name="MO_GENDER" value="M">
-               <label for="MO_GENDER">제한없음</label><input type="radio" name="MO_GENDER" value="0">
-               <p style="font-size: small; color: red;">*참가 성별은 모임 개설 후 수정이 불가능합니다.</p>
-            </div>
-            
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">참가 연령</p>
-               <span>
-                  <input type="text" class="form-control" name="MO_MINAGE" id="MO_MINAGE"
+            <tr>
+            <th class="header"><label for="MO_MINAGE" >참가 연령</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents" style="padding-bottom: 0px;">
+            	<input type="text" class="form-control" name="MO_MINAGE" id="MO_MINAGE"
                   placeholder="최소(숫자 입력)" maxlength="100">
-               </span>
-               <span>
-                  <input type="text" class="form-control" name="MO_MAXAGE" id="MO_MAXAGE"
+                 <input type="text" class="form-control" name="MO_MAXAGE" id="MO_MAXAGE"
+                 placeholder="최대(숫자 입력)" maxlength="100">
+            </td>
+       		</tr>   
+    		<tr>
+	    		<th></th>
+	    		<td><button type="button" id="ageNoLimit" name="MO_MINAGE" class="noLB">제한 없음</button></td>
+    		</tr>
+    	
+            <tr>
+            <th class="header"><label for="MO_MAXPEOPLE" >참가 인원</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents" style="padding-bottom: 0px;">
+            <input type="text" class="form-control" name="MO_MAXPEOPLE" id="MO_MAXPEOPLE"
                   placeholder="최대(숫자 입력)" maxlength="100">
-               </span>
-               <br/>
-               <button type="button" id="ageNoLimit" name="MO_MINAGE">제한 없음</button>
-            </div>
+           	</td>
+         </tr> 
+         <tr>
+	    	<th></th>
+	    	<td><button type="button" id="peopleNoLimit" name="MO_MAXPEOPLE" class="noLB">제한 없음</button></td>
+    	</tr>
+         
             
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">참가 인원</p>
-               <span>
-                  <input type="text" class="form-control" name="MO_MAXPEOPLE" id="MO_MAXPEOPLE"
-                  placeholder="최대(숫자 입력)" maxlength="100">
-               </span>
-               <br/>
-               <button type="button" id="peopleNoLimit" name="MO_MAXPEOPLE">제한 없음</button>
-            </div>
-            
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">참가 비용</p>
-               <input type="text" class="form-control" name="MO_COST"
+           <tr>
+            <th class="header"><label for="MO_COST" >참가 비용</label></th>
+            <td class="contents" style="padding-bottom: 0px;">
+				<input type="text" class="form-control" name="MO_COST" id="MO_COST"
                   placeholder="0" maxlength="100">
-               <p style="font-size: small; color: red;">*참가 비용이 있다면 숫자로만 작성 해주세요.(ex.1000)</p>
-            </div>
+            </td>
+         </tr>   
+         <tr>
+         	<th></th>
+   			<td style="text-align: left; font-size: small; color: red; padding-bottom: 15px;">
+   				*참가 비용이 있다면 숫자로만 작성 해주세요.(ex.1000)
+   			</td>
+         </tr>
+         
+         <tr>
+            <th class="header"><label for="date" >모임 날짜</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents">
+            	<input type="date" class="form-control" name="MO_DEADLINE" id="date" required>
+            </td>
+         </tr>  
             
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">모임 날짜</p>
-               <input type="date" class="form-control" name="MO_DEADLINE" id="date" required>
-            </div>
+         <tr>
+            <th class="header"><label for="MO_DEADTIME" >모임 시간</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents">
+            	<input type="time" class="form-control" name="MO_DEADTIME" id="MO_DEADTIME" required>
+            </td>
+         </tr>  
             
-            <div class="form-group" style="margin-bottom: 30px;">
-               <p style="font-weight: bold;">모임 시간</p>
-               <input type="time" class="form-control" name="MO_DEADTIME" required>
-            </div>
+         <tr>
+         	<th class="header"><label for="textArea_byteLimit" >내용</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents">
+            	<textarea style="width: 373px;" rows="17" class="form-control" name="MO_DETAIL" placeholder="내용 작성" class="form-control" id="textArea_byteLimit" name="textArea_byteLimit" onkeyup="fn_checkByte(this)" wrap="hard" cols = ""></textarea>
+                 <sup>(<span id="nowByte">0</span>/1400bytes)</sup>
+            </td>
+         </tr> 
             
-            <div class="form-group" style="margin-bottom: 30px;">
-               <div class="textLengthWrap"></div>
-               <p style="font-weight: bold;">내용</p>
-                  <textarea rows="17" class="form-control" name="MO_DETAIL" placeholder="내용 작성" class="form-control" id="textArea_byteLimit" name="textArea_byteLimit" onkeyup="fn_checkByte(this)" wrap="hard" cols = ""></textarea>
-                  <sup>(<span id="nowByte">0</span>/1400bytes)</sup>
-            </div>
-
-            <div id="fileDiv" style="text-align: left;">
-               <span><input type="file" id="file" name="file_0"> <a
+         <tr>
+         	<th class="header"><label for="file" >이미지 첨부</label><span style="color:#fd8731;">*</span></th>
+            <td class="contents" id="fileDiv">
+            	<span><input type="file" id="file" name="file_0"> <a
                   href="#this" class="btn" id="delete" name="delete">삭제</a> <a
                   href="#this" class="btn" id="addFile">파일 추가</a></span>
-            </div>
-
-         <button type="submit" onclick="check();" >등록</button>
-
+            </td>
+         </tr>   
+	</tbody>
+	</table>
+	
+         <button class="btn" type="submit" onclick="check();" >등록</button>
          </form>
       </div>
-   </section>
 </body>
  
 <script>

@@ -70,7 +70,7 @@
 
 
 	<!-- 모임 상세보기(관리자 프로필 사진까지) -->
-	<select id="moimDetail" resultType="hashmap"
+	<!-- <select id="moimDetail" resultType="hashmap"
 		parameterType="hashmap">
          <![CDATA[
       SELECT MO.*, M.M_NICKNAME, F.F_SVNAME
@@ -78,8 +78,18 @@
       WHERE MO.MO_IDX = #{MO_IDX} AND M.M_IDX = MO.M_IDX 
       AND  F.F_ARTICLE(+) = M.M_IDX  AND F.F_TABLE(+) = 'P'
          ]]>
-	</select>
+	</select> -->
 
+	<select id="moimDetail" resultType="hashmap"
+		parameterType="hashmap">
+         <![CDATA[
+       SELECT MO.*, M.M_NICKNAME, NVL(F.F_SVNAME,0) AS KPROFILE,
+     (SELECT NVL(F.F_SVNAME,0) FROM MOIM M, FILE_T F WHERE F.F_TABLE(+) = 'M' AND F.F_ARTICLE(+) = M.MO_IDX AND M.MO_IDX = #{MO_IDX}) AS MF_SVNAME
+      FROM MOIM MO , MEMBER M, FILE_T F
+      WHERE MO.MO_IDX = #{MO_IDX} AND M.M_IDX = MO.M_IDX 
+      AND  F.F_ARTICLE(+) = M.M_IDX  AND F.F_TABLE(+) = 'P'
+         ]]>
+	</select>
 
 
 	<!-- 카테고리에서 모임갯수 카운트 -->
