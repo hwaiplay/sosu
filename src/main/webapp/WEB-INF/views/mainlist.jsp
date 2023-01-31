@@ -21,13 +21,13 @@
 			<div class="col">
 				<div style="float: left; font-size: 14.5px;">
 				<select onchange="location.href=(this.value);">
-					<option value="#">선택</option>
-					<option value="/culture.sosu">문화/예술</option>
-					<option value="/sports.sosu">운동/스포츠</option>
-					<option value="/game.sosu">게임/오락</option>
-					<option value="/outdoor.sosu">아웃도어/여행</option>
-					<option value="/food.sosu">음식</option>
-					<option value="/etc.sosu">기타</option>
+					<option value="/culture.sosu" <c:if test="${MO_CATEGORY == 'culture'}">selected="selected"</c:if>>문화/예술</option>
+					<option value="/sports.sosu" <c:if test="${MO_CATEGORY == 'sports'}">selected="selected"</c:if>>운동/스포츠</option>
+					<option value="/game.sosu" <c:if test="${MO_CATEGORY == 'game'}">selected="selected"</c:if>>게임/오락</option>
+					<option value="/outdoor.sosu" <c:if test="${MO_CATEGORY == 'outdoor'}">selected="selected"</c:if>>아웃도어/여행</option>
+					<option value="/food.sosu" <c:if test="${MO_CATEGORY == 'food'}">selected="selected"</c:if>>음식</option>
+					<option value="/etc.sosu" <c:if test="${MO_CATEGORY == 'etc'}">selected="selected"</c:if>>기타</option>
+				
 				</select>
 			
 					<div class="reg">

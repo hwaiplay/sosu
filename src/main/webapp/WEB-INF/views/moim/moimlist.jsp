@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
+<input type="hidden" value="${MO_CATEGORY }">
 
 <div class="container" style="margin-top:75px;">
 	<div class="row gy-5" style="margin-bottom: 90px;">
@@ -21,13 +22,12 @@
 			<div class="col">
 				<div style="float: left; font-size: 14.5px;">
 				<select onchange="location.href=(this.value);">
-					<option value="#">선택</option>
-					<option value="/moim/culture.sosu">문화/예술</option>
-					<option value="/moim/sports.sosu">운동/스포츠</option>
-					<option value="/moim/game.sosu">게임/오락</option>
-					<option value="/moim/outdoor.sosu">아웃도어/여행</option>
-					<option value="/moim/food.sosu">음식</option>
-					<option value="/moim/etc.sosu">기타</option>
+					<option value="/moim/culture.sosu" <c:if test="${MO_CATEGORY == 'culture'}">selected="selected"</c:if>>문화/예술</option>
+					<option value="/moim/sports.sosu" <c:if test="${MO_CATEGORY == 'sports'}">selected="selected"</c:if>>운동/스포츠</option>
+					<option value="/moim/game.sosu" <c:if test="${MO_CATEGORY == 'game'}">selected="selected"</c:if>>게임/오락</option>
+					<option value="/moim/outdoor.sosu" <c:if test="${MO_CATEGORY == 'outdoor'}">selected="selected"</c:if>>아웃도어/여행</option>
+					<option value="/moim/food.sosu" <c:if test="${MO_CATEGORY == 'food'}">selected="selected"</c:if>>음식</option>
+					<option value="/moim/etc.sosu" <c:if test="${MO_CATEGORY == 'etc'}">selected="selected"</c:if>>기타</option>
 				</select>
 			
 					<div class="reg">
@@ -43,9 +43,11 @@
 			</div>
 		</div>
 		
+		<%if(session.getAttribute("M_IDX")!=null){ %>
 		<div style="text-align: right; margin-top: 20px">
 			<button type="button" onclick="location.href='/moim/moimRegister.sosu'" class="mrgbtn">모임 개설하기</button>
 		</div>
+		<% } %>
 		
 		<div class="row gy-5">
 			<div class="col" style="margin-top: 5px; margin-bottom: 20px;">

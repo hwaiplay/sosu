@@ -151,7 +151,7 @@ history.replaceState({}, null, location.pathname);
          <tr>
          	<th class="header"><label for="textArea_byteLimit" >내용</label><span style="color:#fd8731;">*</span></th>
             <td class="contents">
-            	<textarea rows="17" class="form-control" name="MO_DETAIL" placeholder="내용 작성" class="form-control" id="textArea_byteLimit" name="textArea_byteLimit" onkeyup="fn_checkByte(this)" wrap="hard" cols = ""></textarea>
+            	<textarea style="width: 373px;" rows="17" class="form-control" name="MO_DETAIL" placeholder="내용 작성" class="form-control" id="textArea_byteLimit" name="textArea_byteLimit" onkeyup="fn_checkByte(this)" wrap="hard" cols = ""></textarea>
                  <sup>(<span id="nowByte">0</span>/1400bytes)</sup>
             </td>
          </tr> 
