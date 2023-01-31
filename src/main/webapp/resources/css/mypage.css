@@ -1,11 +1,143 @@
 @charset "UTF-8";
-.switch-button {
-        position: relative;
-        display: inline-block;
-        width: 55px;
-        height: 30px;
+
+<!--01-25 추가 -->
+<!--마이페이지-->
+.pro_firsttt{
+	text-align:center;
+	margin: auto;
+	margin-bottom: 50px;
+}
+.img-pro{
+	width: 300px;
+	height: 300px;
+	border-radius: 100%;
+	object-fit : cover;
+	object-position: top;
+}
+.img-modi{
+	padding: 5px;
+    width: 20px;
+    height: 20px;
+}
+.pro_firsttt .nickname{
+	font-weight:bolder;
+	font-size:40px;
+	color:#F16F19;
+	margin-top:30px;
+}
+.pro_sec{
+	margin: auto;
+    width: 900px;
+}
+
+/*모임상세지역*/
+.detail-region{
+    font-size: 15px;
+    color: red;
+    text-align:left;
+    margin-top: 10px;
+}
+
+/*모임제목*/
+.moim-title{
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align:left;
+    margin-top: -10px;
+
+}
+/*모임인원*/
+.moim-people{
+    font-size: 20px;
+    font-weight: 400;
+    vertical-align: top;
+    line-height: 1.5;
+
+}
+/*모임 상세 카테고리*/
+.detail-cate{
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+   text-align:right;
+    margin-left: 58px;
+    margin-top: 3px;
+
+}
+/*모임비용*/
+.mo-cost{
+	font-size: 20px;
+	 font-weight: 400;
+   line-height: 1.5;
+	 text-align:left;
+}
+.hrhr{
+	width:200px;
+}
+
+/*리뷰, 찜 모임 타이틀*/
+.rezimm-title{
+	font-size: 20px;
+    font-weight: 400;
+    line-height: 4.5;
+    margin-top: -10px;
+    text-align: left;
+    height:50px;
+}
+
+/*리뷰, 찜 모임 날짜*/
+.moim-date{
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 6;
+    float:right;
+    margin-right: 25px;
+}
+
+/*자유게시판 작성자 이미지*/
+.img-pro-free{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: top;
+    margin-bottom: 5px;
+}
+
+.btn-mypage{
+	width: 25%;
+    height: 87px;
+    margin-left: -7px;
+    font-size: 18px;
+    background-color:#fff ;
+    color: #F16F19;
+    border: 1px solid black;
+}
+
+.btn-mypage:hover{
+	background-color:#F16F19;
+	color: #fff;
+}
+
+.btn-mypage.on {
+        color: white;
+        background-color: red;
     }
 
+
+<!--비공개처리 토글-->
+/* 안먹어서 jsp에 옮겨놓음 
+.switch-button {
+        position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 30px;
+    left: 2px;
+    bottom: 12px;
+    vertical-align: sub;
+    }
+ */
     .switch-button input {
         opacity: 0;
         width: 0;
@@ -48,4 +180,25 @@
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px);
+    }
+    
+    .hhh{
+    	color:red;
+    	font-size:25px;
+    	font-weight:400;
+    	line-height: 2.0;
+    	float: right;
+    	margin-top : -12px;
+    	margin-right: 34px;
+    }
+    
+    .btn-review{
+   width: 271px;
+    height: 32px;
+    background: black;
+    border: 0px;
+    color: white;
+    border-radius: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
     }

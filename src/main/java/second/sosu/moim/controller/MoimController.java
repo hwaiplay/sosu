@@ -32,7 +32,7 @@ public class MoimController {
 		commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
 
 		ModelAndView mv = new ModelAndView("/moim/moimlist");
-		System.out.println("+++++++++++++++++" + commandMap.getMap());
+		mv.setViewName("moim/moimlist");
 
 		List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
 		mv.addObject("list", list);
@@ -50,7 +50,8 @@ public class MoimController {
 		commandMap.getMap().put("MO_IDX", MO_IDX);
 
 		ModelAndView mv = new ModelAndView("/moim/moimDetail");
-
+		mv.setViewName("moim/moimDetail");
+		
 		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
 		mv.addObject("Detail", map);
 
@@ -62,6 +63,7 @@ public class MoimController {
 	public ModelAndView insertForm(CommandMap commandMap) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/moim/moimRegister");
+		mv.setViewName("moim/moimRegister");
 
 		return mv;
 	}
@@ -92,7 +94,8 @@ public class MoimController {
 	public ModelAndView modifyForm(@PathVariable int MO_IDX, CommandMap commandMap) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/moim/moimModify");
-
+		mv.setViewName("moim/moimModify");
+		
 		commandMap.put("MO_IDX", MO_IDX);
 
 		Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
