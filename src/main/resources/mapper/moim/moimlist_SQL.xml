@@ -68,30 +68,6 @@
 		ORDER BY M.MO_CLOSE_YN, M.MO_REGDATE DESC
 	</select>
 
-
-	<!-- 모임 상세보기(관리자 프로필 사진까지) -->
-	<!-- <select id="moimDetail" resultType="hashmap"
-		parameterType="hashmap">
-         <![CDATA[
-      SELECT MO.*, M.M_NICKNAME, F.F_SVNAME
-      FROM MOIM MO , MEMBER M, FILE_T F
-      WHERE MO.MO_IDX = #{MO_IDX} AND M.M_IDX = MO.M_IDX 
-      AND  F.F_ARTICLE(+) = M.M_IDX  AND F.F_TABLE(+) = 'P'
-         ]]>
-	</select> -->
-
-	<select id="moimDetail" resultType="hashmap"
-		parameterType="hashmap">
-         <![CDATA[
-       SELECT MO.*, M.M_NICKNAME, NVL(F.F_SVNAME,0) AS KPROFILE,
-     (SELECT NVL(F.F_SVNAME,0) FROM MOIM M, FILE_T F WHERE F.F_TABLE(+) = 'M' AND F.F_ARTICLE(+) = M.MO_IDX AND M.MO_IDX = #{MO_IDX}) AS MF_SVNAME
-      FROM MOIM MO , MEMBER M, FILE_T F
-      WHERE MO.MO_IDX = #{MO_IDX} AND M.M_IDX = MO.M_IDX 
-      AND  F.F_ARTICLE(+) = M.M_IDX  AND F.F_TABLE(+) = 'P'
-         ]]>
-	</select>
-
-
 	<!-- 카테고리에서 모임갯수 카운트 -->
 	<select id="moimCount" parameterType="hashmap"
 		resultType="hashmap">
@@ -138,6 +114,25 @@
 		</trim>
 	</select>
 
+
+     <!-- 모임 상세보기  -->
+	<select id="moimDetail" resultType="hashmap"
+		parameterType="hashmap">
+         <![CDATA[
+      SELECT MO.*, M.M_NICKNAME, NVL(F.F_SVNAME,0) AS KPROFILE,
+      (SELECT NVL(F.F_SVNAME,0)
+      FROM MOIM M, FILE_T F 
+      WHERE F.F_TABLE(+) = 
+      'M' AND F.F_ARTICLE(+) = M.MO_IDX 
+      AND M.MO_IDX = #{MO_IDX}) AS MF_SVNAME
+      FROM MOIM MO , MEMBER M, FILE_T F
+      WHERE MO.MO_IDX = #{MO_IDX} AND M.M_IDX = MO.M_IDX 
+      AND  F.F_ARTICLE(+) = M.M_IDX 
+      AND F.F_TABLE(+) = 'P'
+         ]]>
+	</select>
+
+
 	<!-- 모임에 참여한 참여자 수 -->
 	<select id="moimMemberCount" resultType="hashmap"
 		parameterType="hashmap">
@@ -174,6 +169,21 @@
       SELECT *
       FROM PARTYMEM P, MOIM MO, MEMBER M
       WHERE P_BAN_YN = 'Y'
+      AND P_FINAL_YN = 'N'
+      AND P.MO_IDX = MO.MO_IDX
+      AND P.M_IDX = M.M_IDX
+      AND MO.MO_IDX = #{MO_IDX}
+         ]]>
+	</select>
+	
+	<!-- 모임에서 강퇴당한 인원 -->
+	<select id="moimMemberBanList" resultType="hashmap"
+		parameterType="hashmap">
+         <![CDATA[
+      SELECT *
+      FROM PARTYMEM P, MOIM MO, MEMBER M
+      WHERE P_BAN_YN = 'Y'
+      AND P_FINAL_YN = 'Y'
       AND P.MO_IDX = MO.MO_IDX
       AND P.M_IDX = M.M_IDX
       AND MO.MO_IDX = #{MO_IDX}
@@ -288,7 +298,7 @@
 	<update id="moimSelfClose" parameterType="hashmap">
        <![CDATA[
       UPDATE MOIM SET
-             MO_CLOSE_YN = 'Y'
+      MO_CLOSE_YN = 'Y'
       WHERE MO_IDX = #{MO_IDX}
        ]]>
 	</update>
@@ -297,8 +307,8 @@
 	<!-- 모임 삭제 -->
 	<update id="moimDelete" parameterType="hashmap">
        <![CDATA[
-        UPDATE MOIM SET
-         MO_DEL_YN = 'Y'
+      UPDATE MOIM SET
+      MO_DEL_YN = 'Y'
       WHERE MO_IDX = #{MO_IDX}
       ]]>
 	</update>

@@ -61,6 +61,12 @@ public class MoimDao extends AbstractDAO {
 		return (Map<String, Object>) selectOne("moim.moimDetail", map);
 	}
 
+	// 모임에 참여한 현재 인원 수
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> moimMemCount(Map<String, Object> map) throws Exception {
+		return (Map<String, Object>) selectOne("moim.moimMemberCount", map);
+	}
+
 	// 모임에 참가한 인원 리스트
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> moimMemberList(Map<String, Object> map, CommandMap commandMap) throws Exception {
@@ -91,6 +97,17 @@ public class MoimDao extends AbstractDAO {
 		}
 
 		return moimMemberWait;
+	}
+
+	// 모임에서 강퇴당한 인원 리스트
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> moimMemberBanList(Map<String, Object> map, CommandMap commandMap)
+			throws Exception {
+
+		List<Map<String, Object>> moimMemberBanList = (List<Map<String, Object>>) selectList("moim.moimMemberBanList",
+				map);
+
+		return moimMemberBanList;
 	}
 
 	// 모임 참여 승인
