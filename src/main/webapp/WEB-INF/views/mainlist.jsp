@@ -9,7 +9,6 @@
 <link href="/resources/css/list.css" rel="stylesheet">
 <link href="/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/assets/vendor/aos/aos.css" rel="stylesheet">
-<link href="/resources/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
 <meta charset="UTF-8">
 </head>

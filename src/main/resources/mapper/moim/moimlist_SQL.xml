@@ -8,7 +8,6 @@
 	<!-- 메인에서 카테고리 눌렀을때 -->
 	<select id="moimList" parameterType="hashmap"
 		resultType="hashmap">
-    <![CDATA[
      SELECT  M.*, NVL(F.F_SVNAME,0) AS MF_SVNAME
     FROM MOIM M, FILE_T F
     WHERE F.F_DEL_YN(+) = 'N'
@@ -17,29 +16,19 @@
     AND F.F_TABLE(+) = 'M'
     AND M.MO_CATEGORY = #{MO_CATEGORY}
     AND F.F_ARTICLE(+) = M.MO_IDX
+    <if test = "MO_REGION != null">
+    AND M.MO_REGION IN  #{MO_REGION}
+    </if>
     ORDER BY  M.MO_CLOSE_YN, M.MO_REGDATE DESC
-     ]]>
 	</select>
 
-	<!-- 카테고리에서 select option 선택 -->
-	<select id="moimListSearch" parameterType="hashmap"
-		resultType="hashmap">
-    <![CDATA[
-    SELECT DISTINCT M.*,F.F_SVNAME
-    FROM MOIM M, FILE_T F
-    WHERE F.F_DEL_YN(+) = 'N'
-    AND F.F_MAIN_YN(+) = 'Y' 
-    AND M.MO_DEL_YN = 'N' 
-    AND F.F_TABLE(+) = 'M'
-     ]]>
-		<if test="mo_category != null">
-			AND (M.MO_CATEGORY = #{MO_CATEGORY})
-		</if>
+	<!-- 정렬을 위한 동적쿼리 -->
+		<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
 				<trim prefix="OR">
-					<if test="keyword != null">
-						<choose>
+					<if test="keyword != null and keyword != ''" >
+					<choose>
 							<when test="searchType == 'R'.toString()">
 								M.MO_REGION = #{MO_REGION}
 							</when>
@@ -65,8 +54,7 @@
 				</trim>
 			</foreach>
 		</trim>
-		ORDER BY M.MO_CLOSE_YN, M.MO_REGDATE DESC
-	</select>
+	</sql>
 
 	<!-- 카테고리에서 모임갯수 카운트 -->
 	<select id="moimCount" parameterType="hashmap"

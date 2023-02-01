@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link href="/resources/css/detail.css" rel="stylesheet">
+<script defer type="text/javascript" src="/resources/js/moimDetail.js"></script>
 
 <body>
 <%   //개행을 위한..(구현X)
@@ -13,7 +14,8 @@
 
 <div class="container" style="text-align: center; width: 1000px; margin: 50px auto;">
 
-<input type="hidden" name = "MO_IDX" value="${MO_IDX}">
+<input type="hidden" name = "MO_IDX" value="${MO_IDX}" id = "idx">
+<input type="hidden" name = "MO_CATEGORY" value="${MO_CATEGORY}" id = "cate">
 <main>
 		<div class="detailBody">
 			<div class="imgArea">
@@ -70,6 +72,8 @@
 				<p>
 					❖
 					<c:if test="${Detail.MO_MINAGE != '0'}">
+					<input type = "hidden" value="${Detail.MO_MINAGE}" name = "MO_MINAGEE" id = "minAge"/>
+					<input type = "hidden" value="${Detail.MO_MAXAGE}" name = "MO_MAXAGE" id = "maxAge"/>
       ${Detail.MO_MINAGE}~${Detail.MO_MAXAGE}세  
       </c:if>
 
@@ -92,7 +96,9 @@
 				<p>
 					☺
 					<c:if test="${Detail.MO_MAXPEOPLE != '0'}">
-      현재${Detail.MOMEM_COUNT}명/인원 ${Detail.MO_MAXPEOPLE}명
+					<input type = "hidden" value="${Detail.MO_MAXPEOPLE}" name = "MO_MAXPEOPLE" id = "maxP"/>
+					<input type = "hidden" value="${Detail.MOMEM_COUNT}" name = "MOMEM_COUNT" id = "presentP"/>
+      현재${Detail.MOMEM_COUNT}명/최대 ${Detail.MO_MAXPEOPLE}명
       </c:if>
 					<c:if test="${Detail.MO_MAXPEOPLE == '0'}">
       인원 제한 없음
@@ -223,14 +229,20 @@
 		<!-- 버튼들.. -->
 		<div align="center" id="btndiv">
 			<c:if
-				test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'N'}">
+				test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'N' and Detail.MO_CLOSE_YN eq 'N'}">
 				<form action="/moim/moimJoin.sosu" onsubmit="return checkJoin();">
 					<button class="btn normal" type="submit">참여하기</button>
 					<input type="hidden" name="MO_IDX" value="${MO_IDX}"> <input
 						type="hidden" name="M_GENDER" value="${sessgender}" id="ssgender">
 					<input type="hidden" name="M_IDX" value="${sessionss}"
 						id="sessionss">
+					<input type="hidden" name="M_JUMIN" value="${sessage}"
+						id="sessage">
 				</form>
+			</c:if>
+			<c:if
+				test="${Detail.MO_CLOSE_YN eq 'Y'}">
+					<button class="btn normal" >마감종료</button>
 			</c:if>
 			<c:if
 				test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'Y'}">
@@ -250,129 +262,10 @@
 				<input type="hidden" value="${MO_IDX}" name="MO_IDX">
 				<form action="/moim/moimDelete.sosu">
 					<button type="submit" onclick="check();" class="btn normal">삭제하기</button>
+					<input type="hidden" value="${MO_IDX}" name="MO_IDX">
 				</form>
 			</c:if>
 		</div>
 	</main>
 	</div>
 </body>
-
-<!-- 삭제 컨펌 alert 1/20기준 미완 -->
-<script type="text/javascript">
-	function check() {
-
-		var cate = $("#cate");
-		var idx = $("#MO_IDX");
-
-		if (confirm("게시글을 삭제 하시겠습니까?")) {
-			alert("삭제 되었습니다.");
-			location.href = "/moim/moimDelete.sosu";
-		} else {
-			location.href = "/moim/" + cate + "/" + idx + ".sosu";
-			return false;
-		}
-	}
-	function checkJoin() {
-
-		var cate = $("#cate");
-		var idx = $("#MO_IDX");
-		var gender = $("#gender").html();
-		var ssgender = $('#ssgender').val();
-		var sessmidx = $('#sessionss').val();
-		var iiib = 0;
-		var iiip = 0;
-		var bbb = '#bmidx' + iiib++;
-		var ppp = '#pmidx' + iiip++;
-		var bmidx = $(bbb).val(); //강퇴당한사람
-		var pmidx = $(ppp).val(); //참여중인사람
-		var presentP = "<c:out value = '${Detail.MOMEM_COUNT}'/>";
-		var maxP = "<c:out value = '${Detail.MO_MAXPEOPLE}'/>";
-		
-		if(gender.trim() == '여자만' && ssgender == '1' || gender.trim() == '여자만' && ssgender == '3') {
-			alert('여성회원만 참여가능한 모임입니다');
-			return false;
-		}
-		
-		if(gender.trim() == '남자만' && ssgender == '2' || gender.trim() == '남자만' && ssgender == '4') {
-			alert('남성회원만 참여가능한 모임입니다');
-			return false;
-		}
-		if(presentP >= maxP) {
-			alert('참여인원이 꽉 찼습니다.');
-			return false;
-		}
-		
-		if(bmidx == sessmidx) {
-			alert('이미 강퇴당한 모임입니다.');
-			return false;
-		}
-		
-		if(pmidx == sessmidx) {
-			alert('이미 참여한 모임입니다.');
-			return false;
-		} 
-		
-		if (confirm("모임에 참여하시겠습니까??")) {
-			alert("참여완료.");
-			
-		} else {
-			location.href = "/moim/" + cate + "/" + idx + ".sosu";
-			return false;
-		}
-	}
-	function checkJoin2() {
-
-		var cate = $("#cate");
-		var idx = $("#MO_IDX");
-		var gender = $("#gender").html();
-		var ssgender = $('#ssgender').val();
-		var sessmidx = $('#sessionss').val();
-		var iiib = 0;
-		var iiiw = 0;
-		var iiip = 0;
-		var bbb = '#bmidx' + iiib++;
-		var www = '#wmidx' + iiiw++;
-		var ppp = '#pmidx' + iiip++;
-		var bmidx = $(bbb).val(); //강퇴당한사람
-		var wmidx = $(www).val(); //참여대기중인사람
-		var pmidx = $(ppp).val(); //참여중인사람
-		var presentP = "<c:out value = '${Detail.MOMEM_COUNT}'/>";
-		var maxP = "<c:out value = '${Detail.MO_MAXPEOPLE}'/>";
-		
-		if(gender.trim() == '여자만' && ssgender == '1' || gender.trim() == '여자만' && ssgender == '3') {
-			alert('여성회원만 참여가능한 모임입니다');
-			return false;
-		}
-		
-		if(gender.trim() == '남자만' && ssgender == '2' || gender.trim() == '남자만' && ssgender == '4') {
-			alert('남성회원만 참여가능한 모임입니다');
-			return false;
-		}
-		if(presentP >= maxP) {
-			alert('참여인원이 꽉 찼습니다.');
-			return false;
-		}
-		
-		
-		if(bmidx == sessmidx) {
-			alert('이미 강퇴당한 모임입니다.');
-			return false;
-		}
-		if(wmidx == sessmidx) {
-			alert('참여승인을 기다리는 중입니다.');
-			return false;
-		} 
-		if(pmidx == sessmidx) {
-			alert('이미 참여한 모임입니다.');
-			return false;
-		} 
-		
-		if (confirm("모임에 참여하시겠습니까??")) {
-			alert("참여완료.");
-			
-		} else {
-			location.href = "/moim/" + cate + "/" + idx + ".sosu";
-			return false;
-		}
-	}
-</script>

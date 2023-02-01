@@ -8,7 +8,6 @@
 <link href="/resources/css/list.css" rel="stylesheet">
 <link href="/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/assets/vendor/aos/aos.css" rel="stylesheet">
-<link href="/resources/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
 <meta charset="UTF-8">
 </head>
@@ -22,7 +21,7 @@
 		<div class="row gy-5">
 			<div class="col">
 				<div style="float: left; font-size: 14.5px;">
-				<select onchange="location.href=(this.value);">
+				<select onchange="location.href=(this.value);" id = "cate">
 					<option value="/moim/culture.sosu" <c:if test="${MO_CATEGORY == 'culture'}">selected="selected"</c:if>>문화/예술</option>
 					<option value="/moim/sports.sosu" <c:if test="${MO_CATEGORY == 'sports'}">selected="selected"</c:if>>운동/스포츠</option>
 					<option value="/moim/game.sosu" <c:if test="${MO_CATEGORY == 'game'}">selected="selected"</c:if>>게임/오락</option>
@@ -32,8 +31,12 @@
 				</select>
 			
 					<div class="reg">
-						<span>전체</span> <span>중부</span> <span>동부</span> <span>서부</span> <span>남부</span>
-						<span>북부</span>
+						<input type = "checkbox" name = "MO_REGION" value = "중부">중부
+						<input type = "checkbox" name = "MO_REGION" value = "동부">동부
+						<input type = "checkbox" name = "MO_REGION" value = "서부">서부
+						<input type = "checkbox" name = "MO_REGION" value = "남부">남부
+						<input type = "checkbox" name = "MO_REGION" value = "북부">북부
+						<button type = "submit" id = "regionSearch" class="mrgbtn">검색</button>
 					</div>
 		
 					<div class="filter">
@@ -98,4 +101,25 @@
    </div>
    </div>
 </body>
+<script>	
+	var cate = $("#cate");
+
+	$('#regionSearch').on('click', function() {
+		var regionList = [];
+
+		$("input[name=MO_REGION]:checked").each(function(i) {
+			regionList.push($(this).val());
+		});
+		 var allData = { chbox : regionList	};
+		$.ajax({
+			url : "/moim/" + cate + "/.sosu", 
+			type : "get",
+			data : JSON.stringify(allData), //변수이름 chbox ,변수값: regionList 
+			dataType : 'json',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(result) {
+			}
+		});
+	});
+</script>
 </html>

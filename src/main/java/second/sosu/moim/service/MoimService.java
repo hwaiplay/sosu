@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import second.sosu.common.domain.CommandMap;
+import second.sosu.common.domain.Criteria;
 
 public interface MoimService {
 
@@ -31,9 +32,6 @@ public interface MoimService {
 
 	// 모임 상세보기
 	Map<String, Object> moimDetail(Map<String, Object> map) throws Exception;
-
-	// 모임 상세보기
-	Map<String, Object> moimMemCount(Map<String, Object> map) throws Exception;
 
 	// 모임 개설
 	void moimRegister(Map<String, Object> map, HttpSession session) throws Exception;

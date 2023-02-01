@@ -1,6 +1,6 @@
 package second.sosu.moim.controller;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,11 +28,13 @@ public class MoimController {
 
    // 모임 리스트
    @RequestMapping("/moim/{MO_CATEGORY}.sosu")
-   public ModelAndView moimList(@PathVariable String MO_CATEGORY, CommandMap commandMap, HttpSession session)
+   public ModelAndView moimList(@PathVariable String MO_CATEGORY, @RequestParam(value="chbox[]", required=false) String[] chbox, 
+		   CommandMap commandMap, HttpSession session)
          throws Exception {
-
+	  System.out.println(Arrays.toString(chbox));
       commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
-
+      commandMap.getMap().put("MO_REGION", chbox);  
+      
       ModelAndView mv = new ModelAndView("/moim/moimlist");
       mv.setViewName("moim/moimlist");
 
@@ -51,11 +54,6 @@ public class MoimController {
       commandMap.getMap().put("MO_IDX", MO_IDX);
 
       Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
-      
-      Map<String, Object> count = moimService.moimMemCount(commandMap.getMap());
-      
-      map.get("MO_IDX");
-      map.put("MOMEM_COUNT", count.get("MOMEM_COUNT"));
 
       // 모임에 참여한 인원 리스트
       List<Map<String, Object>> list = moimService.moimMemberList(commandMap.getMap(), commandMap);

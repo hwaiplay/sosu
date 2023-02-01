@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import second.sosu.common.domain.CommandMap;
+import second.sosu.common.domain.Criteria;
 import second.sosu.moim.dao.MoimDao;
 
 @Service("moimService")
@@ -33,14 +34,6 @@ public class MoimServiceImpl implements MoimService {
 	@Override
 	public Map<String, Object> moimDetail(Map<String, Object> map) throws Exception {
 		Map<String, Object> resultMap = moimDao.moimDetail(map);
-
-		return resultMap;
-	}
-
-	// 모임 상세보기
-	@Override
-	public Map<String, Object> moimMemCount(Map<String, Object> map) throws Exception {
-		Map<String, Object> resultMap = moimDao.moimMemCount(map);
 
 		return resultMap;
 	}
