@@ -4,31 +4,45 @@
 <mapper namespace="moim">
 
 
-
 	<!-- 메인에서 카테고리 눌렀을때 -->
 	<select id="moimList" parameterType="hashmap"
 		resultType="hashmap">
-     SELECT  M.*, NVL(F.F_SVNAME,0) AS MF_SVNAME
+		SELECT M.*, NVL(F.F_SVNAME,0) AS MF_SVNAME
+		FROM MOIM M, FILE_T F
+		WHERE F.F_DEL_YN(+) = 'N'
+		AND F.F_MAIN_YN(+) = 'Y'
+		AND M.MO_DEL_YN = 'N'
+		AND F.F_TABLE(+) = 'M'
+		AND M.MO_CATEGORY = #{MO_CATEGORY}
+		AND F.F_ARTICLE(+) = M.MO_IDX
+		<if test="MO_REGION != null">
+			AND M.MO_REGION IN
+			<foreach collection="MO_REGION" item = "item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY M.MO_CLOSE_YN, M.MO_REGDATE DESC
+	</select>
+
+	<!-- 카테고리에서 select option 선택 -->
+	<select id="moimListSearch" parameterType="hashmap"
+		resultType="hashmap">
+    <![CDATA[
+    SELECT DISTINCT M.*,F.F_SVNAME
     FROM MOIM M, FILE_T F
     WHERE F.F_DEL_YN(+) = 'N'
     AND F.F_MAIN_YN(+) = 'Y' 
     AND M.MO_DEL_YN = 'N' 
     AND F.F_TABLE(+) = 'M'
-    AND M.MO_CATEGORY = #{MO_CATEGORY}
-    AND F.F_ARTICLE(+) = M.MO_IDX
-    <if test = "MO_REGION != null">
-    AND M.MO_REGION IN  #{MO_REGION}
-    </if>
-    ORDER BY  M.MO_CLOSE_YN, M.MO_REGDATE DESC
-	</select>
-
-	<!-- 정렬을 위한 동적쿼리 -->
-		<sql id="criteria">
+     ]]>
+		<if test="mo_category != null">
+			AND (M.MO_CATEGORY = #{MO_CATEGORY})
+		</if>
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
 				<trim prefix="OR">
-					<if test="keyword != null and keyword != ''" >
-					<choose>
+					<if test="keyword != null">
+						<choose>
 							<when test="searchType == 'R'.toString()">
 								M.MO_REGION = #{MO_REGION}
 							</when>
@@ -54,7 +68,8 @@
 				</trim>
 			</foreach>
 		</trim>
-	</sql>
+		ORDER BY M.MO_CLOSE_YN, M.MO_REGDATE DESC
+	</select>
 
 	<!-- 카테고리에서 모임갯수 카운트 -->
 	<select id="moimCount" parameterType="hashmap"
@@ -103,7 +118,7 @@
 	</select>
 
 
-     <!-- 모임 상세보기  -->
+	<!-- 모임 상세보기 -->
 	<select id="moimDetail" resultType="hashmap"
 		parameterType="hashmap">
          <![CDATA[
@@ -134,22 +149,22 @@
       AND M.MO_IDX = #{MO_IDX}
          ]]>
 	</select>
-	
+
 	<!-- 모임에 참여한 참여 인원 -->
 	<select id="moimMemberList" resultType="hashmap"
 		parameterType="hashmap">
          <![CDATA[
     SELECT P.*, M.*
-	FROM PARTYMEM P, MOIM MO, MEMBER M
-	WHERE MO.M_IDX != P.M_IDX 
-	AND MO.MO_IDX = P.MO_IDX 
-	AND  M.M_IDX = P.M_IDX
-	AND P.P_BAN_YN = 'N'
-	AND P.P_FINAL_YN = 'Y'
-	AND MO.MO_IDX =  #{MO_IDX}
+   FROM PARTYMEM P, MOIM MO, MEMBER M
+   WHERE MO.M_IDX != P.M_IDX 
+   AND MO.MO_IDX = P.MO_IDX 
+   AND  M.M_IDX = P.M_IDX
+   AND P.P_BAN_YN = 'N'
+   AND P.P_FINAL_YN = 'Y'
+   AND MO.MO_IDX =  #{MO_IDX}
          ]]>
 	</select>
-	
+
 	<!-- 모임에 참여 대기중인 인원 -->
 	<select id="moimMemberWait" resultType="hashmap"
 		parameterType="hashmap">
@@ -163,7 +178,7 @@
       AND MO.MO_IDX = #{MO_IDX}
          ]]>
 	</select>
-	
+
 	<!-- 모임에서 강퇴당한 인원 -->
 	<select id="moimMemberBanList" resultType="hashmap"
 		parameterType="hashmap">
@@ -177,8 +192,22 @@
       AND MO.MO_IDX = #{MO_IDX}
          ]]>
 	</select>
-	
-	
+
+	<!-- 모임에서 강퇴당한 인원 -->
+	<select id="moimMemberDropList" resultType="hashmap"
+		parameterType="hashmap">
+         <![CDATA[
+      SELECT *
+      FROM PARTYMEM P, MOIM MO, MEMBER M
+      WHERE P_BAN_YN = 'Y'
+      AND P_FINAL_YN = 'Y'
+      AND P.MO_IDX = MO.MO_IDX
+      AND P.M_IDX = M.M_IDX
+      AND MO.MO_IDX = #{MO_IDX}
+         ]]>
+	</select>
+
+
 	<!-- 모임 참여대기인원 참여 승인 -->
 	<update id="moimWaitApprove" parameterType="hashmap">
        <![CDATA[
@@ -189,7 +218,7 @@
       WHERE P_IDX = #{P_IDX}
         ]]>
 	</update>
-	
+
 	<!-- 모임 멤버 강퇴 -->
 	<update id="moimMemberBan" parameterType="hashmap">
        <![CDATA[
@@ -200,7 +229,17 @@
       WHERE P_IDX = #{P_IDX}
         ]]>
 	</update>
-	
+
+	<!-- 참여한 모임 탈퇴하기 -->
+	<update id="moimExit" parameterType="hashmap">
+       <![CDATA[
+      UPDATE PARTYMEM
+      SET 
+      P_BAN_YN = 'N',
+      P_FINAL_YN = 'N'
+      WHERE M_IDX = #{M_IDX}
+        ]]>
+	</update>
 
 
 	<!-- 모임 스크랩 수 -->
@@ -227,9 +266,9 @@
             ]]>
 	</select>
 
-	<!-- 모임 생성 -->
+	<!-- 모임 작성 개설 -->
 	<insert id="moimRegister" parameterType="hashmap">
-	<selectKey keyProperty="MO_IDX" order="BEFORE"
+		<selectKey keyProperty="MO_IDX" order="BEFORE"
 			resultType="int">
 			SELECT MO_IDX.NEXTVAL FROM DUAL
 		</selectKey>
@@ -243,17 +282,26 @@
        #{MO_COST, jdbcType=INTEGER}, #{MO_DEADLINE},#{MO_DEADTIME, jdbcType=VARCHAR}, SYSDATE,'N','N')
             ]]>
 	</insert>
-	
-	
-	<!--모임 참여 (요청이 필요 없는 경우)-->
+
+	<!-- 파일 등록 -->
+	<insert id="mofileRegister" parameterType="hashmap">
+
+		INSERT INTO FILE_T(F_IDX, F_TABLE, F_ARTICLE, F_OGNAME, F_SVNAME, F_SIZE,
+		F_MAIN_YN, F_DEL_YN, F_REG_DATE)
+		VALUES (F_IDX.NEXTVAL, 'P', #{F_ARTICLE}, #{F_OGNAME}, #{F_SVNAME},
+		#{F_SIZE}, 'Y', 'N', SYSDATE)
+	</insert>
+
+
+	<!--모임 참여 (요청이 필요 없는 경우) -->
 	<insert id="moimJoin" parameterType="hashmap">
          <![CDATA[
       INSERT INTO PARTYMEM (P_IDX, MO_IDX, M_IDX, P_BAN_YN, P_FINAL_YN)
       VALUES (P_IDX.NEXTVAL, #{MO_IDX}, #{M_IDX},'N','Y')
             ]]>
 	</insert>
-	
-	<!--모임 참여 요청 (요청이 필요한 경우)-->
+
+	<!--모임 참여 요청 (요청이 필요한 경우) -->
 	<insert id="moimJoinPermit" parameterType="hashmap">
          <![CDATA[
       INSERT INTO PARTYMEM (P_IDX, MO_IDX, M_IDX, P_BAN_YN, P_FINAL_YN)
@@ -290,7 +338,6 @@
       WHERE MO_IDX = #{MO_IDX}
        ]]>
 	</update>
-
 
 	<!-- 모임 삭제 -->
 	<update id="moimDelete" parameterType="hashmap">

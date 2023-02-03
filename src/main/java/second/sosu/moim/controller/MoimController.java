@@ -1,6 +1,6 @@
 package second.sosu.moim.controller;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +10,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import second.sosu.common.domain.CommandMap;
@@ -27,22 +28,29 @@ public class MoimController {
    private MoimService moimService;
 
    // 모임 리스트
-   @RequestMapping("/moim/{MO_CATEGORY}.sosu")
-   public ModelAndView moimList(@PathVariable String MO_CATEGORY, @RequestParam(value="chbox[]", required=false) String[] chbox, 
-		   CommandMap commandMap, HttpSession session)
-         throws Exception {
-	  System.out.println(Arrays.toString(chbox));
-      commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
-      commandMap.getMap().put("MO_REGION", chbox);  
-      
-      ModelAndView mv = new ModelAndView("/moim/moimlist");
-      mv.setViewName("moim/moimlist");
+   @RequestMapping(value = "/moim/{MO_CATEGORY}.sosu")
+   @ResponseBody
+   public ModelAndView moimList(@PathVariable String MO_CATEGORY,
+	   @RequestParam( value = "MO_REGION[]", required = false) List<String> MO_REGION,
+    CommandMap commandMap,
+         HttpSession session) throws Exception {
+	     
+	      commandMap.getMap().put("MO_CATEGORY", MO_CATEGORY);
+	      
+	      if(MO_REGION != null) {
+	      System.out.println("aaaaaaaaaaaaaaaa"+MO_REGION);
+	      commandMap.getMap().put("MO_REGION", MO_REGION);	  
+	      }
 
-      List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
-      mv.addObject("list", list);
-      mv.addObject("sessionss", session.getAttribute("M_IDX"));
+	      ModelAndView mv = new ModelAndView("/moim/moimlist");
+	      mv.setViewName("moim/moimlist");
 
-      return mv;
+	      List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
+	      
+	      mv.addObject("list", list);
+	      mv.addObject("sessionss", session.getAttribute("M_IDX"));
+
+	      return mv;
    }
 
    // 모임 상세보기
@@ -57,7 +65,11 @@ public class MoimController {
 
       // 모임에 참여한 인원 리스트
       List<Map<String, Object>> list = moimService.moimMemberList(commandMap.getMap(), commandMap);
+      
+      // 모임에 참여 대기중인 인원 리스트
       List<Map<String, Object>> list2 = moimService.moimMemberWait(commandMap.getMap(), commandMap);
+
+      // 모임에서 강퇴 혹은 승인 거절된 인원 리스트
       List<Map<String, Object>> list3 = moimService.moimMemberBanList(commandMap.getMap(), commandMap);
 
       ModelAndView mv = new ModelAndView("/moim/moimDetail");
@@ -110,6 +122,24 @@ public class MoimController {
 
       return mv;
    }
+   
+   // 모임 조기 마감
+   @RequestMapping("/moim/moimSelfClose.sosu")
+   public ModelAndView moimSelfClose(CommandMap commandMap) throws Exception {
+
+      Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
+      
+      String cate = map.get("MO_CATEGORY").toString();
+
+      String idx = map.get("MO_IDX").toString();
+      
+      ModelAndView mv = new ModelAndView("redirect:/moim/" + cate + "/" + idx + ".sosu");
+      
+      moimService.moimSelfClose(commandMap.getMap());
+      
+      return mv;
+   }
+   
 
    // 모임작성 폼
    @RequestMapping(value = "/moim/moimRegister.sosu")
@@ -123,23 +153,17 @@ public class MoimController {
       return mv;
    }
 
-   // 모임작성 구동
+// 모임작성 구동
    @RequestMapping("/moim/moimRegister.pro")
-   public ModelAndView moimRegister(CommandMap commandMap, HttpSession session) throws Exception {
-
-      List<Map<String, Object>> list = moimService.moimList(commandMap.getMap(), session, commandMap);
-
+   public ModelAndView moimRegister(@RequestParam("MO_CATEGORY") String MO_CATEGORY, CommandMap commandMap, HttpSession session, MultipartHttpServletRequest multiRequest) throws Exception {
+	   // ajax로 받아오기 위해 @RequestParam 사용
+	  
       commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
       // 개행을 위한...(구현 안됨)
       String MO_DETAIL = (String) (commandMap.getMap().replace("\r\n", "<br>"));
       commandMap.setMap(MO_DETAIL);
-
-      String cate = list.get(0).get("MO_CATEGORY").toString();// 리스트에서 카테고리 값 스트링으로 가져오기
-
-      ModelAndView mv = new ModelAndView("redirect:/moim/" + cate + ".sosu");
-
-      moimService.moimRegister(commandMap.getMap(), session);
-
+      ModelAndView mv = new ModelAndView("redirect:/moim/" + MO_CATEGORY + ".sosu");
+      moimService.moimRegister(commandMap.getMap(), session, multiRequest);
       return mv;
    }
 
@@ -175,6 +199,7 @@ public class MoimController {
 
       return mv;
    }
+   
 
    // 모임 삭제
    @RequestMapping("/moim/moimDelete.sosu")
@@ -228,6 +253,30 @@ public class MoimController {
 
       moimService.moimJoinPermit(commandMap.getMap(), session, commandMap);
 
+      return mv;
+   }
+   
+   //모임 탈퇴하기
+   @RequestMapping("/moim/moimExit.sosu")
+   public ModelAndView moimExit(CommandMap commandMap, HttpSession session) throws Exception {
+      
+      Map<String, Object> map = moimService.moimDetail(commandMap.getMap());
+
+      // 모임에 참여한 인원 리스트
+     // List<Map<String, Object>> list = moimService.moimMemberList(commandMap.getMap(), commandMap);
+      // 탈퇴할 회원의 p_idx
+      //int p_idx = Integer.parseInt(list.get(0).get("P_IDX").toString());
+      
+      commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
+      commandMap.put("MO_IDX", commandMap.get("MO_IDX"));
+      
+      String cate = map.get("MO_CATEGORY").toString();
+      String idx = map.get("MO_IDX").toString();
+      
+      ModelAndView mv = new ModelAndView("redirect:/moim/" + cate + "/" + idx + ".sosu");
+      
+      moimService.moimExit(commandMap.getMap(), session);
+      
       return mv;
    }
 

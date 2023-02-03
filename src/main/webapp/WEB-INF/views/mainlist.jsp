@@ -28,21 +28,18 @@
 					<option value="/etc.sosu" <c:if test="${MO_CATEGORY == 'etc'}">selected="selected"</c:if>>기타</option>
 				
 				</select>
-			
-					<div class="reg">
-						<span>전체</span> <span>중부</span> <span>동부</span> <span>서부</span> <span>남부</span>
-						<span>북부</span>
-					</div>
-		
-					<div class="filter">
-						<input type="datetime-local">
-					</div>
-				
 				</div>
 			</div>
 		</div>
 		<div class="row gy-5">
-			<div class="col" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col" style="margin-top: 10px; margin-bottom: 20px;">
+		
+		<!-- 작성(개설) 버튼 -->
+		<%if(session.getAttribute("M_IDX")!=null){ %>
+		<div style="text-align: right;">
+			<button type="button" onclick="location.href='/moim/moimRegister.sosu'" class="mrgbtn">모임 개설하기</button>
+		</div>
+		<% } %>
 				<hr>
 			</div>
 		</div>
@@ -138,6 +135,8 @@
 						${r.M_NICKNAME}
 						</span>
 						<span class="hhh" style="margin-top: -7px;">♡</span>
+						<!-- 찜 수 -->
+						<%-- <span class="hhh" style="margin-top: -7px;">${r.RZ_COUNT}</span> --%>
 					</p>	
 				</div>
 			</div>
@@ -209,8 +208,6 @@
       </div>
    </div>
 
-					
-					
 						<%-- <tr align="center"
 							onclick="location.href='/moim/${m.MO_CATEGORY}/${m.MO_IDX}.sosu'">
 							<td>${m.MO_IDX}<input type="hidden" name="MO_IDX"

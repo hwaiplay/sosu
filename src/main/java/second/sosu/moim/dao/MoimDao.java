@@ -58,14 +58,13 @@ public class MoimDao extends AbstractDAO {
 	// 모임 상세보기
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> moimDetail(Map<String, Object> map) throws Exception {
-		Map<String, Object> moimDetail = (Map<String, Object>)selectOne("moim.moimDetail", map);
-	
+		Map<String, Object> moimDetail = (Map<String, Object>) selectOne("moim.moimDetail", map);
+
 		Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",
 				moimDetail.get("MO_IDX"));
 		moimDetail.put("MOMEM_COUNT", moimMemCount.get("MOMEM_COUNT"));
 		return moimDetail;
 	}
-
 
 	// 모임에 참가한 인원 리스트
 	@SuppressWarnings("unchecked")
@@ -110,6 +109,17 @@ public class MoimDao extends AbstractDAO {
 		return moimMemberBanList;
 	}
 
+	// 모임에서 강퇴당한 인원 리스트
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> moimMemberDropList(Map<String, Object> map, CommandMap commandMap)
+			throws Exception {
+
+		List<Map<String, Object>> moimMemberDropList = (List<Map<String, Object>>) selectList("moim.moimMemberDropList",
+				map);
+
+		return moimMemberDropList;
+	}
+
 	// 모임 참여 승인
 	public void moimWaitApprove(Map<String, Object> map) throws Exception {
 		update("moim.moimWaitApprove", map);
@@ -143,6 +153,16 @@ public class MoimDao extends AbstractDAO {
 	// 모임 참가 요청 (요청이 필요하지 않은 경우)
 	public void moimJoinPermit(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
 		insert("moim.moimJoinPermit", map);
+	}
+
+	// 모임 조기 마감
+	public void moimSelfClose(Map<String, Object> map) throws Exception {
+		update("moim.moimSelfClose", map);
+	}
+
+	// 모임 탈퇴하기
+	public void moimExit(Map<String, Object> map) throws Exception {
+		update("moim.moimExit", map);
 	}
 
 }

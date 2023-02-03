@@ -173,6 +173,17 @@ history.replaceState({}, null, location.pathname);
 </body>
  
 <script>
+//카테고리 값 넘기기
+$("#regB").on("click", function(e){
+	var mo_cate = $(".mo_cate option:selected").val();
+	$.ajax({
+		url : "moim/moimRegister.pro",
+		type : "post",
+		data : { MO_CATEGORY : mo_cate },
+		success : function(data){
+			}
+		});
+	});
 
 /* 오늘 날짜 이전 날짜는 선택 불가  */
 var now_utc = Date.now() // 지금 날짜를 밀리초로

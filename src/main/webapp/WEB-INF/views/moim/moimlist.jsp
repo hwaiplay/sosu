@@ -8,12 +8,18 @@
 <link href="/resources/css/list.css" rel="stylesheet">
 <link href="/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/assets/vendor/aos/aos.css" rel="stylesheet">
+<%@page import="java.util.*"%>
+<%
+ 
+    request.setCharacterEncoding("UTF-8");
+ 
+%>
 
 <meta charset="UTF-8">
 </head>
 <body>
 
-<input type="hidden" value="${MO_CATEGORY }">
+<input type="hidden" value="${MO_CATEGORY }" id = "cate">
 
 <div class="container" style="margin-top:75px;">
 	<div class="row gy-5" style="margin-bottom: 90px;">
@@ -21,7 +27,7 @@
 		<div class="row gy-5">
 			<div class="col">
 				<div style="float: left; font-size: 14.5px;">
-				<select onchange="location.href=(this.value);" id = "cate">
+				<select onchange="location.href=(this.value);" >
 					<option value="/moim/culture.sosu" <c:if test="${MO_CATEGORY == 'culture'}">selected="selected"</c:if>>문화/예술</option>
 					<option value="/moim/sports.sosu" <c:if test="${MO_CATEGORY == 'sports'}">selected="selected"</c:if>>운동/스포츠</option>
 					<option value="/moim/game.sosu" <c:if test="${MO_CATEGORY == 'game'}">selected="selected"</c:if>>게임/오락</option>
@@ -102,24 +108,45 @@
    </div>
 </body>
 <script>	
-	var cate = $("#cate");
+		
+var cate = $("#cate").val();
 
-	$('#regionSearch').on('click', function() {
-		var regionList = [];
+$('#regionSearch').on('click', function() {
+	   var $checked = $('input:checkbox[name=MO_REGION]:checked');
+	   
+   var regionList = [];
+/*       $("input[name=MO_REGION]:checked").each(function(i) {
+      regionList.push($(this).val());
+   }); */
+   
+   $.each($checked, function(k, v){
+ 	  regionList.push($(this).val());
+    });
+   
+   var objParams = {
+           "MO_REGION": regionList
+       };
+   
+   //var jsonData = JSON.stringify(regionList);
+   console.log(regionList);
+   console.log(cate);
+   console.log(objParams);
+   
+   $.ajax({   
+      url : "/moim/" + cate + ".sosu", 
+      type : "get",
+      contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+      data :objParams, //변수이름 chbox ,변수값: regionList
+      dataType:'json',
+      success : function(result) {
+      },
+      
+      error: function (request, status, error) {
+       alert("실패");
+         
+      }
+   });   
+});
 
-		$("input[name=MO_REGION]:checked").each(function(i) {
-			regionList.push($(this).val());
-		});
-		 var allData = { chbox : regionList	};
-		$.ajax({
-			url : "/moim/" + cate + "/.sosu", 
-			type : "get",
-			data : JSON.stringify(allData), //변수이름 chbox ,변수값: regionList 
-			dataType : 'json',
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			success : function(result) {
-			}
-		});
-	});
 </script>
 </html>
