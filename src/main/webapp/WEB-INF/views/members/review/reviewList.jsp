@@ -22,7 +22,7 @@
 			   <c:choose>
 			      <c:when test="${fn:length(reviewList) > 0 }">
 			         <c:forEach items="${reviewList}" var = "r" end = "3">
-			            <tr align="center" onclick= "location.href='/review/${MO_CATEGORY}/${r.MO_IDX}.sosu'">
+			            <tr align="center" onclick= "location.href='/review/${MO_CATEGORY}/${r.RV_IDX}.sosu'">
 			               <td>${r.RV_IDX}<input type="hidden" name="MO_IDX" value="${r.RV_IDX}"></td>
 			               <td>${r.M_IDX}<input type="hidden" name="M_IDX" value="${r.M_IDX}"></td>
 			               <td>${r.MO_IDX}</td>

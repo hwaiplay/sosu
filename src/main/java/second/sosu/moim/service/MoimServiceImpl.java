@@ -28,8 +28,8 @@ public class MoimServiceImpl implements MoimService {
 
 	// 모임 리스트
 	@Override
-	public List<Map<String, Object>> moimList(Map<String, Object> map, HttpSession session, CommandMap commandMap)
-			throws Exception {
+	public List<Map<String, Object>> moimList(Map<String, Object> map, HttpSession session, CommandMap commandMap,
+			String MO_REGION) throws Exception {
 		// TODO Auto-generated method stub
 		return moimDao.moimList(map, session, commandMap);
 	}
@@ -40,6 +40,19 @@ public class MoimServiceImpl implements MoimService {
 		Map<String, Object> resultMap = moimDao.moimDetail(map);
 
 		return resultMap;
+	}
+
+	// 모임 상세 이미지
+	@Override
+	public List<Map<String, Object>> selectMoimImg(Map<String, Object> map, CommandMap commandMap) throws Exception {
+		// TODO Auto-generated method stub
+		return moimDao.selectMoimImg(map, commandMap);
+	}
+
+	// 모임 이미지 삭제
+	@Override
+	public void MoimImgDelete(Map<String, Object> map, String f_svname) throws Exception {
+		moimDao.MoimImgDelete(map, f_svname);
 	}
 
 	// 모임에 참가한 인원 리스트
@@ -62,14 +75,6 @@ public class MoimServiceImpl implements MoimService {
 			throws Exception {
 		// TODO Auto-generated method stub
 		return moimDao.moimMemberBanList(map, commandMap);
-	}
-
-// 모임에서 강퇴당한 인원 리스트
-	@Override
-	public List<Map<String, Object>> moimMemberDropList(Map<String, Object> map, CommandMap commandMap)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return moimDao.moimMemberDropList(map, commandMap);
 	}
 
 	// 모임 작성
@@ -133,6 +138,18 @@ public class MoimServiceImpl implements MoimService {
 	@Override
 	public void moimSelfClose(Map<String, Object> map) throws Exception {
 		moimDao.moimSelfClose(map);
+	}
+
+	// 모임 자동 마감
+	@Override
+	public void moimClose() throws Exception {
+		moimDao.moimClose();
+	}
+
+	// 모임 탈퇴하기
+	@Override
+	public void moimZzimInsert(Map<String, Object> map, CommandMap commandMap, HttpSession session) throws Exception {
+		moimDao.moimZzimInsert(map, session, commandMap);
 	}
 
 	// 모임 탈퇴하기

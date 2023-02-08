@@ -2,186 +2,307 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="review">
-   
-   <!-- 마이 페이지에서 리뷰 보여주기 -->   
-   <!-- <select id="selectMyReview" resultType="hashmap" parameterType="hashmap">
-      
-      SELECT 
-            *
-      FROM 
-            REVIEW R 
-      JOIN 
-            MOIM M ON R.RV_MO_IDX = M.MO_IDX
-      JOIN 
-            FILE_T F ON R.RV_IDX = F.F_ARTICLE
-      WHERE 
-            F_TABLE = 'F'
-      AND
-            R.RV_M_IDX = #{rv_m_idx} 
-      AND
-            F_MAIN_YN = 'N'
-      AND
-            F_DEL_YN = 'N'
-      AND
-            RV_DEL_YN = 'N'
-      AND
-            R.RV_IDX = #{rv_idx}
-      
-   </select> -->
-   
-	<!-- 모임리스트에서 리뷰 상세보기 보여주기 -->   
-   <select id="reviewDetail" resultType="hashmap" parameterType="hashmap">
-      
-      SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, MO.MO_CATEGORY, M.*
-        FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
+
+   	<!-- 모임리스트에서 리뷰 상세보기 보여주기 -->   
+   	<select id="reviewDetail" resultType="hashmap" parameterType="hashmap">
+   	<![CDATA[
+   		SELECT 
+   				R.*, 
+   				NVL(F.F_SVNAME, 0) AS RF_SVNAME,
+   				MO.MO_TITLE, 
+   				MO.MO_CATEGORY, 
+   				M.*
+        FROM 
+        		REVIEW R,
+        		FILE_T F, 
+        		MOIM MO, 
+        		MEMBER M
         WHERE
-        F.F_TABLE(+) = 'R'
-        AND F.F_MAIN_YN(+) = 'Y'
-        AND F.F_ARTICLE(+) = R.RV_IDX
-        AND F.F_DEL_YN(+) = 'N'
-        AND R.RV_DEL_YN(+) = 'N'
-        AND R.MO_IDX = MO.MO_IDX 
-        AND M.M_IDX = R.M_IDX
-        AND R.RV_IDX = #{RV_IDX}
-   </select>  
-   
-   <!-- 모임리스트에서 리뷰 보여주기 -->   
-   <select id="reviewList" resultType="hashmap" parameterType="hashmap">
-      
-      SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, MO.MO_CATEGORY, M.*
-        FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
+        		F.F_TABLE(+) = 'R'
+        AND 
+        		F.F_MAIN_YN(+) = 'Y'
+        AND 
+        		F.F_ARTICLE(+) = R.RV_IDX
+        AND 
+        		F.F_DEL_YN(+) = 'N'
+        AND 
+        		R.RV_DEL_YN(+) = 'N'
+        AND 
+        		R.MO_IDX = MO.MO_IDX 
+        AND 
+        		M.M_IDX = R.M_IDX
+        AND 
+        		R.RV_IDX = #{RV_IDX}
+    ]]>    
+   	</select>
+   	
+   	<!-- 모임리스트에서 리뷰 보여주기 -->
+   	<select id="reviewList" resultType="hashmap" parameterType="hashmap">
+   	<![CDATA[
+   		SELECT 
+   				R.*, 
+   				NVL(F.F_SVNAME, 0) AS RF_SVNAME, 
+   				MO.MO_TITLE, 
+   				MO.MO_CATEGORY, 
+   				M.*
+        FROM 
+        		REVIEW R, 
+        		FILE_T F, 
+        		MOIM MO, 
+        		MEMBER M
         WHERE
-        F.F_TABLE(+) = 'R'
-        AND F.F_MAIN_YN(+) = 'Y'
-        AND F.F_ARTICLE(+) = R.RV_IDX
-        AND F.F_DEL_YN(+) = 'N'
-        AND R.RV_DEL_YN(+) = 'N'
-        AND R.MO_IDX = MO.MO_IDX 
-        AND M.M_IDX = R.M_IDX
-        AND MO.MO_CATEGORY = #{MO_CATEGORY}
-      <!-- <if test="MO_REGION != '전체'">
-      AND
-            MO.MO_REGION = #{MO_REGION}      
-      </if> -->
-      
-   </select>
+        		F.F_TABLE(+) = 'R'
+        AND 
+        		F.F_MAIN_YN(+) = 'Y'
+        AND 
+        		F.F_ARTICLE(+) = R.RV_IDX
+        AND 
+        		F.F_DEL_YN(+) = 'N'
+        AND 
+        		R.RV_DEL_YN(+) = 'N'
+        AND 
+        		R.MO_IDX = MO.MO_IDX 
+        AND 
+        		M.M_IDX = R.M_IDX
+        AND 
+        		MO.MO_CATEGORY = #{MO_CATEGORY}
+    ]]>  
+   	</select>
    
-   <!-- 후기 전체보기에서 리뷰 보여주기 -->
-   <select id="selectAllReview" resultType="hashmap" parameterType="hashmap">
-      <!-- <include refid="common.pagingPre"/>  -->
-          SELECT R.*, NVL(F.F_SVNAME,0) AS RF_SVNAME, MO.MO_TITLE, M.*
-        FROM REVIEW R, FILE_T F, MOIM MO, MEMBER M
+    <!-- 후기 전체보기에서 리뷰 보여주기 -->
+    <select id="selectAllReview" resultType="hashmap" parameterType="hashmap">
+   	<![CDATA[
+        SELECT 
+        		R.*, 
+        		NVL(F.F_SVNAME, 0) AS RF_SVNAME, 
+        		MO.MO_TITLE, 
+        		M.*
+        FROM 
+        		REVIEW R, 
+        		FILE_T F, 
+        		MOIM MO, 
+        		MEMBER M
         WHERE
-        F.F_TABLE(+) = 'R'
-        AND F.F_MAIN_YN(+) = 'Y'
-        AND F.F_ARTICLE(+) = R.RV_IDX
-        AND F.F_DEL_YN(+) = 'N'
-        AND R.RV_DEL_YN(+) = 'N'
-        AND R.MO_IDX = MO.MO_IDX 
-        AND M.M_IDX = R.M_IDX
-        AND MO.MO_CATEGORY = #{MO_CATEGORY}
+        		F.F_TABLE(+) = 'R'
+        AND 
+        		F.F_MAIN_YN(+) = 'Y'
+        AND 
+        		F.F_ARTICLE(+) = R.RV_IDX
+        AND 
+        		F.F_DEL_YN(+) = 'N'
+        AND 
+        		R.RV_DEL_YN(+) = 'N'
+        AND 
+        		R.MO_IDX = MO.MO_IDX 
+        AND 
+        		M.M_IDX = R.M_IDX
+        AND 
+        		MO.MO_CATEGORY = #{MO_CATEGORY}
         ORDER BY 
                 F.F_REG_DATE DESC
-      
-      <!-- <include refid="common.pagingPost" /> -->
-   </select>
-   
+    ]]>  
+    </select>
+    
+    <!-- 후기 전체보기에서 후기 개수와 별점 평균 -->
+    <select id="selectAllReviewCount" parameterType="hashmap" resultType="hashmap">
+   	<![CDATA[
+   		SELECT 
+    			COUNT(*) RVC, TO_CHAR(AVG(RV_STAR), 'FM9.0') AVGSP
+        FROM 
+        (
+        		SELECT 
+		        		R.*, 
+		        		NVL(F.F_SVNAME, 0) AS RF_SVNAME, 
+		        		MO.MO_TITLE, 
+		        		M.*
+        		FROM 
+		        		REVIEW R, 
+		        		FILE_T F, 
+		        		MOIM MO, 
+		        		MEMBER M
+		        WHERE
+		        		F.F_TABLE(+) = 'R'
+		        AND 
+		        		F.F_MAIN_YN(+) = 'Y'
+		        AND 
+		        		F.F_ARTICLE(+) = R.RV_IDX
+		        AND 
+		        		F.F_DEL_YN(+) = 'N'
+		        AND 
+		        		R.RV_DEL_YN(+) = 'N'
+		        AND 
+		        		R.MO_IDX = MO.MO_IDX 
+		        AND 
+		        		M.M_IDX = R.M_IDX
+		        AND 
+		        		MO.MO_CATEGORY = 'outdoor'
+		        ORDER BY 
+		                F.F_REG_DATE DESC
+        ) 
+        		REVIEW
+   	]]>
+    </select>
+    
     <!-- 좋아요 수 -->
-	<select id="reviewZzimCount" parameterType="hashmap" resultType="hashmap">
-		SELECT COUNT(Z.Z_ARTICLE) AS RZ_COUNT
-        FROM ZZIM Z, REVIEW R
-        WHERE Z.Z_TABLE = 'R'
-        AND Z.Z_ARTICLE = R.RV_IDX
-        AND R.RV_IDX = #{RV_IDX}
-	</select>
-	
-	<!-- 좋아요 유무 -->
-	<select id="reviewZzimCheck" parameterType="hashmap"
-		resultType="hashmap">
-         <![CDATA[
-      SELECT COUNT(Z_IDX) AS RZ_CHECK
-      FROM ZZIM Z, REVIEW R, MEMBER M
-      WHERE Z.M_IDX = M.M_IDX
-      AND R.RV_IDX = Z.Z_ARTICLE
-      AND Z.Z_TABLE = 'R'
-      AND R.RV_IDX = #{RV_IDX}
-      AND M.M_IDX = #{M_IDX}
-            ]]>
-	</select>
+    <select id="reviewZzimCount" parameterType="hashmap" resultType="hashmap">
    
-   <!-- 리뷰작성하기 -->
-   <insert id="insertReview" parameterType="hashmap">
+   		SELECT 
+   				COUNT(Z.Z_ARTICLE) AS RZ_COUNT
+        FROM 
+        		ZZIM Z, 
+        		REVIEW R
+        WHERE 
+        		Z.Z_TABLE = 'R'
+        AND 
+        		Z.Z_ARTICLE = R.RV_IDX
+        AND 
+        		R.RV_IDX = #{RV_IDX}
+        AND
+        		RV_DEL_YN = 'N'
    
-      INSERT INTO 
-               REVIEW
-      VALUES
-      (
-         RV_IDX.NEXTVAL,
-         #{M_IDX}, 
-         #{MO_IDX},
-         #{RV_CONTENT},
-         sysdate,
-         #{RV_TITLE},
-         'N',
-         #{RV_STAR}
-                  )
+    </select>
    
-   </insert>
-   
-   <!-- 리뷰 사진 파일 등록 -->
-   <insert id="insertPhotoReview" parameterType="hashmap">
-   
-      INSERT INTO 
-               FILE_T
-      VALUES
-      (
-         F_IDX.NEXTVAL, 
-         'F', 
-         #{RV_IDX}, 
-         #{F_OGNAME}, 
-         #{F_SVNAME}, 
-         #{F_SIZE}, 
-         'N', 
-         'N', 
-         sysdate
-               )
-   
-   </insert>
-   
-   <!-- 리뷰수정하기 -->
-   <update id="updateReview" parameterType="hashmap">
-   
-      UPDATE 
-            REVIEW
-      SET 
-            RV_STAR = #{RV_STAR},
-            RV_TITLE = #{RV_TITLE},
-            RV_CONTENT = #{RV_CONTENT},
-            RV_REGDATE = sysdate
-      WHERE 
-            RV_IDX = #{RV_IDX}
-      AND 
-            M_IDX = #{M_IDX}
-      AND      
-            MO_IDX = #{MO_IDX}
+    <!-- 좋아요 유무 -->
+    <select id="reviewZzimCheck" parameterType="hashmap" resultType="hashmap">
     
-   </update>
+    	SELECT 
+    			COUNT(Z_IDX) AS RZ_CHECK
+    	FROM 
+    			ZZIM Z, REVIEW R, MEMBER M
+    	WHERE 
+    			Z.M_IDX = M.M_IDX
+      	AND 
+      			R.RV_IDX = Z.Z_ARTICLE
+      	AND 
+      			Z.Z_TABLE = 'R'
+      	AND 
+      			R.RV_IDX = #{RV_IDX}
+     	AND 
+     			M.M_IDX = #{M_IDX}
+     	AND
+        		RV_DEL_YN = 'N'
+     	
+    </select>
    
-   <!-- 리뷰삭제하기 -->
-   <update id="deleteReview" parameterType="hashmap">
+    <!-- 리뷰작성하기 -->
+    <insert id="insertReview" parameterType="hashmap">
+    	
+    	INSERT INTO REVIEW
+        (
+		      	 RV_IDX,
+				 M_IDX,
+				 MO_IDX,
+				 RV_CONTENT,
+				 RV_REGDATE,
+				 RV_TITLE,
+				 RV_DEL_YN,
+				 RV_STAR
+        )
+      	VALUES
+      	(
+		         RV_IDX.NEXTVAL,
+		         #{M_IDX}, 
+		         #{MO_IDX},
+		         #{RV_CONTENT},
+		         sysdate,
+		         #{RV_TITLE},
+		         'N',
+		         #{RV_STAR}
+      	)
    
-      UPDATE 
-             REVIEW
-      SET 
-            RV_DEL_YN = 'Y',
-            RV_REGDATE = sysdate
-      WHERE 
-            RV_IDX = #{RV_IDX}
-      AND 
-            M_IDX = #{M_IDX}
-      AND      
-            MO_IDX = #{MO_IDX}
+    </insert>
+   
+    <!-- 리뷰 사진 파일 등록 -->
+    <insert id="insertPhotoReview" parameterType="hashmap">
+    	
+    	INSERT INTO FILE_T
+      	(
+	      		 F_IDX,
+				 F_TABLE,
+				 F_ARTICLE,
+				 F_OGNAME,
+				 F_SVNAME,
+				 F_SIZE,
+				 F_MAIN_YN,
+				 F_DEL_YN,
+				 F_REG_DATE
+      	)
+      	VALUES
+      	(
+		         F_IDX.NEXTVAL, 
+		         'R', 
+		         #{RV_IDX}, 
+		         #{F_OGNAME}, 
+		         #{F_SVNAME}, 
+		         #{F_SIZE}, 
+		         'N', 
+		         'N', 
+		         sysdate
+      	)
+   
+    </insert>
+   
+    <!-- 리뷰수정하기 -->
+    <update id="updateReview" parameterType="hashmap">
+    	
+    	UPDATE 
+    			REVIEW
+      	SET 
+	            RV_STAR = #{RV_STAR},
+	            RV_TITLE = #{RV_TITLE},
+	            RV_CONTENT = #{RV_CONTENT},
+	            RV_REGDATE = sysdate
+     	WHERE 
+            	RV_IDX = #{RV_IDX}
+      	AND 
+            	M_IDX = #{M_IDX}
+      	AND      
+            	MO_IDX = #{MO_IDX}
+        AND
+        		RV_DEL_YN = 'N'
+   
+    </update>
     
-   </update>
+    <!-- 리뷰사진수정하기 -->
+    <update id="updatePhotoReview" parameterType="hashmap">
+    	
+    	UPDATE 
+    			FILE_T
+      	SET 
+	            F_OGNAME = #{F_OGNAME},
+	            F_SVNAME = #{F_SVNAME},
+	            F_SIZE = #{F_SIZE},
+	            F_REG_DATE = sysdate
+     	WHERE 
+            	F_IDX = #{F_IDX}
+      	AND 
+            	F_TABLE = #{F_TABLE}
+      	AND      
+            	F_ARTICLE = #{F_ARTICLE}
+        AND
+        		F_MAIN_YN = 'N'
+        AND
+        		F_DEL_YN = 'N'
+   
+    </update>
+   
+    <!-- 리뷰삭제하기 -->
+    <update id="deleteReview" parameterType="hashmap">
+    
+    	UPDATE 
+    			REVIEW
+      	SET 
+	            RV_DEL_YN = 'Y',
+	            RV_REGDATE = sysdate
+      	WHERE 
+            	RV_IDX = #{RV_IDX}
+      	AND 
+            	M_IDX = #{M_IDX}
+      	AND      
+            	MO_IDX = #{MO_IDX}
+        AND
+        		RV_DEL_YN = 'N'
+      
+    </update>
 
 </mapper>

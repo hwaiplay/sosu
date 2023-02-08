@@ -53,6 +53,7 @@ public class MoimDao extends AbstractDAO {
 		}
 
 		return moimList;
+
 	}
 
 	// 모임 상세보기
@@ -63,6 +64,7 @@ public class MoimDao extends AbstractDAO {
 		Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",
 				moimDetail.get("MO_IDX"));
 		moimDetail.put("MOMEM_COUNT", moimMemCount.get("MOMEM_COUNT"));
+
 		return moimDetail;
 	}
 
@@ -109,15 +111,17 @@ public class MoimDao extends AbstractDAO {
 		return moimMemberBanList;
 	}
 
-	// 모임에서 강퇴당한 인원 리스트
+	// 모임 이미지 상세보기
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> moimMemberDropList(Map<String, Object> map, CommandMap commandMap)
-			throws Exception {
+	public List<Map<String, Object>> selectMoimImg(Map<String, Object> map, CommandMap commandMap) throws Exception {
 
-		List<Map<String, Object>> moimMemberDropList = (List<Map<String, Object>>) selectList("moim.moimMemberDropList",
-				map);
+		return selectList("moim.selectMoimImg", map);
 
-		return moimMemberDropList;
+	}
+
+	// 모임 이미지 삭제
+	public void MoimImgDelete(Map<String, Object> map, String f_svname) throws Exception {
+		update("file.FileDelete", map);
 	}
 
 	// 모임 참여 승인
@@ -155,9 +159,19 @@ public class MoimDao extends AbstractDAO {
 		insert("moim.moimJoinPermit", map);
 	}
 
+	// 모임 찜
+	public void moimZzimInsert(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
+		insert("moim.moimZzimInsert", map);
+	}
+
 	// 모임 조기 마감
 	public void moimSelfClose(Map<String, Object> map) throws Exception {
 		update("moim.moimSelfClose", map);
+	}
+
+	// 모임 자동 마감
+	public void moimClose() throws Exception {
+		update2("moim.moimClose");
 	}
 
 	// 모임 탈퇴하기

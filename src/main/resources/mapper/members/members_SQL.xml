@@ -20,9 +20,28 @@
       <![CDATA[
       SELECT *
       FROM MEMBER
-      WHERE M_EMAIL = #{M_EMAIL} AND M_PW = #{M_PW} AND M_DEL_YN!='Y' AND M_TYPE='M'
+      WHERE M_EMAIL = #{M_EMAIL} AND M_PW = #{M_PW} AND M_DEL_YN!='Y'
     ]]>
    </select>
+   
+   <!-- 닉네임 중복 확인 -->
+   <select id="checkNickname" resultType="int" parameterType="hashmap">
+      <![CDATA[
+         SELECT COUNT(1)
+         FROM MEMBER
+         WHERE M_NICKNAME=#{M_NICKNAME} AND M_DEL_YN!='Y'
+    ]]>
+   </select>
+   
+   <!-- 로그인 비밀번호 확인 -->
+   <select id="checkPassword" resultType="hashmap" parameterType="hashmap">
+      <![CDATA[
+         SELECT M_PW
+         FROM MEMBER
+         WHERE M_EMAIL=#{M_EMAIL} AND M_DEL_YN!='Y'
+    ]]>
+   </select>
+   
 
    <!-- ID 중복 확인 -->
    <select id="checkId" resultType="int" parameterType="hashmap">
@@ -110,7 +129,7 @@
    <select id="mypageOpenMoim" resultType="hashmap"
       parameterType="hashmap">
       <![CDATA[
-         SELECT MO_TITLE, MO_DETAILREGION, MO_DETAILCATEGORY, MO_COST, MO_MAXPEOPLE, MO_IDX
+         SELECT *
       FROM MOIM
       WHERE M_IDX=#{M_IDX}
       ORDER BY MO_REGDATE DESC
@@ -141,7 +160,8 @@
    <select id="mypagePartyMoim" resultType="hashmap"
       parameterType="hashmap">
       <![CDATA[
-         SELECT M.MO_TITLE, M.MO_DETAILREGION, M.MO_DETAILCATEGORY, M.MO_COST, M.MO_MAXPEOPLE, MEM.M_PRIVATE, M.MO_IDX
+      SELECT M.MO_TITLE, M.MO_DETAILREGION, M.MO_DETAILCATEGORY, M.MO_COST, M.MO_MAXPEOPLE, MEM.M_PRIVATE, M.MO_IDX, 
+      			  M.MO_CATEGORY, M.MO_CLOSE_YN, MEM.M_IDX
       FROM PARTYMEM P, MOIM M, MEMBER MEM
       WHERE P.M_IDX=#{M_IDX} AND P.P_BAN_YN='N' AND P.P_FINAL_YN='Y' AND P.MO_IDX=M.MO_IDX AND P.M_IDX=MEM.M_IDX
       ORDER BY M.MO_REGDATE DESC
@@ -189,16 +209,23 @@
       ORDER BY R.RV_REGDATE DESC
     ]]>
    </select>
-
-   <!-- 마이페이지 : 자유게시판 찜 -->
+   
+      <!-- 마이페이지 : 자유게시판 찜 -->
    <select id="mypageZzimFree" resultType="hashmap"
       parameterType="hashmap">
       <![CDATA[
-       SELECT Z.Z_IDX, Z.M_IDX, Z.Z_ARTICLE, Z.Z_TABLE, F.FR_IDX, F.FR_TITLE, F.FR_CATEGORY, F.FR_REGDATE, F.FR_WRITER, F.FR_COUNT, M.M_PRIVATE
-      FROM ZZIM Z, FREE F, MEMBER M
-      WHERE Z.M_IDX=#{M_IDX} AND Z.Z_TABLE='F' AND Z.Z_ARTICLE=F.FR_IDX AND Z.M_IDX=M.M_IDX
+       SELECT Z.Z_IDX, Z.M_IDX, Z.Z_ARTICLE, Z.Z_TABLE,Z.Z_DEL_YN, FR.FR_IDX, FR.FR_TITLE, FR.FR_CATEGORY, FR.FR_REGDATE, FR.FR_WRITER, FR.FR_COUNT, M.M_PRIVATE, NVL(F.F_SVNAME,0) AS PROFILE
+      FROM ZZIM Z, FREE FR, MEMBER M, FILE_T F
+      WHERE Z.M_IDX= #{M_IDX}
+      AND Z.Z_TABLE='F'
+      AND Z.Z_ARTICLE= FR.FR_IDX 
+      AND Z.M_IDX = M.M_IDX
+      AND F.F_ARTICLE (+) = FR.M_IDX
+      AND F.F_TABLE(+) = 'P'
+      AND Z.Z_DEL_YN='N'
     ]]>
    </select>
+
 
    <!-- 마이페이지 : 모임 찜 개수 -->
    <select id="mypageZzimMoimCount" resultType="hashmap"
@@ -218,16 +245,18 @@
       FROM ZZIM Z, FREE F
       WHERE Z.M_IDX=#{M_IDX} AND Z.Z_TABLE='F' AND Z.Z_ARTICLE=F.FR_IDX
       ORDER BY F.FR_REGDATE DESC
+      
     ]]>
-   </select>
+   </select> 
 
    <!-- 마이페이지 : 모임 찜 -->
    <select id="mypageZzimMoim" resultType="hashmap"
       parameterType="hashmap">
       <![CDATA[
-       SELECT Z.Z_IDX, Z.M_IDX, Z.Z_ARTICLE, Z.Z_TABLE, M.MO_IDX, M.MO_TITLE, M.MO_DETAILCATEGORY, M.MO_DETAILREGION, M.MO_COST, MEM.M_PRIVATE, M.MO_MAXPEOPLE
+      SELECT Z.Z_IDX, Z.M_IDX, Z.Z_ARTICLE, Z.Z_TABLE, M.MO_IDX, M.MO_TITLE, M.MO_DETAILCATEGORY, M.MO_DETAILREGION, 
+      M.MO_COST, MEM.M_PRIVATE, M.MO_MAXPEOPLE, M.MO_CATEGORY, Z.Z_DEL_YN
       FROM ZZIM Z, MOIM M, MEMBER MEM
-      WHERE Z.M_IDX=#{M_IDX} AND Z.Z_TABLE='M' AND Z.Z_ARTICLE=M.MO_IDX AND Z.M_IDX=MEM.M_IDX
+      WHERE Z.M_IDX=#{M_IDX} AND Z.Z_TABLE='M' AND Z.Z_ARTICLE=M.MO_IDX AND Z.M_IDX=MEM.M_IDX AND Z.Z_DEL_YN='N'
       ORDER BY M.MO_REGDATE DESC
     ]]>
    </select>
@@ -239,22 +268,6 @@
       WHERE M_IDX=#{M_IDX}
     ]]>
    </update>
-
-   <!-- 관리자 로그인 -->
-   <select id="adminLogin" resultType="hashmap"
-      parameterType="hashmap">
-      <![CDATA[
-         SELECT *
-         FROM MEMBER
-         WHERE M_EMAIL=#{M_EMAIL} AND M_PW = #{M_PW} AND M_DEL_YN='N' AND M_TYPE='A'
-    ]]>
-   </select>
-
-   <!-- 관리자 : 회원 리스트 -->
-   <!-- <select id="adminMemberList" resultType="hashmap" parameterType="hashmap"> 
-      <![CDATA[ SELECT M_IDX, M_NAME, M_EMAIL, M_PHONE, M_TYPE, M_DEL_YN, M_BAN_DATE, 
-      R_COUNT FROM MEMBER, REPORT WHERE M_IDX = R_REPORTEDMEM AND ORDER BY R_COUNT 
-      DESC ]]> </select> -->
 
    <!-- 관리자 : 회원 정지 처리 -->
    <update id="adminMemberStop" parameterType="hashmap">
@@ -272,22 +285,13 @@
     ]]>
    </update>
 
-   <!-- 관리자 : 회원 상세보기 -->
-   <!-- <select id="adminMemberDetail" resultType="hashmap" parameterType="hashmap"> 
-      <![CDATA[ SELECT M_IDX, M_NAME, M_GENDER, M_NICKNAME, M_EMAIL, M_PHONE, M_JUMIN, 
-      M_TYPE, M_DEL_YN, M_REGDATE, M_BAN_DATE, R_MEM, R_REASON, R_COUNT, R_DATE, 
-      R_DETAIL, R_DEL_YN FROM MEMBER, REPORT WHERE M_IDX = R_REPORTEDMEM AND M_IDX=#{M_IDX} 
-      ]]> </select> -->
-
-   <!-- 관리자 : 신고 내역 삭제 -->
-   <!-- <update id="adminMemberDetail" parameterType="hashmap"> <![CDATA[ ]]> 
-      </update> -->
-
    <!-- 신고하기 -->
-   <!-- <insert id="profileRegister" parameterType="hashmap"> INSERT INTO REPORT 
-      (R_IDX, R_MEM, R_REASON, R_REPORTEDMEM, R_COUNT, R_DATE, R_DETAIL, R_DEL_YN) 
-      VALUES (R_IDX.NEXTVAL, #{R_MEM}, #{R_REASON}, #{M_IDX}, 1, SYSDATE, #{R_DETAIL}, 
-      'N'); </insert> -->
+   <insert id="insertReport" parameterType="hashmap"> 
+      <![CDATA[
+      INSERT INTO REPORT (R_IDX, R_MEM, R_REASON, R_REPORTEDMEM, R_COUNT, R_DATE, R_DETAIL, R_DEL_YN) 
+      VALUES (R_IDX.NEXTVAL, #{R_MEM}, #{R_REASON}, #{R_REPORTEDMEM}, 1, SYSDATE, #{R_DETAIL}, 'N') 
+      ]]>
+   </insert>
 
    <!-- 사진 이미지 가져오기 : 프로필, 모임, 자유게시판, 리뷰 등 메인 사진 -->
    <select id="profileGet" resultType="hashmap"
@@ -301,11 +305,12 @@
 
    <!-- 프로필 사진 기본 이미지 등록하기 -->
    <insert id="profileRegister" parameterType="hashmap">
-
+      <![CDATA[
       INSERT INTO FILE_T(F_IDX, F_TABLE, F_ARTICLE, F_OGNAME, F_SVNAME, F_SIZE,
       F_MAIN_YN, F_DEL_YN, F_REG_DATE)
       VALUES (F_IDX.NEXTVAL, 'P', #{F_ARTICLE}, #{F_OGNAME}, #{F_SVNAME},
       #{F_SIZE}, 'Y', 'N', SYSDATE)
+          ]]>
    </insert>
 
    <!-- 프로필 수정, 삭제 -->
@@ -316,10 +321,117 @@
       WHERE F_ARTICLE=#{M_IDX} AND F_TABLE='P' AND F_MAIN_YN='Y'
     ]]>
    </update>
-
-
-
-
-
-
+	<!-- 다른 사람 마이페이지 불러오기 -->
+   <select id="userMypage" resultType="hashmap" parameterType="hashmap">
+      <![CDATA[
+         SELECT * FROM MEMBER WHERE M_NICKNAME=#{M_NICKNAME}
+      ]]>
+    </select>
+   
+   <!-- 페이징 처리 -->
+   <sql id="pagingPre">
+   <![CDATA[
+         SELECT 
+    AAA.*
+FROM(
+    SELECT 
+        COUNT(*) OVER() AS TOTAL_COUNT,
+        AA.*
+    FROM(
+      ]]>
+   </sql>
+   <!-- 페이징 처리 -->
+   <sql id="pagingPost">
+   <![CDATA[
+    ) AA
+) AAA
+WHERE 
+    AAA.RNUM BETWEEN #{START} AND #{END}
+      ]]>
+   </sql>
+   
+   <!-- 관리자 - 회원 리스트 -->
+   <select id="adminMemberList" resultType="hashmap" parameterType="hashmap">
+      <include refid="members.pagingPre"/> 
+      <![CDATA[
+      
+         SELECT ROW_NUMBER() OVER (ORDER BY M.M_REGDATE DESC) RNUM, 
+         M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
+      FROM MEMBER M, REPORT R
+      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN!='Y' AND R.R_DEL_YN(+)!='Y'
+      GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
+    ]]>
+    <include refid="members.pagingPost" />
+   </select>
+   
+   
+   <!-- 관리자 - 신고받은 회원 -->
+   <select id="adminReportMemberList" resultType="hashmap" parameterType="hashmap">
+   <include refid="members.pagingPre"/> 
+      <![CDATA[
+       SELECT
+                  ROW_NUMBER() OVER (ORDER BY COUNT(R_IDX) DESC) RNUM,
+                  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
+              FROM MEMBER M, REPORT R
+                WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='N' AND R.R_DEL_YN='N'
+                GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
+     ]]>
+     <include refid="members.pagingPost" />
+   </select>   
+   
+   <!-- 관리자 - 정지 회원 -->
+    <select id="adminStopMemberList" resultType="hashmap" parameterType="hashmap">
+    <include refid="members.pagingPre"/> 
+      <![CDATA[    
+        SELECT  ROW_NUMBER() OVER (ORDER BY M.M_BAN_DATE DESC) RNUM,
+        M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
+      FROM MEMBER M, REPORT R
+      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='S'
+      GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
+        ]]>
+        <include refid="members.pagingPost" />
+   </select>
+   
+   
+   <!-- 관리자 - 회원 상세보기 -->
+   <select id="adminMemberDetail" resultType="hashmap" parameterType="hashmap">
+      <![CDATA[
+         SELECT MEMBER.*, F_SVNAME
+        FROM MEMBER, FILE_T
+        WHERE M_IDX=#{M_IDX} AND F_TABLE='P' AND F_ARTICLE=M_IDX
+    ]]>
+   </select>
+   
+   <!-- 관리자 - 회원 신고 내역 -->
+   <select id="adminMemberReport" resultType="hashmap" parameterType="hashmap">
+      <![CDATA[
+         SELECT R.*
+        FROM MEMBER M, REPORT R
+        WHERE M.M_IDX=R.R_REPORTEDMEM AND M_IDX=#{M_IDX} AND R.R_DEL_YN='N'
+    ]]>
+   </select>
+   
+   <!-- 관리자 - 신고 내역 삭제 -->
+   <update id="adminMemberReportDelete" parameterType="hashmap">
+      <![CDATA[
+         UPDATE REPORT
+        SET R_DEL_YN='Y'
+        WHERE R_IDX=#{R_IDX}
+    ]]>
+   </update>
+   
+   <!-- 찜 삭제 --> 
+   <update id="deleteZzim" parameterType="hashmap">
+   <![CDATA[
+     UPDATE ZZIM SET Z_DEL_YN='Y' WHERE Z_IDX = #{Z_IDX}
+      ]]>
+   </update>
+   
+   <!-- 찜 다시 추가 -->
+   <update id="reinsertZzim" parameterType="hashmap">
+   <![CDATA[
+     UPDATE ZZIM SET Z_DEL_YN='N' WHERE Z_IDX = #{Z_IDX}
+      ]]>
+   </update>
+   
 </mapper>

@@ -16,6 +16,8 @@
    <form action="/members/join.sosu" method="post">
    <input type="hidden" id="doubleCheck" value='0'>
    <input type="hidden" id="pwSameCheck" value='0'>
+   
+   <input type="hidden" id="nickCheck" value='0'>
       
       <table class="input-form" >
    <colgroup>
@@ -31,7 +33,15 @@
          
          <tr>
             <th class="header"><label for="m_nickname" >닉네임</label><span style="color:#fd8731;">*</span></th>
-            <td class="contents"><input type="text" name="M_NICKNAME" id="m_nickname"></td>
+            <td class="contents"><input type="text" name="M_NICKNAME" id="m_nickname">
+            <button type="button" id="check" value='중복확인' class="dbtn">중복확인</button></td>
+         </tr>
+         
+         <tr>
+         <td></td>
+            <td>
+            <div class="double_check_result" id="nickname_check_result"></div>
+            </td>
          </tr>
             
          <tr>

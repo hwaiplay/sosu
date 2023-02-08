@@ -1,73 +1,90 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="/resources/js/common.js"></script>
 <html>
 <head>
-<title>Insert title here</title>
+<link href="/resources/css/list.css" rel="stylesheet">
+<link href="/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/assets/vendor/aos/aos.css" rel="stylesheet">
+<%@page import="java.util.*"%>
+<%
+    request.setCharacterEncoding("UTF-8"); 
+%>
+
+<meta charset="UTF-8">
+<title>소수 자유게시판</title>
 </head>
-<body>
-<h1>자유게시판 </h1>
-
-<table style="border:1px solid #ccc">
-	<colgroup>
-		<col width="10%"/>
-		<col width="*"/>
-		<col width="40%"/>
-	</colgroup>
-	<thead>
-		<tr>
-			<th scope="col">자유게시판번호</th>
-			<th scope="col">프로필</th>
-			<th scope="col">닉네임</th>
-			<th scope="col">메인이미지</th>
-			<th scope="col">제목</th>
-			<th scope="col">찜</th>
-			<th scope="col">등록날짜</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:choose>
-			<c:when test="${!empty list}">
-				<c:forEach items="${list}" var="i" >
-					<tr  align="center" onclick="location.href='/freeboard/${i.FR_CATEGORY}/${i.FR_IDX}.sosu'" >	
-						<td>${i.FR_CATEGORY}
-						<td>${i.FR_IDX}
-						</td>
-						<td>${i.PROFILE}</td>
-						<td>${i.M_IDX}</td>
-						<td>${i.F_SVNAME}</td>
-						<td >
-						${i.FR_TITLE}	
-						</td>
-						<td>${i.FRZ_COUNT}</td>
-						<td>${i.FR_REGDATE}</td>
-					</tr>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<tr>
-					<td colspan="3">조회된 결과가 없습니다.</td>
-				</tr>
-			</c:otherwise>
-		</c:choose>
-		<tr>
-			<td>
-			<a class="use_move" href="/sosuboard/insertForm/${FR_CATEGORY}" onclick="move(this, 'in', 'FR_ID', 'FR_CATEGORY', 'M_NICKNAME')" >
-								글쓰기
-								<input type="hidden" name="FR_ID" value="${i.FR_ID}"><!-- 게시판 -->
-								<input type="hidden" name="M_NICKNAME" value="${i.M_NICKNAME}"><!-- 카테고리 -->
-								<input type="hidden" name="FR_CATEGORY" value="${i.FR_CATEGORY}"><!-- 카테고리 -->
-								<input type="hidden" name="M_IDX" value="${i.M_IDX}"><!-- 회원 번호 -->
-								
-							</a> &nbsp;
-			</td>
-		</tr>
+<main>
+	<article>
+		<input type="hidden" value="${FR_CATEGORY }" id = "cate">
+	
+		<div class="container" style="margin-top:75px;">
+		<div class="row gy-5" style="margin-bottom: 90px;">
+			<div class="container">
+			<div class="row gy-5">
+				<div class="col">
+					<div style="float: left; font-size: 14.5px;">
+					<select onchange="location.href=(this.value);" >
+						<option value="/freeboard/culture.sosu" <c:if test="${FR_CATEGORY == 'culture' }">selected="selected"</c:if>>문화/예술</option>
+						<option value="/freeboard/sports.sosu" <c:if test="${FR_CATEGORY == 'sports' }">selected="selected"</c:if>>운동/스포츠</option>
+						<option value="/freeboard/game.sosu" <c:if test="${FR_CATEGORY == 'game' }">selected="selected"</c:if>>게임/오락</option>
+						<option value="/freeboard/outdoor.sosu" <c:if test="${FR_CATEGORY == 'outdoor' }">selected="selected"</c:if>>아웃도어/여행</option>
+						<option value="/freeboard/food.sosu" <c:if test="${FR_CATEGORY == 'food' }">selected="selected"</c:if>>음식</option>
+						<option value="/freeboard/etc.sosu" <c:if test="${FR_CATEGORY == 'etc' }">selected="selected"</c:if>>기타</option>
+					</select>
+					<%-- <form action="/freeboard/${FR_CATEGORY }.sosu" method="post">
+						<select name="searchType">
+							<option value="A">전체</option>
+							<option value="T">제목</option>
+							<option value="C">내용</option>
+						</select>
+							<input type="text" class="form-control" placeholder="검색어 입력" name="keyword" maxlength="100">
+							<input class="btn" type="submit" value="검색">
+					</form>	 --%>
+				</div>
+			</div>
+		</div>
 		
-	</tbody>
-</table>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>		
-<script src="/resources/js/common.js"></script>
-</body>
+		<%if(session.getAttribute("M_IDX")!=null){ %>
+		<div style="text-align: right; margin-top: 20px">
+			<button type="button" onclick="location.href='/freeboard/insertForm/${FR_CATEGORY }.sosu'" class="mrgbtn">글쓰기</button>
+		</div>
+		<% } %>
+		
+		<div class="row gy-5">
+			<div class="col" style="margin-top: 5px; margin-bottom: 20px;">
+				<hr>
+			</div>
+		</div>
+		</div>
+		
+         <c:choose>
+            <c:when test="${fn:length(list) > 0 }">
+               <c:forEach items="${list}" var = "map">
+				<div class="col-lg-3 menu-item" style="margin-bottom: 80px;">
+				<div class="row gy-5"  onclick="location.href='/freeboard/${map.FR_CATEGORY }/${map.FR_IDX }.sosu'" style="cursor: pointer;">
+					<input type="hidden" name="M_IDX"	value="${map.M_IDX }">
+					<input type="hidden" name="FR_IDX" value="${map.FR_IDX }">
+					<img src="${pageContext.request.contextPath }/resources/assets/img/image/${map.F_SVNAME }" alt="" style='width: 300px; height: 300px'>
+					<p></p>
+					<p class="moim-title">${map.FR_TITLE}
+					<span class="detail-writer">${map.FR_WRITER}</span></p>
+					<span class="hhh">♡</span>
+				</div>
+				</div>
+               </c:forEach>
+            </c:when>
+            <c:otherwise>
+				<div class="row gy-5" style="height: 165px; margin-bottom: 12px;">
+       			<div class="none">
+					조회된 결과가 없습니다.
+				</div>	
+				</div>
+            </c:otherwise>
+         </c:choose>
+		</div>
+		</div>
+	</article>
+</main>
 </html>

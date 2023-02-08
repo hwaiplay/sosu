@@ -13,7 +13,9 @@ $(document).ready(function(){
       var m_que = $('#m_que').val();   
       var m_ans = $('#m_ans').val();
       var doubleCheck = $('#doubleCheck').val();
+      var nickCheck = $('#nickCheck').val();
       var double = $('#double').val();
+      var check = $('#check').val();
       var pwSameCheck = $('#pwSameCheck').val();
       
       //이름 입력하지 않았을 경우
@@ -98,6 +100,13 @@ $(document).ready(function(){
       $('#m_email').focus();
       return false;
       }
+      
+      //닉네임 중복 확인이 안된 경우 
+      if(nickCheck == 0) {
+      alert("닉네임 중복확인을 해주세요.");
+      $('#m_nickname').focus();
+      return false;
+      }
      
       //비밀번호와 비밀번호 확인이 일치하지 않을 경우
       if(pwSameCheck==0){
@@ -158,6 +167,61 @@ $(document).ready(function(){
             $('#doubleCheck').val(-1);
          }
       });   
+      
+      
+      //--------------------
+      //닉네임 중복검사 ajax
+      $('#check').on('click',function(e){
+         let nickname = $('#m_nickname').val(); // input_id에 입력되는 값
+         let nickCheck = $('#nickCheck');
+      
+         if(nickname != null && nickname !='') {
+            $.ajax({
+               url : "/members/checknickname.sosu",
+               type : "post",
+               contentType: "application/json",
+               data : JSON.stringify({
+                        M_NICKNAME : nickname
+               }),
+               dataType:'json',
+               success : function(result, status, xhr) {
+                  if (result != 0) { 
+                     $("#nickname_check_result").html('중복된 닉네임입니다.');
+                     $("#nickname_check_result").css('color', 'red');
+                     $('#nickCheck').val(0);
+                  } else {
+                     $("#nickname_check_result").html('사용할 수 있는 닉네임입니다.');
+                     $("#nickname_check_result").css('color', 'green');
+                     $('#nickCheck').val(1);
+                  }
+               },
+               error : function() {
+                  alert("서버요청실패");
+               }
+            })
+         }else {
+            $("#nickname_check_result").html('닉네임을 입력해 주세요.');
+            $("#nickname_check_result").css('color', 'red');
+            $('#nickCheck').val(-1);
+         }
+      });   
+      
+      //------------------
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
    //비밀번호와 비밀번호 입력 체크하여 화면에 출력
    $('#m_pw, #m_pw2').focusout(function(){
@@ -223,6 +287,16 @@ function checkEmail(email) {
    }
    return true;
 }
+
+
+function checkNickname(nickname) {
+   var pattern = /^[0-9a-zA-Z가-힣]([-_.]?[0-9a-zA-Z가-힣])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+   if(!pattern.test(nickname)) {
+      return false;
+   }
+   return true;
+}
+
 
 //숫자만 입력 가능하도록 만들기 (0부터 9까지)
 function onlyNumber(data){

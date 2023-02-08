@@ -17,5 +17,26 @@
 			]]>
 	</select>
 
+	<!-- 이미지 등록하기 -->
+   <insert id="imgInsert" parameterType="hashmap">
+       <![CDATA[
+      INSERT INTO FILE_T(F_IDX, F_TABLE, F_ARTICLE, F_OGNAME, F_SVNAME, F_SIZE,
+      F_MAIN_YN, F_DEL_YN, F_REG_DATE)
+      VALUES (F_IDX.NEXTVAL, #{F_TABLE}, #{F_ARTICLE}, #{F_OGNAME}, #{F_SVNAME},
+      #{F_SIZE}, #{F_MAIN_YN}, 'N', SYSDATE)
+       ]]>
+   </insert>
+   
+   <!-- 이미지 삭제하기 -->
+   <update id="FileDelete" parameterType="hashmap">
+     UPDATE FILE_T
+     SET F_DEL_YN = 'Y'
+     WHERE F_SVNAME IN
+     <foreach collection="chArr" item="F_SVNAME" open="('" close="')" separator="','"> 
+     #{F_SVNAME} 
+     </foreach>
+      
+   </update>
+
 </mapper>
 	

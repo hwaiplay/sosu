@@ -130,6 +130,11 @@ public class FileUtils {
    
    public List<Map<String,Object>> fileInsert(Map<String,Object> map, HttpServletRequest request) throws Exception{
 		
+	   String realPath = "";
+	   String savePath = filePath;
+	      
+	   realPath = request.getRealPath(savePath);
+	   
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
 		
 		Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
@@ -142,8 +147,6 @@ public class FileUtils {
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		Map<String,Object> listMap = null;
 		
-		File file = new File(filePath);
-		
 		while(iterator.hasNext()) {
 			multipartFile = multipartHttpServletRequest.getFile(iterator.next());
 			if(multipartFile.isEmpty()==false) {
@@ -152,25 +155,25 @@ public class FileUtils {
 				originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
 				storedFileName = CommonUtils.getRandomString()+originalFileExtension;
 				
-				file = new File(filePath+storedFileName);
+				File file = new File(realPath+"upload/"+storedFileName);
 				multipartFile.transferTo(file); //업로드 처리
 				
 				listMap = new HashMap<String,Object>();
 				if(map.get("MO_IDX")!=null) {
 					listMap.put("F_ARTICLE", map.get("MO_IDX"));
-					listMap.put("F_TABLE", map.get("M"));
+					listMap.put("F_TABLE", "M");
 					
 				}else if(map.get("RV_IDX")!=null) {
 					listMap.put("F_ARTICLE", map.get("RV_IDX"));
-					listMap.put("F_TABLE", map.get("R"));
+					listMap.put("F_TABLE", "R");
 					
 				}else if(map.get("FR_IDX")!=null) {
 					listMap.put("F_ARTICLE", map.get("FR_IDX"));
-					listMap.put("F_TABLE", map.get("F"));
+					listMap.put("F_TABLE", "F");
 					
 				}else if(map.get("N_IDX")!=null) {
 					listMap.put("F_ARTICLE", map.get("N_IDX"));
-					listMap.put("F_TABLE", map.get("N"));
+					listMap.put("F_TABLE", "N");
 				}
 				
 				//메인 이미지는 이름 mainImage로 ㄱㄱ
@@ -188,7 +191,6 @@ public class FileUtils {
 			}
 		}
 		return list;
-		
 	}
 
 }

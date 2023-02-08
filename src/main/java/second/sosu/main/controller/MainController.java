@@ -40,9 +40,13 @@ public class MainController {
 	 */
 
 	@RequestMapping(value = "/main.sosu")
-	public String main() {
-		
-		return "main_layout";
+	public String main(HttpSession session) {
+		if(session.getAttribute("M_TYPE") != null) {
+			if(session.getAttribute("M_TYPE").equals("A")) {
+				return "redirect:/admin/memberlist.sosu";
+			}
+		}
+		 return "main_layout";
 	}
 	
 	@RequestMapping( "/{MO_CATEGORY}.sosu")

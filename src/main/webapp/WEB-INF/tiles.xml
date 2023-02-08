@@ -25,27 +25,27 @@
 		<put-attribute name="body" value="/WEB-INF/views/moim/{1}.jsp"/>
 	</definition>
 	
-	<!-- 회원가입 -->
-	<definition name="/com/join/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/com/join/{1}.jsp"/>
-	</definition>
-	
-	<!-- 로그인 관련 -->
-	<definition name="/com/login/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/com/login/{1}.jsp"/>
-	</definition>
-	
-	<!-- 멤버 관련 -->
-	<definition name="members/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
-	</definition>
+	 <!-- 회원가입 -->
+   <definition name="/com/join/*" extends="main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/com/join/{1}.jsp"/>
+   </definition>
+   
+   <!-- 로그인 관련 -->
+   <definition name="/com/login/*" extends="main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/com/login/{1}.jsp"/>
+   </definition>
+   
+   <!-- 멤버 관련  -->
+   <definition name="members/mypage/*" extends="main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/members/mypage/{1}.jsp"/>
+   </definition>
 	
 	<!-- 리뷰 관련 -->
-	<!-- <definition name="review/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
-	</definition>
+	<definition name="members/review/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/members/review/{1}.jsp"/>
+	</definition> 
 	
-	자유게시판 관련
+	<!-- 자유게시판 관련
 	<definition name="freeboard/*" extends="main_layout">
 		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
 	</definition> -->

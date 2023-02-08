@@ -1,3 +1,4 @@
+//강승현 02/17
 package second.sosu.main.dao;
 
 import java.util.HashMap;
@@ -34,7 +35,6 @@ public class MainDao extends AbstractDAO {
             moimList.get(i).put("MZ_CHECK", zz.get("MZ_CHECK"));
          }
       }
-      
       // 모임 맴버 수
       for (int i = 0; i < moimList.size(); i++) {
          Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",

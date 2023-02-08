@@ -47,10 +47,9 @@
 
      if(curDate < (curYear + tmpBirthday)) {
 
-     tmpAge += 1;
-
+     tmpAge -= 1;
     }
-	
+   
     // 모임에 참여 했다면 참여하기 버튼 없애고 탈퇴하기 버튼 띄움
     if(pmidx == sessmidx) {
       $("#cham").css('display', 'none');
@@ -116,12 +115,11 @@
     }
     
     if(wmidx == sessmidx) {
-      alert('참여승인을 기다리는 중입니다.');
-      return false;
+     alert('참여승인을 기다리는 중입니다.');
+     return false;
     } 
     
     if(pmidx == sessmidx) {
-     
       alert('이미 참여한 모임입니다.');
       return false;
     } 
