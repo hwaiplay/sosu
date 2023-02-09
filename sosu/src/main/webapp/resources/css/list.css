@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+.third {
+   margin-top: 17px;
+}
+
+/*=========================== 
+          mainlist.jsp              
+  ===========================    */
+
+/* 카테고리 선택 */
+select {
+   font-size: 25px;
+   font-weight: bold;
+   width: auto;
+   height: 50px;
+   border: none;
+   padding: 0 0 2px 0;
+}
+
+select:focus {
+   outline: none;
+}
+
+option {
+   font-size: 16px;
+}
+
+/* 지역 선택 */
+.reg {
+   padding: 5px 0 0 5px;
+}
+
+.reg span {
+   padding: 0 10px 0 3px;
+}
+
+/* 날짜+시간 선택 */
+.filter {
+   padding: 14px 0 0 7px;
+}
+
+/* 리스트 관련 */
+.ct {
+   font-size: 23px;
+   font-weight: bold;
+   width: 100%;
+}
+
+/* 전체보기 */
+.allb {
+   text-decoration: none;
+   color: #000;
+   font-size: 14px;
+   padding-right: 28px;
+   float: right;
+   padding: 7px 28px 0 0;
+}
+
+.none {
+   text-align: center;
+}
+
+/*모임상세지역*/
+.detail-region{
+    font-size: 15px;
+    color: red;
+    float: left;
+    margin-top: 10px;
+}
+
+/*모임제목*/
+.moim-title{
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.5;
+    float: left;
+    margin-top: -10px;
+
+}
+
+.rmoim-title{
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 3.5;
+    float: left;
+    margin-top: -10px;
+
+}
+
+/*모임인원*/
+.moim-people{
+    font-size: 20px;
+    font-weight: 400;
+    vertical-align: top;
+    line-height: 1.5;
+
+}
+
+/*모임 상세 카테고리*/
+.detail-cate{
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.5;
+    float: right;
+    margin-top: 3px;
+    margin-right: 30px;
+    color: #fd8731;
+}
+
+.max {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.rdetail-cate{
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 4.0;
+    float: right;
+    margin-top: 3px;
+    margin-right: 30px;
+}
+
+/*모임비용*/
+.mo-cost{
+   font-size: 20px;
+    font-weight: 400;
+   line-height: 1.5;
+   float: left;
+}
+
+/* 찜 하트 */   
+.hhh {
+   color : red;
+   font-size: 34px;
+    font-weight: 400;
+    line-height: 1.5;
+    float: right;
+    margin-top: -12px;
+    margin-right: 34px;
+}   
+
+/* 리뷰 작성자 프사 */
+.kingimg {
+   border-radius: 100%;
+   object-fit: cover;
+   object-position: top;
+   width: 46px;
+   height: 46px;
+}
+
+.ddd{
+   font-size: 17px;
+    font-weight: 400;
+   line-height: 1.5;
+   float: left;
+}
+
+/* 개설하기 버튼 */
+.mrgbtn {
+   border: none;
+   background-color: #fd8731;
+   color: #fff;
+   font-size: 15px;
+   padding: 4px 8px 4px 8px;
+   border-radius: 10px; 
+}
