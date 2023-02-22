@@ -125,11 +125,11 @@
        ]]>
    </select>
 
-   <!-- 마이페이지 : 개설한 모임 상세 내용 -->
+   <!-- 마이페이지 : 개설한 모임 리스트 -->
    <select id="mypageOpenMoim" resultType="hashmap"
       parameterType="hashmap">
        SELECT 
-             M.*, SUBSTR(MO_TITLE,1,16) AS MOTT , NVL(MO_COST,0) AS MO_COST2, F.F_SVNAME
+             M.*, SUBSTR(MO_TITLE,1,16) AS MOTT , F.F_SVNAME
       FROM 
               MOIM M, FILE_T F
       WHERE 
@@ -141,9 +141,9 @@
       AND      
             F.F_ARTICLE (+) = M.MO_IDX
       AND     
-            F.F_MAIN_YN = 'Y'
+            F.F_MAIN_YN(+) = 'Y'
       AND      
-            F.F_DEL_YN = 'N'
+            F.F_DEL_YN(+) = 'N'
       ORDER BY 
               M.MO_REGDATE DESC
    </select>
@@ -179,93 +179,84 @@
                 NOT M.M_IDX = P.M_IDX
    </select>
 
-   <!-- 마이페이지 : 참여한 모임 상세 내용 -->
+   <!-- 마이페이지 : 참여한 모임 리스트 -->
    <select id="mypagePartyMoim" resultType="hashmap"
       parameterType="hashmap">
-         SELECT 
-              SUBSTR(M.MO_TITLE,1,14) AS MOTT, 
-              M.MO_IDX,
-                M.MO_DETAILREGION, 
-              M.MO_DETAILCATEGORY, 
-              NVL(M.MO_COST,0) AS MO_COST2, 
-              M.MO_MAXPEOPLE, 
-              MEM.M_PRIVATE, 
-              M.MO_IDX, 
-               M.MO_CATEGORY, 
-              M.MO_CLOSE_YN,
-                F.F_SVNAME,
-              M.M_IDX AS MOIDX,
-              MEM.M_IDX AS MEMIDX,
-                  (
-                  SELECT 
-                        COUNT(*)
-                  FROM 
-                        PARTYMEM P, MOIM M, REVIEW R
-                  WHERE 
-                        R.M_IDX = #{M_IDX}
-                  AND 
-                        P.P_BAN_YN='N'
-                  AND 
-                        P.P_FINAL_YN = 'Y' 
-                  AND 
-                        M.MO_IDX = R.MO_IDX 
-                  AND 
-                        P.M_IDX = R.M_IDX 
-                  AND 
-                        M.MO_IDX = P.MO_IDX
-                  AND 
-                        R.RV_DEL_YN = 'N'
-                  ) AS RVCOUNT
+      SELECT 
+                 SUBSTR(M.MO_TITLE,1,14) AS MOTT, 
+                 M.MO_IDX,
+                 M.MO_DETAILREGION, 
+                 M.MO_DETAILCATEGORY, 
+                 NVL(M.MO_COST,0) AS MO_COST2, 
+                 M.MO_MAXPEOPLE, 
+                 MEM.M_PRIVATE, 
+                 M.MO_IDX, 
+                 M.MO_CATEGORY, 
+                 M.MO_CLOSE_YN,
+                 F.F_SVNAME,
+                 M.M_IDX AS MOIDX,
+                 MEM.M_IDX AS MEMIDX
       FROM 
-              PARTYMEM P, 
-              MOIM M, 
-              MEMBER MEM,
+                 PARTYMEM P, 
+                 MOIM M, 
+                 MEMBER MEM,
                 FILE_T F
                 
       WHERE 
-              P.M_IDX = #{M_IDX}
+                 P.M_IDX = MEM.M_IDX  
       AND 
-              P.P_BAN_YN = 'N' 
+                 P.P_FINAL_YN = 'Y' 
       AND 
-              P.P_FINAL_YN = 'Y' 
+                 P.P_BAN_YN = 'N' 
       AND 
-              P.MO_IDX = M.MO_IDX 
-      AND 
-              P.M_IDX = MEM.M_IDX
-        AND
-                F.F_TABLE(+) = 'M'
-        AND     
-                F.F_ARTICLE(+) = M.MO_IDX
-        AND
-                F.F_DEL_YN(+) = 'N'
-        AND        
-                F.F_MAIN_YN(+) = 'Y'
-        AND
-              NOT M.M_IDX = MEM.M_IDX
+                 P.M_IDX = #{M_IDX} 
+      AND
+                P.MO_IDX = M.MO_IDX 
+      AND
+                F.F_TABLE(+) = 'M' 
+      AND     
+                F.F_ARTICLE(+) = M.MO_IDX 
+      AND
+                F.F_DEL_YN(+) = 'N' 
+      AND        
+                F.F_MAIN_YN(+) = 'Y' 
+      AND
+                 NOT M.M_IDX = MEM.M_IDX 
                 
       ORDER BY 
-              M.MO_REGDATE DESC
-                
-               
+                 M.MO_REGDATE DESC
    </select>
 
+
+
+
+   <!-- 마이페이지 : 참여한 모임별 리뷰개수 -->
+   <select id="mypageMoimReviewCount" resultType="hashmap"
+      parameterType="hashmap">
+        SELECT
+                 COUNT(*) AS RVCOUNT 
+        FROM
+                 REVIEW R, MOIM M
+        WHERE 
+                 R.M_IDX = #{M_IDX}
+        AND
+                 R.MO_IDX = #{MO_IDX}
+        AND 
+                 R.RV_DEL_YN = 'N' 
+   </select>
+   
+   
    <!-- 마이페이지 : 내가 남긴 리뷰 개수 -->
    <select id="mypageMyReviewCount" resultType="hashmap"
       parameterType="hashmap">
-         SELECT 
+      SELECT 
               COUNT(*)
       FROM 
-              PARTYMEM P, MOIM M, REVIEW R
+              MOIM M, REVIEW R
       WHERE 
               R.M_IDX = #{M_IDX} 
       AND 
-              P.P_BAN_YN = 'N'
-      AND 
-              P.P_FINAL_YN = 'Y' 
-      AND 
               M.MO_IDX = R.MO_IDX 
-      AND 
-              P.M_IDX = R.M_IDX 
       AND 
               M.MO_IDX = P.MO_IDX
       AND
@@ -290,31 +281,27 @@
    <!-- 마이페이지 : 내가 남긴 리뷰 상세 내용 -->
    <select id="mypageMyReview" resultType="hashmap"
       parameterType="hashmap">
-         SELECT 
+      SELECT 
               SUBSTR(M.MO_TITLE,1,11) AS MO_TITLE,  
-              M.MO_REGDATE, 
-              R.RV_STAR, 
-              R.RV_CONTENT, 
-              R.M_IDX, 
-              R.RV_IDX, 
-              M.MO_CATEGORY, 
-              M.MO_IDX
+              M.*,
+              R.*,
+              F.*
       FROM 
-              PARTYMEM P, MOIM M, REVIEW R
+              MOIM M, REVIEW R, FILE_T F
       WHERE 
               R.M_IDX = #{M_IDX}
       AND 
-              P.P_BAN_YN = 'N'
-      AND 
-              P.P_FINAL_YN = 'Y' 
-      AND 
               M.MO_IDX = R.MO_IDX 
-      AND 
-              P.M_IDX = R.M_IDX 
-      AND 
-              M.MO_IDX = P.MO_IDX
       AND
               R.RV_DEL_YN = 'N'
+      AND
+              F_DEL_YN(+) = 'N'   
+      AND
+              F.F_ARTICLE(+) = R.RV_IDX
+      AND   
+              F.F_MAIN_YN(+) = 'Y'
+      AND
+              F.F_TABLE(+) = 'R'
       ORDER BY 
               R.RV_REGDATE DESC
    </select>
@@ -322,12 +309,10 @@
    <!-- 마이페이지 : 나에게 남긴 리뷰 상세 내용 -->
    <select id="mypageToMeReview" resultType="hashmap"
       parameterType="hashmap">
-          SELECT 
+       SELECT 
               SUBSTR(M.MO_TITLE,1,11) AS MO_TITLE, 
-              M.MO_REGDATE,  
-              M.MO_CATEGORY, 
-              M.MO_IDX,
-                R.*
+              M.*,
+              R.*
       FROM 
               MOIM M, REVIEW R
       WHERE 
@@ -361,7 +346,7 @@
    <select id="mypageZzimMoimCount" resultType="hashmap"
       parameterType="hashmap">
       <![CDATA[
-       SELECT COUNT(*) 
+      SELECT COUNT(*) 
       FROM ZZIM Z, MOIM M
       WHERE Z.M_IDX=#{M_IDX} AND Z.Z_TABLE='M' AND Z.Z_ARTICLE=M.MO_IDX
     ]]>
@@ -488,7 +473,7 @@ WHERE
          SELECT ROW_NUMBER() OVER (ORDER BY M.M_REGDATE DESC) RNUM, 
          M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
       FROM MEMBER M, REPORT R
-      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN!='Y' AND R.R_DEL_YN(+)!='Y'
+      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN!='Y' AND R.R_DEL_YN(+)!='Y' AND M.M_TYPE!='A'
       GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
     ]]>
     <include refid="members.pagingPost" />
@@ -503,7 +488,7 @@ WHERE
                   ROW_NUMBER() OVER (ORDER BY COUNT(R_IDX) DESC) RNUM,
                   M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
               FROM MEMBER M, REPORT R
-                WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='N' AND R.R_DEL_YN='N'
+                WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='N' AND R.R_DEL_YN='N' AND M.M_TYPE!='A'
                 GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
      ]]>
      <include refid="members.pagingPost" />
@@ -516,7 +501,7 @@ WHERE
         SELECT  ROW_NUMBER() OVER (ORDER BY M.M_BAN_DATE DESC) RNUM,
         M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
       FROM MEMBER M, REPORT R
-      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='S'
+      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='S' AND M.M_TYPE!='A'
       GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
         ]]>
         <include refid="members.pagingPost" />
@@ -563,5 +548,11 @@ WHERE
      UPDATE ZZIM SET Z_DEL_YN='N' WHERE Z_IDX = #{Z_IDX}
       ]]>
    </update>
+   
+   <delete id="zzimRealDelete">
+      <![CDATA[
+         DELETE FROM ZZIM WHERE Z_DEL_YN='Y'
+      ]]>
+   </delete>
    
 </mapper>

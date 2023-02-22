@@ -12,7 +12,7 @@ input #star { width:100%; }
 #insertReview input[type=radio]{
     display: none; /* 라디오박스 감춤 */
 }
-#insertReview label{
+#insertReview .starp{
     font-size: 3em; /* 이모지 크기 */
     color: transparent; /* 기존 이모지 컬러 제거 */
     text-shadow: 0 0 0 #f0f0f0; /* 새 이모지 색상 부여 */
@@ -35,7 +35,4 @@ input #star { width:100%; }
 }
 #insertReview input[type=radio]:checked ~ label{
     text-shadow: 0 0 0 #ffc83d; /* 마우스 클릭 체크 */
-}
-span {
-	font-size: 1em;
 }

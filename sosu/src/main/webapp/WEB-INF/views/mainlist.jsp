@@ -9,10 +9,14 @@
 <link href="/resources/css/list.css" rel="stylesheet">
 <link href="/resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/assets/vendor/aos/aos.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <meta charset="UTF-8">
 </head>
 <body>
+<input type="hidden" value="${sessionss}" id="session">
 <div class="container" style="margin-top:75px;">
+
+<!--============== 모임 ==============--> 
    <div class="row gy-5" style="margin-bottom: 90px;">
       <div class="container">
       <div class="row gy-5">
@@ -27,17 +31,16 @@
                <option value="/etc.sosu" <c:if test="${MO_CATEGORY == 'etc'}">selected="selected"</c:if>>기타</option>
             </select>
             </div>
+             <%if(session.getAttribute("M_IDX")!=null){ %>
+      <div style="text-align: right;">
+         <button type="button" onclick="location.href='/moim/moimRegister.sosu'" class="mrgbtn"
+            style = "margin-top: 18px; margin-right: 11px;">모임 개설하기</button>
+      </div>
+      <% } %>
          </div>
       </div>
       <div class="row gy-5">
-         <div class="col" style="margin-top: 10px; margin-bottom: 20px;">
-      
-      <!-- 작성(개설) 버튼 -->
-      <%if(session.getAttribute("M_IDX")!=null){ %>
-      <div style="text-align: right;">
-         <button type="button" onclick="location.href='/moim/moimRegister.sosu'" class="mrgbtn">모임 개설하기</button>
-      </div>
-      <% } %>
+         <div class="col" style="margin-bottom: 20px;">
             <hr>
          </div>
       </div>
@@ -46,71 +49,24 @@
    
    <!--============== 모임 리스트 4개 ==============-->      
       <c:choose>
-      <c:when test="${fn:length(molist) > 0 }">
-      <p class="ct">모임
-         <span><a href="/moim/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
-      </p>
-      
-         <c:forEach items="${molist}" var="m" end="3">
-            <div class="col-lg-3 menu-item">
-         <div class="row gy-5"  onclick="location.href='/moim/${m.MO_CATEGORY}/${m.MO_IDX}.sosu'" style="cursor: pointer;">
-         <input type="hidden" name="M_IDX"   value="${m.M_IDX}">
-            <input type="hidden" name="MO_IDX" value="${m.MO_IDX}">
-            <img src="/resources/img/upload/${m.MF_SVNAME}" alt=""
-            style='width: 300px; height: 300px'>
-                     <br />
-               <!-- 지역 -->
-               <p class="detail-region">${m.MO_DETAILREGION }</p>
-               
-               <!-- 타이틀이 16자 보다 크거나 같다면  -->
-               <c:if test="${fn:length(m.MOTT) >= 16}"> 
-					<p class="moim-title">${m.MOTT}...</p>
-				</c:if>
-				<!-- 타이틀이 16자 보다 작거나 같다면  -->	
-				<c:if test="${fn:length(m.MOTT) < 16}"> 
-					<p class="moim-title">${m.MOTT}</p>
-				</c:if>
-				
-			<!-- 인원수 -->	
-			<c:if test="${m.MO_MAXPEOPLE != 0}">
-             <p> <span class="max">[${m.MOMEM_COUNT}명/${m.MO_MAXPEOPLE}명]</span>
-            </c:if>
-			<c:if test="${m.MO_MAXPEOPLE == 0}">
-			<p>	<span class="max">[제한없음]</span>
-			</c:if>
-			
-			<!-- 디테일 카테고리 -->
-               <span class="detail-cate"> #${m.MO_DETAILCATEGORY}</span></p>
-               <hr style="width:300px;">
-            
-            <!-- 참가비용 -->   
-               <c:if test="${m.MO_COST != null }">
-               <p class="mo-cost">${m.MO_COST}원
-                  <span class="hhh">♡</span>
-               </p>
-               </c:if>
-               <c:if test="${m.MO_COST == null }">
-               <p class="mo-cost">0원
-                  <span class="hhh">♡</span>
-               </p>   
-               </c:if>
-            </div>
-         </div>
+       <c:when test="${fn:length(molist) > 0 }">
+      <p class="ct">모임 
+         <span><a href="/moim/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span></p>
+         <c:forEach items="${molist}" var="m" end="3" >
+           <%@ include file="./moim/include_MSL.jsp" %>
          </c:forEach>
          </c:when>
-         <c:otherwise>
-         <div class="row gy-5" style="height: 165px; margin-bottom: 12px;">
-                <p class="ct">모임</p>
-                <div class="none">
-               조회된 결과가 없습니다.
-            </div>   
-      </div>
-       </c:otherwise>
-      </c:choose>
-      </div>
-      
-      
-      <!--============== 리뷰 리스트 4개 ==============-->
+          <c:otherwise>
+           <p class="ct">모임 </p>
+          <div class="row gy-5" style="height: 165px; margin-bottom: 12px;">
+          <br>
+             <div class="none">조회된 결과가 없습니다.</div>   
+         </div>
+          </c:otherwise>
+         </c:choose>
+        </div><hr>
+        
+        <!--============== 리뷰 리스트 4개 ==============-->
       <div class="row gy-5" style="margin-bottom: 90px;">
       <c:choose>
       <c:when test="${fn:length(relist) > 0 }">
@@ -123,14 +79,16 @@
          <input type="hidden" name="M_IDX" value="${r.RV_IDX}">
             <input type="hidden" name="MO_IDX" value="${r.M_IDX}">
             
-             <c:if test="${r.f_svname != null }">
-                 <img
-                     src="${pageContext.request.contextPath}/resources/assets/img/image/${r.F_SVNAME }"
-                     alt="" style='width: 300px; height: 300px'>
-                 </c:if>
-                 <c:if test="${r.f_svname == null }">
-                    <img src="/resources/img/icons/list.png"  style='width: 300px; height: 300px'>
-                 </c:if> 
+             <c:choose>   
+                <c:when test="${r.F_SVNAME ne '0'}">   
+                 <img   
+                     src="${pageContext.request.contextPath}/resources/img/upload/${r.F_SVNAME}"   
+                     alt="" style='width: 300px; height: 300px'>   
+                 </c:when>   
+                 <c:otherwise>   
+                    <img src="/resources/img/icons/list.png"  style='width: 300px; height: 300px'>   
+                 </c:otherwise>   
+               </c:choose> 
                      <br />
                <p class="rmoim-title">${r.RV_TITLE}
                <span class="rdetail-cate">
@@ -147,7 +105,7 @@
                <%-- <img class="kingimg" src="${pageContext.request.contextPath}/resources/assets/img/image/${r.PROFILE}"
                               alt="profile"> --%>
                       <!-- ▼임시사진 -->
-                      <img class="kingimg" src="/resources/img/category/basketball.jpg"
+                      <img class="kingimg" src="/resources/img/upload/${r.PROFILE}"
                               alt="profile">
                   <span style="padding-left: 6px">
                   ${r.M_NICKNAME}
@@ -173,22 +131,35 @@
      </div> 
       
      <div class="row gy-5"> 
+        <div class="col" style="margin-top: 10px; margin-bottom: 20px;">
+      
+      <!-- 작성(개설) 버튼 -->
+      <%if(session.getAttribute("M_IDX")!=null){ %>
+      <div style="text-align: right;">
+         <button type="button" onclick="location.href='/freeboard/insertForm/{FR_CATEGORY}.sosu'" class="mrgbtn">글쓰기</button>
+      </div>
+      <% } %>
+         
+         </div>
       <!--============== 자유게시판 4개 ==============-->
+     <div class="row gy-5" style="padding-bottom: 80px;"> 
+     <div class="myhr"><hr></div>
       <c:choose>
       <c:when test="${fn:length(frlist) > 0 }">
       <p class="ct">자유게시판
-      <!-- 작성(개설) 버튼 -->
-         <span><a href="/freeboard/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
+        <c:if test="${fn:length(frlist) > 5 }"> <span><a href="/freeboard/${MO_CATEGORY}.sosu" class="allb">전체보기</a></span>
+         </c:if>
       </p>
          <c:forEach items="${frlist}" var="f" end="3">
             <div class="col-lg-3 menu-item" onclick="location.href='/freeboard/${f.FR_CATEGORY}/${f.FR_IDX}.sosu'">
+                <div class="row gy-5" style="padding-left: 11px;">
                 <c:if test="${f.f_svname != null }">
-                <img
+                <img class="mimg" style="width: 300px;"
                      src="${pageContext.request.contextPath}/resources/assets/img/image/${f.F_SVNAME }"
-                     alt="" style='width: 300px; height: 300px'>
+                     alt="${f.f_svname}">
                  </c:if>
                  <c:if test="${f.f_svname == null }">
-                    <img src="/resources/img/icons/list.png"  style='width: 300px; height: 300px'>
+                    <img src="/resources/img/icons/list.png" class="mimg" style="width: 300px;">
                  </c:if> 
                      <br />
                      
@@ -196,7 +167,7 @@
                <%-- <img class="kingimg" src="${pageContext.request.contextPath}/resources/assets/img/image/${r.PROFILE}"
                               alt="profile"> --%>
                       <!-- ▼임시사진 -->
-                      <img class="kingimg" src="/resources/img/category/basketball.jpg"
+                      <img class="kingimg" src="/resources/img/upload/${f.PROFILE }"
                               alt="profile">
                   <span style="padding-left: 6px">
                   ${f.M_NICKNAME}
@@ -209,12 +180,13 @@
                </p>
                   <input type="hidden" value="${f.FR_IDX}">
                   <input type="hidden" value="${f.M_IDX}">
+            
             </div>
-      
+      </div>
       </c:forEach>
       </c:when>
        <c:otherwise>
-      <div class="row gy-5" style="height: 165px; margin-bottom: 12px;">
+      <div class="row gy-5" style="height: 166px; margin-bottom: 143px;">
        <p class="ct">자유게시판</p>
        <div class="none">
          조회된 결과가 없습니다.
@@ -223,6 +195,7 @@
        </c:otherwise>
       </c:choose>
       </div>
+   </div>
    </div>
 </body>
 </html>

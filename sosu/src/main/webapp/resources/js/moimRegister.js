@@ -1,16 +1,3 @@
-//카테고리 값 넘기기
-$("#regB").on("click", function(e){
-    var mo_cate = $(".mo_cate option:selected").val();
- 
-    $.ajax({
-       url : "moim/moimRegister.pro",
-       type : "post",
-       data : { MO_CATEGORY : mo_cate },
-       success : function(data){
-          }
-       }); 
-    });
- 
  /* 파일 추가 버튼 + 제한 없음 버튼 구동 */
  var gfv_count = 1;
       
@@ -19,6 +6,8 @@ $("#regB").on("click", function(e){
        $('#ageNoLimit').click(function() {
          var min = $('#MO_MINAGE').detach();
          var max = $('#MO_MAXAGE').detach();
+         var wv = $('#wave').detach();
+
           $('#ageNoLimit').css('display', 'none');
           $('#Limit').css('display', 'block');
           
@@ -32,6 +21,7 @@ $("#regB").on("click", function(e){
           $('#Limit').click(function() {
              $("#agetd").append(min);
              $("#agetd").append(max);
+             $('#MO_MINAGE').after(wv);
                $("#ll").remove();
                $("#MO_MINAGE2").remove();
                $("#MO_MAXAGE2").remove();
@@ -58,10 +48,10 @@ $("#regB").on("click", function(e){
       });
  
       function fn_addFile() {
-         var str = "<p><input type='file' id='file' name='file_"
-                   + (gfv_count++)
-                   + "'><a href='#this' class='btn' name='delete'>삭제</a></p>";
- 
+           var str = "<p><input type='file' id='file' name='file_"
+              + (gfv_count++)
+              + "' style='border:none;width: auto;padding-left: 79px;'><a href='#this' class='btn' name='delete' id='delete'>삭제</a></p>";
+    
        $("#fileDiv").append(str);
          
        $("a[name='delete']").on("click", function(e) { //삭제 버튼
@@ -76,7 +66,6 @@ $("#regB").on("click", function(e){
       
       /* alert 기능 */
       function check() {
-         
          if (document.moimR.MO_TITLE.value.trim() == "") {
             alert("제목를 입력해 주세요.");
             document.moimR.MO_TITLE.focus();
@@ -102,7 +91,19 @@ $("#regB").on("click", function(e){
             document.getElementById("MO_GENDER").focus();
             return false;
             
-         } else if ($("input[name=MO_MINAGE]").val() == "") {
+         } else if ($("input[name=MO_MAXAGE]").val() == "") {
+            alert("참가 연령을 입력해 주세요.");
+            $("#MO_MAXAGE").focus();
+            return false; 
+
+         } else if ($("input[name=MO_MAXAGE]").val() < $("input[name=MO_MINAGE]").val()) {
+            alert("참가 최소 연령이 최대 연령보다 큽니다.");
+           // $('#age_check_result').css("color", "red");
+           // $('#age_check_result').html("*참가 최소 연령이 최대 연령보다 큽니다.");
+            $("#MO_MAXAGE").focus();
+            return false; 
+            
+          } else if ($("input[name=MO_MINAGE]").val() == "") {
             alert("참가 연령을 입력해 주세요.");
             $("#MO_MINAGE").focus();
             return false; 
@@ -128,10 +129,29 @@ $("#regB").on("click", function(e){
             return false;
             
          } else {
+         
+         //카테고리 값 넘기기
+          var mo_cate = $(".mo_cate option:selected").val();
+       
+          $.ajax({
+             url : "moim/moimRegister.pro",
+             type : "post",
+             data : { MO_CATEGORY : mo_cate },
+             success : function(data){
+                }
+             }); 
+         
             alert("게시글이 등록되었습니다.")
             return true;
          }
       }
+      
+      function maxLengthCheck(object){
+    if (object.value.length > object.maxLength){
+        object.value = object.value.slice(0, object.maxLength);
+    }    
+}
+      
  
  /* 오늘 날짜 이전 날짜는 선택 불가  */
  var now_utc = Date.now() // 지금 날짜를 밀리초로
@@ -168,7 +188,7 @@ $("#regB").on("click", function(e){
  
     /* 입력된 바이트(글자수) 값 제어 */
     function fn_checkByte(obj) {
-       const maxByte = 1400; //최대 100바이트
+       const maxByte = 1800; //최대 100바이트
        const text_val = obj.value; //입력한 문자
        const text_len = text_val.length; //입력한 문자수
  
@@ -186,7 +206,7 @@ $("#regB").on("click", function(e){
        }
  
        if (totalByte > maxByte) {
-          alert('최대 1500Byte까지만 입력가능합니다.');
+          alert('최대 1800Byte까지만 입력가능합니다.');
           document.getElementById("nowByte").innerText = totalByte;
           document.getElementById("nowByte").style.color = "red";
        } else {

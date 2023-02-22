@@ -14,27 +14,39 @@
 <script type="text/javascript">
 history.replaceState({},null,location.pathname);
 </script>
+<style type="text/css">
+/*페이징 디자인*/
+.pagination-class{
+	margin-top: 30px;
+}
+
+.pagination-class a{
+	color: black;
+   /*  border: 1px solid black; */
+    padding: 2px 5px 1px 8px;
+    text-decoration: none;
+    
+}
+
+.pagination-class strong{
+	    color: black;
+    border: 0px solid black;
+    padding: 0px 8px 0px 8px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20%;
+    background-color: #e6e6e6;
+}
+</style>
+<link href="/resources/css/adminmem.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <body>
-<div class="container">
-<h1>회원 관리</h1>
-<a href="/members/logout.sosu">로그아웃</a>
 
-<form action="/admin/memberlist.sosu">
-   <input type="hidden" name="listType" value="adminMemberList">
-   <input type="submit" value="전체 회원 리스트">
-</form>
-<form action="/admin/memberlist.sosu">
-   <input type="hidden" name="listType" value="adminReportMemberList">
-   <input type="submit" value="신고받은 회원 리스트">
-</form>
-<form action="/admin/memberlist.sosu">
-   <input type="hidden" name="listType" value="adminStopMemberList">
-   <input type="submit" value="정지당한 회원 리스트">
-</form>
+<div class="container" style="text-align:center">
+	<h1 style="margin-top:50px; margin-bottom:40px">회원 관리</h1>
 
-<table>
+<table class="admin-table">
    <thead>
       <tr>
          <th>회원번호</th>
@@ -44,12 +56,13 @@ history.replaceState({},null,location.pathname);
          <th>회원상태</th>
          <th>정지일</th>
          <th>신고누적횟수</th>
-         
          <th></th>
       </tr>
    </thead>
-      
-      <c:forEach begin="0" end="${fn:length(adminList)}" items="${adminList}" var="memberList">
+   
+	<tbody>
+		<c:if test="${adminList[0].M_IDX ne null}">
+		<c:forEach begin="0" end="${fn:length(adminList)}" items="${adminList}" var="memberList">
             <tr>
             <td>${memberList.M_IDX}</td>
             <td>${memberList.M_EMAIL}</td>
@@ -58,10 +71,10 @@ history.replaceState({},null,location.pathname);
             
             <td>
                <c:if test="${memberList.M_DEL_YN eq 'N'}">
-                  정상
+                  <p>정상</p>
                </c:if>
                <c:if test="${memberList.M_DEL_YN eq 'S'}">
-                  정지
+                 <p class="stop-mem"> 정지</p>
                </c:if>
             </td>
             
@@ -78,24 +91,29 @@ history.replaceState({},null,location.pathname);
                <form action="/admin/memberdetail.sosu">
                   <input type="hidden" name="M_IDX" value="${memberList.M_IDX}">
                   <input type="hidden" name="RECOUNT" value="${memberList.RECOUNT}">
-                  <input type="submit" value="상세보기">
+                  <input type="submit" value="상세보기" class="detail-btn">
                </form>
             </td>
             </tr>
          </c:forEach>
+         </c:if>
+       
+        </tbody>
         
-   
 </table>
 
+
+<!-- 페이징 -->
+<div class="pagination-class">
 <c:if test="${not empty paginationInfo}">
 		<ui:pagination paginationInfo = "${paginationInfo}" type="text" jsFunction="fn_search"/>
 	</c:if>
 	<input type="hidden" id="currentPageNo" name="currentPageNo"/>
-
 <form id="commonForm" name="commonForm"></form>
+</div>
+
 
 <script type="text/javascript">
-
 	function fn_search(pageNo){
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("<c:url value='/admin/memberlist.sosu' />");
@@ -103,7 +121,6 @@ history.replaceState({},null,location.pathname);
 		comSubmit.submit();
 	}
 </script>
-
 
 </div>
 

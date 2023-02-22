@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Repository;
 
@@ -30,25 +30,26 @@ public class MemberDAO extends AbstractDAO{
       insert("members.join", map);
    }
    
-   //프로필 이미지 등록
+   //프로필 등록
    public void profileRegister(Map<String, Object> map) throws Exception{
       insert("members.profileRegister", map);
    }
    
-   //프로필 이미지 업로드
+   //프로필 수정
    public void profileUpdate(Map<String, Object> map) throws Exception{
       update("members.profileUpdate", map);
    }
    
-   //로그인 시, 비밀번호 유효성 검사
+   //로그인 유효성 검사
    @SuppressWarnings("unchecked") 
-   public Map<String,Object> checkPassword(Map<String,Object> map) throws Exception{
+   public Map<String,Object> checkPassword(Map<String,Object> map) throws Exception{ 
       return (Map<String,Object>)selectOne("members.checkPassword",map);
    }
-   
+     
    //로그인
    @SuppressWarnings("unchecked") 
    public Map<String,Object> login(Map<String,Object> map) throws Exception{
+      
       return (Map<String,Object>)selectOne("members.login",map);
    }
    
@@ -112,8 +113,7 @@ public class MemberDAO extends AbstractDAO{
          Map<String,Object> partyMoimMember = (Map<String,Object>)selectOne("members.mypageMoimMember",mypageInfo.get(7).get(i).get("MO_IDX"));
          mypageInfo.get(7).get(i).put("MOIMMEMBER", partyMoimMember.get("MOIMMEMBER"));
       }
-      
-      mypageInfo.add(selectList("members.mypageZzimFree",map)); //mypageInfo[8]
+      mypageInfo.add(selectList("members.mypageZzimFree",map));
       
       //프로필 사진 가져오기
       mypageInfo.add(selectList("members.profileGet",map)); //mypageInfo[9]
@@ -156,52 +156,30 @@ public class MemberDAO extends AbstractDAO{
       }
    }
    
-   
-   //관리자 - 회원 기본 리스트 : 페이징 이후
-   @SuppressWarnings("unchecked")
-   public Map<String, Object> adminMemberList(Map<String, Object> map) throws Exception{
-	   
-	   if(map.get("listType").equals("adminMemberList")) {
-		   return (Map<String, Object>)selectPagingList("members.adminMemberList", map);
-	   }else if(map.get("listType").equals("adminReportMemberList")) {
-		   return (Map<String, Object>)selectPagingList("members.adminReportMemberList", map);
-	   }else {
-		   return (Map<String, Object>)selectPagingList("members.adminStopMemberList", map);
-	   }
+   public void zzimRealDelete(Map<String,Object> map) throws Exception{
+      delete("members.zzimRealDelete",map);
    }
    
-   //관리자 - 정지처리
-   public void adminMemberStop(Map<String, Object> map) throws Exception{
-      if(map.get("STOP_YN").equals("Y")) {
-         update("members.adminMemberStop", map);
-      }else {
-         update("members.adminMemberStopCancle", map);
-      }      
-   }
-   
-   // 관리자 - 회원 상세보기
+// 리뷰 유무
    @SuppressWarnings("unchecked")
-   public List<Map<String,Object>> adminMemberDetail(Map<String,Object> map) throws Exception{
-      return (List<Map<String,Object>>)selectList("members.adminMemberDetail", map);
-   }
-   
-   // 관리자 - 회원 신고 내역
-   @SuppressWarnings("unchecked")
-   public List<Map<String,Object>> adminMemberReport(Map<String,Object> map) throws Exception{
-
-      List<Map<String,Object>> reportMap = (List<Map<String,Object>>)selectList("members.adminMemberReport", map);
+   public List<Map<String, Object>> mypageMoimReviewCount(Map<String, Object> map, HttpSession session) throws Exception {
+       
       
-      for(int i=0 ; i<reportMap.size() ; i++) {
-         Map<String,Object> m = new HashMap<>();
-         m.put("M_IDX", reportMap.get(i).get("R_MEM"));
-         List<Map<String,Object>> list = (List<Map<String,Object>>)selectList("members.adminMemberDetail", m.get("M_IDX"));
-         reportMap.get(i).put("M_NICKNAME",list.get(0).get("M_NICKNAME"));
-      }
-      return reportMap;
-   }
+      List<Map<String, Object>> mypagePartyMoim = (List<Map<String, Object>>) selectList("members.mypagePartyMoim", map);
+      
+         for (int i = 0; i < mypagePartyMoim.size(); i++) {
+            
+               Map<String, Object> recount = new HashMap<>();
+               recount.put("M_IDX", session.getAttribute("M_IDX"));
+               recount.put("MO_IDX", mypagePartyMoim.get(i).get("MO_IDX"));
+               
+               Map<String, Object> rr = (Map<String, Object>)selectOne("members.mypageMoimReviewCount", recount);
+               
+               mypagePartyMoim.get(i).put("RVCOUNT", rr.get("RVCOUNT"));
+         }
+         
+         return mypagePartyMoim;
+    }
    
-   // 관리자 - 신고 내역 삭제
-   public void adminMemberReportDelete(Map<String,Object> map) throws Exception{
-      update("members.adminMemberReportDelete",map);
-   }
+   
 }

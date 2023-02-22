@@ -8,12 +8,13 @@ import javax.servlet.http.HttpSession;
 
 public interface MemberService {
    
+   //로그인 유효성 검사
    public Map<String,Object> checkPassword(Map<String,Object> map) throws Exception;
    
    // 아이디 중복확인
    int checkId(Map<String, Object> map) throws Exception;
    
-   // 닉네임 중복확인
+   // 아이디 중복확인
    int checkNickname(Map<String, Object> map) throws Exception;
 
    // 회원가입
@@ -39,8 +40,7 @@ public interface MemberService {
    
    //다른 사람 마이페이지
    public List<Map<String, Object>> userMypage(Map<String, Object> map) throws Exception;
-   
-   //마이페이지 수정
+
    void mypageModify(Map<String, Object> map, HttpServletRequest request, HttpSession session) throws Exception;
 
    // 탈퇴하기
@@ -55,22 +55,11 @@ public interface MemberService {
    //찜 삭제
    public void deleteZzim(Map<String,Object> map) throws Exception;
    
+   //찜 전체 삭제
+   public void zzimRealDelete(Map<String,Object> map) throws Exception;
    
-   //관리자 - 회원 기본 리스트
-   //페이징 이후 회원 기본 리스트
-   public Map<String, Object> adminMemberList(Map<String, Object> map) throws Exception;
+   //마이페이지 내가 참여한 모임 리뷰 유무
+   public List<Map<String, Object>> mypageMoimReviewCount(Map<String, Object> map, HttpSession session) throws Exception;
    
-   //관리자 - 회원 상세보기
-   public List<Map<String,Object>> adminMemberDetail(Map<String,Object> map) throws Exception;
-   
-   //관리자 - 신고내역
-   public List<Map<String, Object>> adminMemberReport(Map<String,Object> map) throws Exception;
-   
-   //관리자 - 신고 내역 삭제
-   public void adminMemberReportDelete(Map<String,Object> map) throws Exception;
-   
-   //관리자 - 회원정지
-   public void adminMemberStop(Map<String, Object> map) throws Exception;
-      
 
 }

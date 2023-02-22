@@ -4,18 +4,18 @@
 <mapper namespace="file">
 
 
-	<!-- 회원 프로필사진 띄우기 -->
-	<select id="memberProfile" parameterType="hashmap"
-		resultType="hashmap">
-			<![CDATA[
-		SELECT NVL(F.F_SVNAME,0) AS PROFILE
+   <!-- 회원 프로필사진 띄우기 -->
+   <select id="memberProfile" parameterType="hashmap"
+      resultType="hashmap">
+         <![CDATA[
+      SELECT NVL(F.F_SVNAME,0) AS PROFILE
         FROM MEMBER M, FILE_T F
         WHERE F.F_TABLE(+) = 'P'
         AND F.F_ARTICLE(+) = M.M_IDX
         AND M.M_IDX = #{M_IDX}
-			]]>
-	</select>
-	
+         ]]>
+   </select>
+   
    <!-- 이미지 등록하기 -->
    <insert id="imgInsert" parameterType="hashmap">
        <![CDATA[
@@ -33,4 +33,4 @@
      WHERE F_SVNAME = #{chArr}
    </update>
 </mapper>
-	
+   

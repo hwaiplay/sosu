@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService{
       return memberDAO.mypage(map);
    }
    
- // 다른 사람 마이페이지
+   // 다른 사람 마이페이지
    @Override
    public List<Map<String,Object>> userMypage(Map<String, Object> map) throws Exception {
       return memberDAO.userMypage(map);
@@ -91,7 +91,7 @@ public class MemberServiceImpl implements MemberService{
       memberDAO.mypageModify(map);
    }
 
-//탈퇴하기
+   //탈퇴하기
    @Override
    public void mypageDelete(Map<String, Object> map) throws Exception {
       memberDAO.mypageDelete(map);
@@ -107,7 +107,6 @@ public class MemberServiceImpl implements MemberService{
    @Override
    public void profileRegister(Map<String, Object> map, HttpServletRequest request) throws Exception {
       memberDAO.profileRegister(fileUtils.profileInsert(map, request));
-      
    }
    
    //프로필 비공개
@@ -116,7 +115,7 @@ public class MemberServiceImpl implements MemberService{
       memberDAO.mypagePrivate(map);
    }
    
-   //신고 작성
+   //신고하기
    @Override
    public void insertReport(Map<String, Object> map) throws Exception {
       memberDAO.insertReport(map);
@@ -128,32 +127,14 @@ public class MemberServiceImpl implements MemberService{
       memberDAO.deleteZzim(map);
    }
    
-   //관리자 - 회원 기본 리스트: 페이징 이후
    @Override
-   public Map<String, Object> adminMemberList(Map<String, Object> map) throws Exception {
-   	return memberDAO.adminMemberList(map);
-   }
-
-   //관리자 - 회원 상세보기, 신고내역
-   @Override
-   public List<Map<String, Object>> adminMemberDetail(Map<String,Object> map) throws Exception {
-      return memberDAO.adminMemberDetail(map);
+   public void zzimRealDelete(Map<String, Object> map) throws Exception {
+      memberDAO.zzimRealDelete(map);
    }
    
-   //관리자 - 회원 상세보기, 신고내역
+// 마이페이지 내가 참여한 모임 리뷰 유무
    @Override
-   public List<Map<String, Object>> adminMemberReport(Map<String,Object> map) throws Exception {
-      return memberDAO.adminMemberReport(map);
+   public List<Map<String,Object>> mypageMoimReviewCount(Map<String, Object> map, HttpSession session) throws Exception {
+      return memberDAO.mypageMoimReviewCount(map, session);
    }
-   
-   //관리자 - 신고 내역 삭제
-   @Override
-   public void adminMemberReportDelete(Map<String, Object> map) throws Exception {
-      memberDAO.adminMemberReportDelete(map);
-   }
-   
-   //관리자 - 회원 정지
-   @Override
-   public void adminMemberStop(Map<String, Object> map) throws Exception {
-      memberDAO.adminMemberStop(map);
-   }}
+}   
