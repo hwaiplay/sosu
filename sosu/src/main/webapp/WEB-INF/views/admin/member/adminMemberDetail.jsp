@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link href="/resources/css/adminmem.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <script type="text/javascript">
@@ -53,19 +54,12 @@ $(document).ready(function(){
     	   alert("확인(예)을 누르셨습니다.");
     	   delMember(delfrm);
 		}else{
-			alert("노를 누르셨습니다.");
+			alert("아니오를 누르셨습니다.");
 			return false;
 		}
-	   
    });
-   
-   
 });
-
-
-
 </script>
-
 <script>
 function popup(frm)
 {
@@ -85,125 +79,151 @@ function delMember(delfrm){
 	delfrm.method = "get"
 	delfrm.submit();
 }
-
 </script>
 
 <body>
 
-<div class="container">
-<form enctype="multipart/form-data">
-       <img src="${pageContext.request.contextPath}/resources/img/upload/${memberDetail[0].F_SVNAME}"><br/>
-    </form>
-   <table>
+<div class="container" style="text-align:center">
+	<h1 style="margin-top:50px; margin-bottom:40px">회원 상세 보기</h1>
+<table class="admin-detail-table">
+<colgroup>
+   <col style="width:150px;">
+   <col style="width:150px;">
+   <col style="width:200px;">
+   </colgroup>
    <tbody>
+   	<tr>
+   		<th></th>
+		<th></th>
+		<th></th>
+   	</tr>
    
-   
       <tr>
-         <th>이름</th>
-         <td>${memberDetail[0].M_NAME}</td>
+      	<td rowspan="9"><form enctype="multipart/form-data"><img src="${pageContext.request.contextPath}/resources/img/upload/${memberDetail[0].F_SVNAME}" class="img-deta"></form></td>
+         <td class="header">이름</td>
+         <td class="contents">${memberDetail[0].M_NAME}</td>
       </tr>
       
       <tr>
-         <th>닉네임</th>
-         <td>${memberDetail[0].M_NICKNAME}</td>
+         <td class="header">닉네임</td>
+         <td class="contents">${memberDetail[0].M_NICKNAME}</td>
       </tr>
       
       <tr>
-         <th>아이디</th>
-         <td>${memberDetail[0].M_EMAIL}</td>
+         <td class="header">아이디</td>
+         <td class="contents">${memberDetail[0].M_EMAIL}</td>
       </tr>
       
       <tr>
-         <th>휴대전화</th>
-         <td>${memberDetail[0].M_PHONE}</td>
+         <td class="header">휴대전화</td>
+         <td class="contents">${memberDetail[0].M_PHONE}</td>
       </tr>
       
       <tr>
-         <th>주민번호</th>
-         <td>${memberDetail[0].M_JUMIN} - ${memberDetail[0].M_GENDER}******</td>
+         <td class="header">주민번호</td>
+         <td class="contents">${memberDetail[0].M_JUMIN} - ${memberDetail[0].M_GENDER}******</td>
       </tr>
       
       <tr>
-         <th>신고횟수</th>
-         <td>${RECOUNT}</td>
+         <td class="header">신고횟수</td>
+         <td class="contents">${RECOUNT}</td>
       </tr>
       
       <tr>
-      		<th>회원상태</th>
-			<td id="mDelYn"> 
+      		<td class="header">회원상태</td>
+			<td id="mDelYn" class="contents"> 
       		<c:if test="${memberDetail[0].M_DEL_YN eq 'N'}"> 정상 </c:if>
 			<c:if test="${memberDetail[0].M_DEL_YN eq 'S'}"> 정지 </c:if>
 			<c:if test="${memberDetail[0].M_DEL_YN eq 'Y'}"> 탈퇴 </c:if>
        		</td>
       </tr>
       <tr>
-         <th>정지/해제</th>
-         <td >
-         <input type="hidden" value="${memberDetail[0].M_IDX}" name="M_IDX" id="memberIdx">
-         <c:if test="${memberDetail[0].M_DEL_YN eq 'N'}"> 
-         <input type="button" value="정지" id="stopBtn"></c:if>
-         <c:if test="${memberDetail[0].M_DEL_YN eq 'S'}"> 
-         <input type="button" value="정지 해제" id="stopBtn"></c:if>
+         <td class="header">정지/해제</td>
+         <td class="contents-btn">
+	         <input type="hidden" value="${memberDetail[0].M_IDX}" name="M_IDX" id="memberIdx">
+	         <c:if test="${memberDetail[0].M_DEL_YN eq 'N'}"> 
+	         <input type="button" value="정지" id="stopBtn" class="stoped-btn"></c:if>
+	         <c:if test="${memberDetail[0].M_DEL_YN eq 'S'}"> 
+	         <input type="button" value="정지 해제" id="stopBtn"class="stoped-btn"></c:if>
          </td>
       </tr>
-      
       <c:if test="${RECOUNT ge 0}">
       <tr>
-         <th>탈퇴시키기</th>
-         <td>
-         <form action="/admin/memberdelete.sosu" method="get" id="delfrm"> 
-	         <input type="hidden" value="${memberDetail[0].M_IDX}" name="M_IDX" id="memberIdx"> 
-	         <input type="button" value="탈퇴" id="deleteMem">
-         </form>
+         <td class="header">탈퇴시키기</td>
+         <td class="contents-btn">
+         	<form action="/admin/memberdelete.sosu" method="get" id="delfrm"> 
+		         <input type="hidden" value="${memberDetail[0].M_IDX}" name="M_IDX" id="memberIdx"> 
+		         <input type="button" value="탈퇴" id="deleteMem" class="stoped-btn">
+         	</form>
          </td>
       </tr>
 	</c:if>
-      
    </tbody>
    </table>
-   
-    <table>
-      <thead>
-         <tr>
-            <th>r_idx 신고 기본 번호</th>
-            <th>신고한 회원번호</th>
-            <th>신고사유</th>
-            <th>신고상세내용</th>
-            <th>신고일자</th>
-         <tr>
-      </thead>
-      <tbody>
-         <c:forEach items="${memberReport }" begin="0" end="${fn:length(memberReport)}" var="memReport" >
-         
-         <tr id="member" >
-            <td>${memReport.R_IDX}</td>
-            <td>
-            <form action="/members/usermypage.sosu" name="frm">
-               <input type="hidden" value="${memReport.M_NICKNAME}" name="M_NICKNAME">
-               <input type="button" name="userInfo" value="${memReport.R_MEM}" onclick="javascript:popup(this.form);">
-            </form></td>
-            <td>
-               <c:if test="${memReport.R_REASON eq '1'}"> 폭언/욕설</c:if>
-               <c:if test="${memReport.R_REASON eq '2'}"> 개인정보 노출 게시물</c:if>
-               <c:if test="${memReport.R_REASON eq '3'}"> 도배, 불법 광고</c:if>
-               <c:if test="${memReport.R_REASON eq '4'}"> 음란물</c:if>
-               <c:if test="${memReport.R_REASON eq '5'}"> 기타</c:if>
-            </td>
-            <td>${memReport.R_DETAIL}</td>
-            <td>${memReport.R_DATE}</td>
+   	<hr>
+   	
+
+	
+   	
+   	
+
+		<c:forEach items="${memberReport }" begin="0" end="${fn:length(memberReport)}" var="memReport" >
+          <div class="detail-div">
+          <table class="admin-detail-table"    style=" border-spacing: 10px;">
+           
+    <colgroup>
+	   	<col style="width:150px;">
+	   	<col style="width:300px;">
+	  	<col style="width:180px">
+  	</colgroup>
+  	<tbody>
+         	<tr id="member" >
+            	<td class="header">신고번호</td>
+            	<td class="report-contents">${memReport.R_IDX}</td>
+            	<td class="header">신고한 회원 닉네임</td>
+            	<td class="report-contents">
+	            	<form action="/members/usermypage.sosu" name="frm">
+	               		<input type="hidden" value="${memReport.M_NICKNAME}" name="M_NICKNAME"> 
+	              		<input type="button" name="M_NICKNAME" value="${memReport.M_NICKNAME}" onclick="javascript:popup(this.form);" class="report-nickname">
+	            	</form>
+            	</td>
+            </tr>
+            
+            <tr>
+	            <td class="header">신고 사유</td>
+	            <td class="report-contents">
+	               <c:if test="${memReport.R_REASON eq '1'}"> 폭언/욕설</c:if>
+	               <c:if test="${memReport.R_REASON eq '2'}"> 개인정보 노출 게시물</c:if>
+	               <c:if test="${memReport.R_REASON eq '3'}"> 도배, 불법 광고</c:if>
+	               <c:if test="${memReport.R_REASON eq '4'}"> 음란물</c:if>
+	               <c:if test="${memReport.R_REASON eq '5'}"> 기타</c:if>
+	            </td>
+	            <td class="header">신고일자</td>
+	            <td class="report-contents">
+	          		<fmt:formatDate value="${memReport.R_DATE}" pattern="yyyy-MM-dd HH:mm"/>
+	           </td>
+            </tr>
+            
+            <tr>
+            	<td class="header">신고내용</td>
+            	<td colspan="3" class="report-contents">${memReport.R_DETAIL}</td>
+           
             <td>
                <input type="hidden" id="ridx" value="${memReport.R_IDX}">
-               <button id="deleteReport">삭제</button>
+               <button id="deleteReport" class="stoped-btn">삭제</button>
+               
             </td>
          </tr>
-         
-   </c:forEach>
-   </tbody>
+         </tbody>
+
    
-   </table> 
+   </table>
+   </div>
 
+   </c:forEach>
+   
+   
 
-<a href="/admin/memberlist.sosu">회원리스트로~</a>
 </div>
 </body>
 </html>

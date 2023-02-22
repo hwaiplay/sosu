@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import second.sosu.admin.member.service.AdminMemberService;
 import second.sosu.common.domain.CommandMap;
 import second.sosu.members.member.service.MemberService;
 
@@ -22,28 +23,38 @@ public class AdminMemberController {
 
    Logger log = Logger.getLogger(this.getClass());
 
+   @Resource(name = "adminMemberService")
+   private AdminMemberService adminMemberService;
+   
    @Resource(name = "memberService")
    private MemberService memberService;
-
    
-   //페이징 이후 컨트롤러
    @RequestMapping(value = "/admin/memberlist.sosu")
    public ModelAndView adminMemberList(CommandMap commandMap) throws Exception {
       ModelAndView mv = new ModelAndView();      
       if(commandMap.get("listType")==null) {
          commandMap.put("listType", "adminMemberList");
+         
+      }else if(commandMap.get("listType").equals("adminMemberList")) {
+        commandMap.put("listType", "adminMemberList");
+        
+      }else if(commandMap.get("listType").equals("adminReportMemberList")) {
+        commandMap.put("listType", "adminReportMemberList");
+        
+      }else if(commandMap.get("listType").equals("adminStopMemberList")) {
+         commandMap.put("listType", "adminStopMemberList");
       }
       
-      Map<String,Object> resultMap = memberService.adminMemberList(commandMap.getMap());
+      Map<String,Object> resultMap = adminMemberService.adminMemberList(commandMap.getMap());
       
-  	mv.addObject("paginationInfo", (PaginationInfo) resultMap.get("paginationInfo"));
+       mv.addObject("paginationInfo", (PaginationInfo) resultMap.get("paginationInfo"));
       mv.addObject("adminList", resultMap.get("result"));
       mv.setViewName("/admin/member/adminMemberList");
       
       return mv;    
    }
    
-   
+   //회원 상세보기
    @RequestMapping(value = "/admin/memberdetail.sosu")
    public ModelAndView adminMemberDetail(CommandMap commandMap, HttpSession session) throws Exception {
       ModelAndView mv = new ModelAndView();
@@ -56,25 +67,21 @@ public class AdminMemberController {
       commandMap.put("RECOUNT", session.getAttribute("DETAIL_RECOUNT"));
       commandMap.put("M_IDX", session.getAttribute("DETAIL_M_IDX"));
       
-      System.out.println("세션테스트"+session.getAttribute("DETAIL_RECOUNT"));
-      System.out.println("세션테스트"+session.getAttribute("DETAIL_M_IDX"));
-      System.out.println("테스트222 : "+commandMap.getMap());
-      
-      mv.addObject("memberDetail",memberService.adminMemberDetail(commandMap.getMap()));
-      mv.addObject("memberReport",memberService.adminMemberReport(commandMap.getMap()));
+      mv.addObject("memberDetail",adminMemberService.adminMemberDetail(commandMap.getMap()));
+      mv.addObject("memberReport",adminMemberService.adminMemberReport(commandMap.getMap()));
       mv.addObject("RECOUNT",commandMap.get("RECOUNT"));
       mv.setViewName("/admin/member/adminMemberDetail");
-      
       
       return mv;
    }
    
+   //신고 삭제
    @ResponseBody
    @RequestMapping(value = "/admin/reportdelete.sosu", method=RequestMethod.POST)
    public int adminMemberReportDelete(@RequestBody Map<String,Object> param) throws Exception {      
       int result;
       try {
-         memberService.adminMemberReportDelete(param); 
+         adminMemberService.adminMemberReportDelete(param); 
          result = 0;
       }catch(Exception e){
          e.printStackTrace(); 
@@ -89,7 +96,7 @@ public class AdminMemberController {
    public int adminMemberStop(@RequestBody Map<String,Object> param) throws Exception {
       int result;
       try {
-         memberService.adminMemberStop(param);
+         adminMemberService.adminMemberStop(param);
          result = 0;
       }catch(Exception e){
          e.printStackTrace(); 
@@ -97,6 +104,7 @@ public class AdminMemberController {
       }
       return result;
    }
+   
    
    
    // 탈퇴
@@ -108,4 +116,18 @@ public class AdminMemberController {
       mv.setViewName("redirect:/admin/memberlist.sosu");
       return mv;
    }
+   
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 }

@@ -6,14 +6,17 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 public interface NoticeService {
-	
-	//리뷰 페이징 리스트
-	List<Map<String,Object>>noticeList(Map<String, Object> map) throws Exception; 
-	
-	void noticeWrite(Map<String, Object> map, HttpSession session) throws Exception;
-	
-	void noticeUpdate(Map<String, Object> map, HttpSession session) throws Exception;
-		
-	void noticeDelete(Map<String, Object> map, HttpSession session) throws Exception;
+   
+   //공지사항 리스트
+   Map<String,Object>noticeList(Map<String, Object> map) throws Exception; 
+   
+   //공지사항 작성
+   void noticeWrite(Map<String, Object> map) throws Exception;
+   
+   //공지사항 수정
+   void noticeUpdate(Map<String, Object> map) throws Exception;
+      
+   //공지사항 삭제
+   void noticeDelete(Map<String, Object> map) throws Exception;
 
 }

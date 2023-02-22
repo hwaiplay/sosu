@@ -19,41 +19,48 @@ public class MainDao extends AbstractDAO {
    @SuppressWarnings("unchecked")
    public List<Map<String, Object>> moimList(Map<String, Object> map, CommandMap commandMap, HttpSession session) throws Exception {
 
-	   List<Map<String, Object>> moimList = (List<Map<String, Object>>) selectList("moim.moimList", map);
+      List<Map<String, Object>> moimList = (List<Map<String, Object>>) selectList("moim.moimList", map);
+      
+         // 스크랩 유무
+         if (session.getAttribute("M_IDX") != null) {
 
-	      // 스크랩 유무
-	      if (session.getAttribute("M_IDX") != null) {
+            for (int i = 0; i < moimList.size(); i++) {
 
-	         for (int i = 0; i < moimList.size(); i++) {
+               Map<String, Object> moimZzim = new HashMap<>();
+               moimZzim.put("M_IDX", session.getAttribute("M_IDX"));
+               moimZzim.put("MO_IDX", moimList.get(i).get("MO_IDX"));
 
-	            Map<String, Object> moimZzim = new HashMap<>();
-	            moimZzim.put("M_IDX", session.getAttribute("M_IDX"));
-	            moimZzim.put("MO_IDX", moimList.get(i).get("MO_IDX"));
+               Map<String, Object> zz = (Map<String, Object>) selectOne("moim.moimZzimCheck", moimZzim);
 
-	            Map<String, Object> zz = (Map<String, Object>) selectOne("moim.moimZzimCheck", moimZzim);
+               moimList.get(i).put("MZ_CHECK", zz.get("MZ_CHECK"));
+            }
 
-	            moimList.get(i).put("MZ_CHECK", zz.get("MZ_CHECK"));
-	         }
+         }
 
-	      }
+         // 모임 현재 멤버 수
+         for (int i = 0; i < moimList.size(); i++) {
+            Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",
+                  moimList.get(i).get("MO_IDX"));
+            moimList.get(i).put("MOMEM_COUNT", moimMemCount.get("MOMEM_COUNT"));
+         }
+         // 모임 스크랩 수
+         for (int i = 0; i < moimList.size(); i++) {
 
-	      // 모임 현재 멤버 수
-	      for (int i = 0; i < moimList.size(); i++) {
-	         Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",
-	               moimList.get(i).get("MO_IDX"));
-	         moimList.get(i).put("MOMEM_COUNT", moimMemCount.get("MOMEM_COUNT"));
-	      }
-	      // 모임 스크랩 수
-	      for (int i = 0; i < moimList.size(); i++) {
+            Map<String, Object> moimZzimCount = (Map<String, Object>) selectOne("moim.moimZzimCount",
+                  moimList.get(i).get("MO_IDX"));
+            moimList.get(i).put("MZ_COUNT", moimZzimCount.get("MZ_COUNT"));
+         }
+         
+         //프사
+         for (int i = 0; i < moimList.size(); i++) {
+            Map<String, Object> memberProfile = (Map<String, Object>) selectOne("file.memberProfile",
+                  moimList.get(i).get("M_IDX"));
+            moimList.get(i).put("PROFILE", memberProfile.get("PROFILE"));
+         }
 
-	         Map<String, Object> moimZzimCount = (Map<String, Object>) selectOne("moim.moimZzimCount",
-	               moimList.get(i).get("MO_IDX"));
-	         moimList.get(i).put("MZ_COUNT", moimZzimCount.get("MZ_COUNT"));
-	      }
+         return moimList;
 
-	      return moimList;
-
-	   }
+      }
    
    
    //자유게시판
@@ -120,7 +127,7 @@ public class MainDao extends AbstractDAO {
       for (int i = 0; i < reviewList.size(); i++) {
 
          Map<String, Object> zzimFreeCount = (Map<String, Object>) selectOne("review.reviewZzimCount",
-        		 reviewList.get(i).get("RV_IDX"));
+               reviewList.get(i).get("RV_IDX"));
          reviewList.get(i).put("RZ_COUNT", zzimFreeCount.get("RZ_COUNT"));
       }
       

@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div class="container" style="text-align:center">
+<div class="container" style="text-align:center; padding: 108px 0 220px 0;">
    <c:choose>
       <c:when test="${M_EMAIL != null and findId eq null }">
          <h1 style="margin-top:50px; margin-bottom:40px">FIND ID</h1>

@@ -36,7 +36,7 @@
    </definition>
    
    <!-- 멤버 관련  -->
-   <definition name="members/mypage/*" extends="main_layout">
+   <definition name="/members/mypage/*" extends="main_layout">
       <put-attribute name="body" value="/WEB-INF/views/members/mypage/{1}.jsp"/>
    </definition>
 	
@@ -45,36 +45,50 @@
 		<put-attribute name="body" value="/WEB-INF/views/members/review/{1}.jsp"/>
 	</definition> 
 	
-	<!-- 자유게시판 관련
-	<definition name="freeboard/*" extends="main_layout">
-		<put-attribute name="body" value="/WEB-INF/views/members/{1}.jsp"/>
-	</definition> -->
+	<!-- QNA 관련 -->
+ 	<definition name="/qna/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/qna/{1}.jsp"/>
+	</definition>
 	
+	<!-- 공지사항 관련 -->
+	 <definition name="/notice/*" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/notice/{1}.jsp"/>
+	</definition>
 	
+	<!-- 채팅 관련 -->
+	 <definition name="/chat" extends="main_layout">
+		<put-attribute name="body" value="/WEB-INF/views/chat.jsp"/>
+	</definition>
 	
-<!-- 	
-	  관리자 페이지
-   <definition name="admin_layout" template="/WEB-INF/views/layout/layout.jsp">
-      <put-attribute name="header" value="/WEB-INF/views/layout/admin_header.jsp" />
-      <put-attribute name="body" value="/WEB-INF/views/admin_main.jsp" />
-      <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+	<!-- 자유게시판 관련 -->
+   <definition name="board/*" extends="main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/board/{1}.jsp"/>
+   </definition>
+	
+
+	  <!-- 관리자 페이지 -->
+  <definition name="admin_main_layout" template="/WEB-INF/views/layout/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/layout/admin_header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/admin_main.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+	</definition>
+   
+   <!-- 관리자 멤버 페이지 -->
+   <definition name="/admin/member/*" extends="admin_main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/admin/member/{1}.jsp"/>
    </definition>
    
-   
-   
- 	admin 
-   <definition name="admin/*" extends="admin_layout">
-      <put-attribute name="body" value="/WEB-INF/views/admin/{1}.jsp"/>
+   <!-- 관리자 QNA 페이지 -->
+   <definition name="/admin/qna/*" extends="admin_main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/admin/qna/{1}.jsp"/>
    </definition>
    
-    <definition name="admin/*/*" extends="admin_layout">
-      <put-attribute name="body" value="/WEB-INF/views/admin/{1}/{2}.jsp"/>
-   </definition> -->
+   <!-- 관리자 공지사항 페이지 -->
+   <definition name="/admin/notice/*" extends="admin_main_layout">
+      <put-attribute name="body" value="/WEB-INF/views/admin/notice/{1}.jsp"/>
+   </definition>
    
-    <!-- <definition name="admin/goods/*" extends="admin_layout">
-      <put-attribute name="body" value="/WEB-INF/views/admin/goods/{1}.jsp"/>
-   </definition> -->
-  
+
 
 	
 </tiles-definitions>

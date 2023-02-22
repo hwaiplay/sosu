@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import second.sosu.admin.member.service.AdminMemberService;
 import second.sosu.common.domain.CommandMap;
 //import second.sosu.members.member.dao.MypageQuery;
 import second.sosu.members.member.service.MemberService;
@@ -26,28 +27,28 @@ import second.sosu.members.member.service.MemberService;
 public class MemberController {
 
    Logger log = Logger.getLogger(this.getClass());
-
+   
+   @Resource(name = "adminMemberService")
+   private AdminMemberService adminMemberService;
+   
    @Resource(name = "memberService")
    private MemberService memberService;
-   
-   // 로그인 체크
+
+   // 로그인 체크(ID,PW)
    @RequestMapping(value = "/members/checklogin.sosu")
    @ResponseBody // 자바객체를 다시 HTTP 응답 바디로 변환
    public int checkLogin(@RequestBody HashMap<String, Object> param) throws Exception {
-    
-      Map<String,Object> map = memberService.checkPassword(param);
+     Map<String,Object> map = memberService.checkPassword(param);
       int result;
       if(map==null) {
         result=0;            
      }else {
         if(map.get("M_PW").equals(param.get("M_PW"))) {
             result = 2;
-         //비번 틀리면
          }else {
             result = 1;
          }
      }
-      System.out.println("결과: " + result);
       return result;
    }
    
@@ -139,6 +140,8 @@ public class MemberController {
          session.setAttribute("M_PRIVATE", map.get("M_PRIVATE"));
          session.setAttribute("M_BAN_DATE", map.get("M_BAN_DATE"));
          
+         session.setAttribute("MEM_INFO",map); //전체 넣어보기
+         
          mv.setViewName("redirect:/main.sosu");
          
          return mv;
@@ -155,7 +158,7 @@ public class MemberController {
       return "/com/login/find_id";
    }
 
-// 아이디 찾기 처리
+   // 아이디 찾기 처리
    @RequestMapping(value = "/members/findid.sosu", method = RequestMethod.POST)
    public ModelAndView findId(CommandMap commandMap) throws Exception {
 
@@ -168,6 +171,7 @@ public class MemberController {
       } else {
          mv.addObject("findId","X");
       }
+
       return mv;
    }
 
@@ -178,7 +182,7 @@ public class MemberController {
       return "/com/login/find_pw";
    }
 
-// 비밀번호 찾기 처리
+   // 비밀번호 찾기 처리
    @RequestMapping(value = "/members/findpw.sosu", method = RequestMethod.POST)
    public ModelAndView findPw(CommandMap commandMap) throws Exception {
 
@@ -187,16 +191,21 @@ public class MemberController {
 
       if (memberService.findPw(commandMap.getMap()) != null) {
          mv.addObject("M_PW", memberService.findPw(commandMap.getMap()).get("M_PW"));
+         
       } else {
          mv.addObject("findPw","X");
       }
+
       return mv;
    }
 
-   // 마이페이지 
+// 마이페이지 
    @RequestMapping(value = "/members/mypage.sosu", method = RequestMethod.GET)
    public ModelAndView mypage(CommandMap commandMap, HttpSession session) throws Exception {
-
+      
+      
+      memberService.zzimRealDelete(commandMap.getMap());
+      
       ModelAndView mv = new ModelAndView();
       
       commandMap.put("M_IDX", session.getAttribute("M_IDX"));
@@ -204,6 +213,8 @@ public class MemberController {
 
       mv.addObject("privateCheck", session.getAttribute("M_PRIVATE"));
       mv.addObject("mypageInfo", memberService.mypage(commandMap.getMap()));
+      
+      mv.addObject("reCount", memberService.mypageMoimReviewCount(commandMap.getMap(), session));
 
       if (commandMap.get("mypageCategory") == null) {
          mv.addObject("mypageCategory", "1");
@@ -230,7 +241,7 @@ public class MemberController {
          }
       }
 
-      mv.setViewName("members/mypage/mypage");
+      mv.setViewName("/members/mypage/mypage");
 
       return mv;
    }
@@ -255,7 +266,6 @@ public class MemberController {
       mv.addObject("M_NICKNAME", session.getAttribute("USER_M_NICKNAME"));
       commandMap.put("M_NICKNAME", session.getAttribute("USER_M_NICKNAME"));
       List<Map<String,Object>> list = memberService.userMypage(commandMap.getMap());
-      System.out.println("리스트"+memberService.userMypage(commandMap.getMap()));
             
       commandMap.put("M_IDX", list.get(0).get("M_IDX"));
       commandMap.put("F_ARTICLE", list.get(0).get("M_IDX"));
@@ -291,8 +301,9 @@ public class MemberController {
             mv.addObject("selectZzim", commandMap.get("selectZzim"));
          }
       }
+      
 
-      mv.setViewName("members/mypage/userMypage");
+      mv.setViewName("/members/mypage/userMypage");
 
       return mv;
    }
@@ -309,7 +320,7 @@ public class MemberController {
 
       mv.addObject("modify", memberService.login(commandMap.getMap()));
       mv.addObject("profileGet", memberService.profileCheck(commandMap.getMap()).get(0));
-      mv.setViewName("members/mypage/mypageModify");
+      mv.setViewName("/members/mypage/mypageModify");
 
       return mv;
    }
@@ -428,8 +439,7 @@ public class MemberController {
       ModelAndView mv = new ModelAndView();
       
       commandMap.put("M_IDX", session.getAttribute("USER_M_IDX"));
-      System.out.println("멤버"+commandMap.getMap());
-      List<Map<String,Object>> check = memberService.adminMemberReport(commandMap.getMap());
+      List<Map<String,Object>> check = adminMemberService.adminMemberReport(commandMap.getMap());
       for(int i=0 ; i<check.size() ; i++) {
          if(check.get(i).get("R_MEM").toString().equals(session.getAttribute("M_IDX").toString())) {
             mv.addObject("impossible","impossible");
@@ -445,12 +455,10 @@ public class MemberController {
    @RequestMapping(value = "/members/report.sosu", method = RequestMethod.POST)
    @ResponseBody
    public ModelAndView report(CommandMap commandMap, HttpSession session) throws Exception {
-      System.out.println("파람파람"+commandMap.getMap());
       
       commandMap.put("R_MEM", session.getAttribute("M_IDX"));
-      
       commandMap.put("R_REPORTEDMEM", commandMap.get("M_IDX"));
-
+      
       memberService.insertReport(commandMap.getMap());
       ModelAndView mv = new ModelAndView();
       mv.addObject("close","close");
@@ -467,13 +475,6 @@ public class MemberController {
          e.printStackTrace();
       }
    }
-      
-      
-      
-      
-  
-      
-      
-      
-      
+       
 }
+   

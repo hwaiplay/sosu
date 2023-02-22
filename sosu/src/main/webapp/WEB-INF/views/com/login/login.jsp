@@ -54,7 +54,7 @@ $(document).ready(function(){
 </head>
 <body>
 
-<div class="container" style="text-align:center">
+<div class="container" style="text-align:center; padding-bottom:182px;">
 
 <h1 style="margin-top:50px; margin-bottom:40px">LOGIN</h1>
 

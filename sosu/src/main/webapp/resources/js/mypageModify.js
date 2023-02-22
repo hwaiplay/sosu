@@ -1,6 +1,5 @@
 history.replaceState({},null,location.pathname);
 $(document).ready(function(){
-
    //수정 버튼 클릭 시, 유효성 검사
    $('#modify').on('click',function(e){
       var m_name = $('#m_name').val();
