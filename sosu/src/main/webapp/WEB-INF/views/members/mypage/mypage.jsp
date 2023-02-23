@@ -334,7 +334,7 @@
                <a onclick= "location.href='/moim/${mypage.MO_CATEGORY}/${mypage.MO_IDX}.sosu'">
                <input type="hidden" name="MO_CATEGORY" value="${mypage.MO_CATEGORY}">
 				<input type="hidden" name="MO_IDX" value="${mypage.MO_IDX}">
-				<img src="${pageContext.request.contextPath}/resources/img/icons/list.png" class="moim-img">
+				<img src="${pageContext.request.contextPath}/resources/img/upload/${mypage.F_SVNAME}" class="moim-img">
                </a>
                   <p class="detail-region">${mypage.MO_DETAILREGION }</p>
                   <p class="moim-title">${mypage.MO_TITLE}</p>
