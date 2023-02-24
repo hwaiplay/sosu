@@ -1,6 +1,8 @@
-var sess = $("#session").val();
-
-
+if("#session" != null) {
+ var sess = $("#session").val();
+} else {
+  var sess = 0;
+}
 function MoinsertHeart(mo){
 
   if(sess != null) {
@@ -13,7 +15,7 @@ function MoinsertHeart(mo){
             location.reload();}
         }); 
      }  
-     if(sess == null) {
+     if(sess == 0) {
      
     alert("로그인이 필요한 서비스입니다.");
   }
@@ -45,7 +47,7 @@ function RvinsertHeart(rv){
             location.reload();}
         }); 
      }  
-     if(sess == null) {
+     if(sess == 0) {
      
     alert("로그인이 필요한 서비스입니다.");
   }
@@ -77,7 +79,7 @@ function FrinsertHeart(fr){
             location.reload();}
         }); 
      }  
-     if(sess == null) {
+     if(sess == 0) {
      
     alert("로그인이 필요한 서비스입니다.");
   }

@@ -20,18 +20,18 @@
         </c:if>
         <c:if test="${m.MF_SVNAME eq '0'}">
                 <img src="/resources/img/icons/list.png" 
-                <c:if test="${m.MO_CLOSE_YN eq 'N' }"> class="mimg" </c:if> 
+                <c:if test="${m.MO_CLOSE_YN eq 'N' }"> c class="mimg" </c:if> 
                <c:if test="${m.MO_CLOSE_YN eq 'Y' }"> class="moim-endimg"</c:if>>
         </c:if> 
       <br />
      <p class="detail-region">${m.MO_DETAILREGION}
-	  	<!-- 인원수 -->
-    	<c:if test="${m.MO_MAXPEOPLE != 0}">
+        <!-- 인원수 -->
+       <c:if test="${m.MO_MAXPEOPLE != 0}">
             <span class="max">[${m.MOMEM_COUNT}명/${m.MO_MAXPEOPLE}명]</span>
-      	</c:if>
-     	<c:if test="${m.MO_MAXPEOPLE == 0}">
+         </c:if>
+        <c:if test="${m.MO_MAXPEOPLE == 0}">
             <span class="max">[제한없음]</span>
-     	</c:if>
+        </c:if>
       </p>
       <!-- 타이틀이 16자 보다 크거나 같다면  -->
       <c:if test="${fn:length(m.MOTT) >= 16}">

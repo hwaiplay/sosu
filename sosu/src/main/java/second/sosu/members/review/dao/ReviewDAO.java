@@ -14,44 +14,44 @@ import second.sosu.common.domain.CommandMap;
 @Repository("reviewDAO")
 public class ReviewDAO extends AbstractDAO {
 
-	 //리뷰
-	   @SuppressWarnings("unchecked")
-	   public List<Map<String, Object>> reviewList(Map<String, Object> map, HttpSession session) throws Exception {
+    //리뷰
+      @SuppressWarnings("unchecked")
+      public List<Map<String, Object>> reviewList(Map<String, Object> map, HttpSession session) throws Exception {
 
-	      List<Map<String, Object>> reviewList = (List<Map<String, Object>>) selectList("review.reviewList", map);
-	      
-	      //좋아요 유무
-	      if (session.getAttribute("M_IDX") != null) {
+         List<Map<String, Object>> reviewList = (List<Map<String, Object>>) selectList("review.reviewList", map);
+         
+         //좋아요 유무
+         if (session.getAttribute("M_IDX") != null) {
 
-	          for (int i = 0; i < reviewList.size(); i++) {
-	             
-	             Map<String, Object> reviewZzim = new HashMap<>();
-	             reviewZzim.put("M_IDX", session.getAttribute("M_IDX"));
-	             reviewZzim.put("RV_IDX", reviewList.get(i).get("RV_IDX"));
-	             
-	             Map<String, Object> zz = (Map<String, Object>)selectOne("review.reviewZzimCheck",reviewZzim);
-	             
-	             reviewList.get(i).put("RZ_CHECK", zz.get("RZ_CHECK"));
-	          }
-	          
-	       }
-	      // 리뷰 좋아요
-	      for (int i = 0; i < reviewList.size(); i++) {
+             for (int i = 0; i < reviewList.size(); i++) {
+                
+                Map<String, Object> reviewZzim = new HashMap<>();
+                reviewZzim.put("M_IDX", session.getAttribute("M_IDX"));
+                reviewZzim.put("RV_IDX", reviewList.get(i).get("RV_IDX"));
+                
+                Map<String, Object> zz = (Map<String, Object>)selectOne("review.reviewZzimCheck",reviewZzim);
+                
+                reviewList.get(i).put("RZ_CHECK", zz.get("RZ_CHECK"));
+             }
+             
+          }
+         // 리뷰 좋아요
+         for (int i = 0; i < reviewList.size(); i++) {
 
-	         Map<String, Object> zzimFreeCount = (Map<String, Object>) selectOne("review.reviewZzimCount",
-	               reviewList.get(i).get("RV_IDX"));
-	         reviewList.get(i).put("RZ_COUNT", zzimFreeCount.get("RZ_COUNT"));
-	      }
-	      
-	      //프사
-	      for (int i = 0; i < reviewList.size(); i++) {
-	         Map<String, Object> memberProfile = (Map<String, Object>) selectOne("file.memberProfile",
-	               reviewList.get(i).get("M_IDX"));
-	         reviewList.get(i).put("PROFILE", memberProfile.get("PROFILE"));
-	      }
+            Map<String, Object> zzimFreeCount = (Map<String, Object>) selectOne("review.reviewZzimCount",
+                  reviewList.get(i).get("RV_IDX"));
+            reviewList.get(i).put("RZ_COUNT", zzimFreeCount.get("RZ_COUNT"));
+         }
+         
+         //프사
+         for (int i = 0; i < reviewList.size(); i++) {
+            Map<String, Object> memberProfile = (Map<String, Object>) selectOne("file.memberProfile",
+                  reviewList.get(i).get("M_IDX"));
+            reviewList.get(i).put("PROFILE", memberProfile.get("PROFILE"));
+         }
 
-	      return reviewList;
-	   }
+         return reviewList;
+      }
 
 
 //   리뷰 상세보기
@@ -80,6 +80,12 @@ public class ReviewDAO extends AbstractDAO {
 
       insert("review.insertReview", map);
    }
+   
+ @SuppressWarnings("unchecked")
+ public List<Map<String, Object>> max(Map<String, Object> map) throws Exception {
+
+    return (List<Map<String, Object>>) selectList("review.max", map);
+ }
 
 //   리뷰 사진 파일 등록
    public void imgInsert(Map<String, Object> map) throws Exception {
@@ -107,5 +113,11 @@ public class ReviewDAO extends AbstractDAO {
 
       update("review.deleteReview", map);
    }
+   
+   public void updateReviewMain(Map<String, Object> map) throws Exception {
+
+         update("review.updateReviewMain", map);
+      }
+      
 
 }

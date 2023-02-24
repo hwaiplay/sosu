@@ -6,22 +6,15 @@
       <!-- 리뷰 상세보기 -->   
       <select id="reviewDetail" resultType="hashmap" parameterType="hashmap">
       <![CDATA[
-        SELECT 
-               R.*, 
-               MO.*,
-               M.*
-        FROM 
-              REVIEW R,
-              MOIM MO,
-              MEMBER M
-        WHERE
-              R.RV_DEL_YN = 'N'
-        AND 
-              R.MO_IDX = MO.MO_IDX 
-        AND 
-              M.M_IDX = R.M_IDX
-        AND 
-              R.RV_IDX = #{RV_IDX}
+           SELECT R.*, MO.*,
+        M.M_NICKNAME, NVL(F.F_SVNAME,0) AS KPROFILE
+         FROM  REVIEW R , MEMBER M, FILE_T F, MOIM MO
+         WHERE R.RV_IDX = #{RV_IDX}
+         AND M.M_IDX = R.M_IDX 
+         AND MO.MO_IDX = R.MO_IDX
+         AND  F.F_ARTICLE(+) = M.M_IDX 
+         AND  F.F_TABLE(+) = 'P'
+        
     ]]>    
       </select>
       
@@ -65,8 +58,9 @@
         SELECT F_SVNAME, F_MAIN_YN
         FROM FILE_T F, REVIEW R
         WHERE F.F_TABLE(+) = 'R'
-        AND F.F_ARTICLE(+) = #{RV_IDX}
+        AND F.F_ARTICLE(+) =  R.RV_IDX
         AND F.F_DEL_YN(+) = 'N'
+        AND  R.RV_IDX =#{RV_IDX}
         ORDER BY F.F_MAIN_YN DESC
     ]]>    
       </select>
@@ -98,11 +92,11 @@
         
     </select>
    
-    <!-- 리뷰작성하기 -->
+     <!-- 리뷰작성하기 -->
    <insert id="insertReview" parameterType="hashmap"
-		useGeneratedKeys="true" keyProperty="RV_IDX">
-		<selectKey keyProperty="RV_IDX" order="BEFORE"
-			resultType="int">
+      useGeneratedKeys="true" keyProperty="RV_IDX">
+      <selectKey keyProperty="RV_IDX" order="BEFORE"
+         resultType="int">
          SELECT RV_IDX.NEXTVAL FROM DUAL
       </selectKey>
        <![CDATA[
@@ -112,6 +106,15 @@
          (#{RV_IDX}, #{M_IDX}, #{MO_IDX}, #{RV_CONTENT}, sysdate, #{RV_TITLE},'N', #{RV_STAR})
           ]]>
     </insert>
+   
+   
+   <select id="max" parameterType="hashmap" resultType="hashmap">
+    SELECT R.RV_IDX AS MAX
+        FROM REVIEW R, MEMBER M
+        WHERE M.M_IDX=R.M_IDX
+        AND M.M_IDX=#{M_IDX}
+   </select>
+   
    
     <!-- 리뷰수정하기 -->
     <update id="updateReview" parameterType="hashmap">
@@ -123,7 +126,18 @@
                RV_CONTENT = #{RV_CONTENT}
         WHERE 
                RV_IDX = #{RV_IDX}
+       
     </update>
+    
+    
+    <!-- 리뷰 사진 업데이트 -->
+    <update id="updateReviewMain" parameterType="hashmap">
+       UPDATE FILE_T
+               SET F_OGNAME=#{F_OGNAME}, F_SVNAME=#{F_SVNAME}
+               WHERE F_TABLE='R' AND F_ARTICLE=#{F_ARTICLE}
+    </update>
+    
+    
     
     <!-- 리뷰삭제하기 -->
     <update id="deleteReview" parameterType="hashmap">

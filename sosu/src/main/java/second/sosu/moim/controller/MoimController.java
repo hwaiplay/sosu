@@ -481,35 +481,4 @@ public class MoimController {
 		return mv;
 	}
 
-	// 모임 스크랩하기 구동
-	@RequestMapping("/moim/zzimInsert.do")
-	public String moimZzimInsert(@RequestParam("MO_IDX") String MO_IDX, HttpSession session, HttpServletRequest request,
-			CommandMap commandMap) throws Exception {
-		// ajax로 받아오기 위해 @RequestParam 사용
-
-		commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
-		commandMap.put("MO_IDX", MO_IDX);
-
-		moimService.moimZzimInsert(commandMap.getMap(), session, commandMap);
-
-		String referer = request.getHeader("Referer");
-		return "redirect:" + referer;
-
-	}
-
-	// 모임 스크랩취소 구동
-	@RequestMapping("/moim/zzimDelete.do")
-	public String moimZzimDelete(@RequestParam("MO_IDX") String MO_IDX, HttpSession session, HttpServletRequest request,
-			CommandMap commandMap) throws Exception {
-		// ajax로 받아오기 위해 @RequestParam 사용
-
-		commandMap.put("M_IDX", Integer.parseInt(String.valueOf(session.getAttribute("M_IDX"))));
-		commandMap.put("MO_IDX", MO_IDX);
-
-		moimService.moimZzimDelete(commandMap.getMap(), session, commandMap);
-
-		String referer = request.getHeader("Referer");
-		return "redirect:" + referer;
-	}
-
 }

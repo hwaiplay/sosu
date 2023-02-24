@@ -10,7 +10,7 @@
         &copy; Copyright <strong><span>SOSU</span></strong>. All Rights Reserved
       </div>
       <div class="credits">
-         강승현 장한원 남재욱 이효원 한승주 김현수 
+         강승현 장한원 남재욱 이효원
       </div>
     </div>
   </footer><!-- End Footer -->

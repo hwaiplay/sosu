@@ -114,26 +114,6 @@
 		</if>
 	</select>
 
-
-	<!--모임 찜 insert -->
-	<insert id="moimZzimInsert" parameterType="hashmap">
-         <![CDATA[
-     INSERT INTO ZZIM
-    (Z_IDX, M_IDX, Z_ARTICLE, Z_TABLE, Z_DEL_YN) 
-    VALUES (Z_IDX.NEXTVAL, #{M_IDX}, #{MO_IDX},'M','N')
-            ]]>
-	</insert>
-
-	<!--모임 찜 Delete -->
-	<insert id="moimZzimDelete" parameterType="hashmap">
-         <![CDATA[
-    DELETE ZZIM 
-    WHERE Z_TABLE = 'M' 
-    AND M_IDX = #{M_IDX}  
-    AND Z_ARTICLE = #{MO_IDX}
-            ]]>
-	</insert>
-
 	<!-- 모임 상세보기 -->
 	<select id="moimDetail" resultType="hashmap"
 		parameterType="hashmap">

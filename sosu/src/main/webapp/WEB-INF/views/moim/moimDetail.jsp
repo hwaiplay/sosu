@@ -40,7 +40,7 @@
                         test="${sessionss eq null or sessionss ne null and Detail.MZ_CHECK eq '0'}">
                         <input type="hidden" name="MO_IDX" value="${Detail.MO_IDX}">
                         <button type="button" class="hhhbtn"
-                           onclick="return insertHeart(${Detail.MO_IDX})">
+                           onclick="return MoinsertHeart(${Detail.MO_IDX})">
                            <img alt="heart" src="/resources/img/icons/like.png"
                               width="32px;">
                         </button>
@@ -48,7 +48,7 @@
                      </c:if> <c:if test="${sessionss ne null and Detail.MZ_CHECK ne '0'}">
                         <input type="hidden" name="MO_IDX" value="${Detail.MO_IDX}">
                         <button type="button" class="hhhbtn"
-                           onclick="return deleteHeart(${Detail.MO_IDX})">
+                           onclick="return ModeleteHeart(${Detail.MO_IDX})">
                            <img alt="heart" src="/resources/img/icons/heart.png"
                               width="32px;">
                         </button>

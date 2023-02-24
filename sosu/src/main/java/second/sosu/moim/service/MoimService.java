@@ -74,9 +74,4 @@ public interface MoimService {
    // 모임 탈퇴하기
    void moimExit(Map<String, Object> map, HttpSession session) throws Exception;
 
-   // 모임 찜하기
-   void moimZzimInsert(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception;
-
-   // 모임 찜하기
-   void moimZzimDelete(Map<String, Object> map, HttpSession session, CommandMap commandMap) throws Exception;
 }

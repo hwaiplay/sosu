@@ -292,13 +292,4 @@ public class MoimDao extends AbstractDAO {
 		update("moim.moimExit", map);
 	}
 
-	// 모임 찜 insert
-	public void moimZzimInsert(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
-		insert("moim.moimZzimInsert", map);
-	}
-
-	// 모임 찜 삭제
-	public void moimZzimDelete(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
-		insert("moim.moimZzimDelete", map);
-	}
 }

@@ -19,6 +19,6 @@ public class zzimDAO extends AbstractDAO {
 
 	// 모임 찜 삭제
 	public void zzimDelete(Map<String, Object> map, HttpSession seesion, CommandMap commandMap) throws Exception {
-		update("common.zzimDelete", map);
+		delete("common.zzimDelete", map);
 	}
 }

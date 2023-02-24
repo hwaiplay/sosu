@@ -24,4 +24,8 @@ public interface ReviewService {
   // void updateReview(Map<String, Object> map, HttpServletRequest request) throws Exception;
 //   리뷰 삭제   
    void deleteReview(Map<String, Object> map) throws Exception;
+   
+   void updateReview(Map<String, Object> map) throws Exception;
+   
+   public void updateReviewMain(Map<String, Object> map, HttpServletRequest request) throws Exception;
 }

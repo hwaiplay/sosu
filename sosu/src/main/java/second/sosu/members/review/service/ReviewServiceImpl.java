@@ -62,8 +62,21 @@ public class ReviewServiceImpl implements ReviewService{
       
       reviewDAO.insertReview(map);
       
-      List<Map<String, Object>> list = fileUtils.fileInsert(map, request);
+      List<Map<String,Object>> max = reviewDAO.max(map);
       
+      int maxnum=0;
+      
+      for(int i=0 ; i <max.size() ; i++) {
+         int num = Integer.parseInt(max.get(i).get("MAX").toString());
+         if(maxnum < num) {
+            maxnum=num;
+         }
+      }
+      
+      map.put("rMax", maxnum);
+      
+      List<Map<String, Object>> list = fileUtils.fileInsert(map, request);
+      System.out.println("파일유틸즈"+list);
       for(int i=0, size=list.size(); i<size; i++) {
          
          reviewDAO.imgInsert(list.get(i));
@@ -72,28 +85,43 @@ public class ReviewServiceImpl implements ReviewService{
 
 
 //   리뷰 수정
-	/*
-	 * @Override public void updateReview(Map<String, Object> map,
-	 * HttpServletRequest request) throws Exception {
-	 * 
-	 * reviewDAO.updateReview(map);
-	 * 
-	 * reviewDAO.deletePhotoReview(map);
-	 * 
-	 * List<Map<String,Object>> list = fileUtils.fileUpdate(map, request);
-	 * 
-	 * Map<String,Object> tempMap = null;
-	 * 
-	 * for(int i=0, size=list.size(); i<size; i++){ tempMap = list.get(i);
-	 * 
-	 * if(tempMap.get("IS_NEW").equals("Y")){ reviewDAO.imgInsert(tempMap); } else{
-	 * reviewDAO.updatePhotoReview(tempMap); } } }
-	 */
+   /*
+    * @Override public void updateReview(Map<String, Object> map,
+    * HttpServletRequest request) throws Exception {
+    * 
+    * reviewDAO.updateReview(map);
+    * 
+    * reviewDAO.deletePhotoReview(map);
+    * 
+    * List<Map<String,Object>> list = fileUtils.fileUpdate(map, request);
+    * 
+    * Map<String,Object> tempMap = null;
+    * 
+    * for(int i=0, size=list.size(); i<size; i++){ tempMap = list.get(i);
+    * 
+    * if(tempMap.get("IS_NEW").equals("Y")){ reviewDAO.imgInsert(tempMap); } else{
+    * reviewDAO.updatePhotoReview(tempMap); } } }
+    */
 //   리뷰 삭제
    @Override
    public void deleteReview(Map<String, Object> map) throws Exception {
       
       reviewDAO.deleteReview(map);
    }
+
+@Override
+public void updateReview(Map<String, Object> map) throws Exception {
+   reviewDAO.updateReview(map);
+   
+}
+
+@Override
+public void updateReviewMain(Map<String, Object> map, HttpServletRequest request) throws Exception {
+   List<Map<String,Object>> updateMain = fileUtils.fileInsert(map, request);
+   System.out.println("사진 리스트 : "+updateMain.get(0));
+   reviewDAO.updateReviewMain(updateMain.get(0));
+}
+   
+   
 
 }
