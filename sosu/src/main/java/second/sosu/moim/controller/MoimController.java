@@ -288,7 +288,7 @@ public class MoimController {
 		return mv;
 	}
 
-	// 모임 개설 작성 구동
+	// 모임작성 구동
 	@RequestMapping("/moim/moimRegister.pro")
 	public ModelAndView moimRegister(@RequestParam("MO_CATEGORY") String MO_CATEGORY, CommandMap commandMap,
 			HttpSession session, HttpServletRequest request) throws Exception {
@@ -497,7 +497,7 @@ public class MoimController {
 
 	}
 
-	// 모임 스크랩하기 구동
+	// 모임 스크랩취소 구동
 	@RequestMapping("/moim/zzimDelete.do")
 	public String moimZzimDelete(@RequestParam("MO_IDX") String MO_IDX, HttpSession session, HttpServletRequest request,
 			CommandMap commandMap) throws Exception {

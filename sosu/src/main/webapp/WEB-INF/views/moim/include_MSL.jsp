@@ -56,14 +56,14 @@
             <span style="float: left;padding-top: 8px;">${m.M_NICKNAME}</span>
             <c:if test = "${sessionss eq null or sessionss ne null and m.MZ_CHECK eq '0'}">
                 <input type="hidden" name="MO_IDX" value="${m.MO_IDX}">
-                <button type="button" class="hhhbtn" onclick="return insertHeart(${m.MO_IDX})">
+                <button type="button" class="hhhbtn" onclick="return MoinsertHeart(${m.MO_IDX})">
                 <img alt="heart" src="/resources/img/icons/like.png" width="32px;">
                 </button>
                <span class="mzcount">${m.MZ_COUNT}</span>
             </c:if>
             <c:if test = "${sessionss ne null and m.MZ_CHECK ne '0'}">
                 <input type="hidden" name="MO_IDX" value="${m.MO_IDX}" >
-                <button type="button" class="hhhbtn" onclick="return deleteHeart(${m.MO_IDX})">
+                <button type="button" class="hhhbtn" onclick="return ModeleteHeart(${m.MO_IDX})">
                 <img alt="heart" src="/resources/img/icons/heart.png" width="32px;">
                </button>
                <span class="mzcount">${m.MZ_COUNT}</span>

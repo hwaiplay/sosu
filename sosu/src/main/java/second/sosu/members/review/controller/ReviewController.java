@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import second.sosu.common.domain.CommandMap;
 import second.sosu.members.review.service.ReviewService;
@@ -107,7 +108,7 @@ public class ReviewController {
 		String CONTENT = (String) (commandMap.get("RV_CONTENT"));
 		CONTENT = CONTENT.replaceAll("(\r\n|\r|\n|\n\r)", "<br/>");
 		commandMap.put("RV_CONTENT", CONTENT);
-
+		
 		ModelAndView mv = new ModelAndView("redirect:/members/mypage.sosu");
 
 		reviewService.insertReview(commandMap.getMap(), request);

@@ -22,19 +22,40 @@
 			AAA.RNUM BETWEEN #{START} AND #{END}
 		]]>
 	</sql>
-	
-<!--##############################################################################################################################-->
-	
-	
-	
-	<!-- 메인페이지 -->
-	<select id="main" resultType="hashmap" >
-		
-	</select>
-	
-	<!-- 회원가입 -->	
-	<insert id="join">
-		
+
+	<!--############################################################################################################################## -->
+
+
+	<!--모임 찜 insert -->
+	<insert id="zzimInsert" parameterType="hashmap">
+         <![CDATA[
+     INSERT INTO ZZIM
+    (Z_IDX, M_IDX, Z_ARTICLE, Z_TABLE, Z_DEL_YN) 
+    VALUES (Z_IDX.NEXTVAL, #{M_IDX}, #{Z_ARTICLE}, #{Z_TABLE}, 'N')
+            ]]>
 	</insert>
-	
+
+	<!--모임 찜 Delete -->
+	<insert id="zzimDelete" parameterType="hashmap">
+         <![CDATA[
+    DELETE ZZIM 
+    WHERE M_IDX = #{M_IDX}  
+    AND Z_TABLE = #{Z_TABLE}  
+    AND Z_ARTICLE = #{Z_ARTICLE}
+            ]]>
+	</insert>
+
+
+
+
+	<!-- 메인페이지 -->
+	<select id="main" resultType="hashmap">
+
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="join">
+
+	</insert>
+
 </mapper>

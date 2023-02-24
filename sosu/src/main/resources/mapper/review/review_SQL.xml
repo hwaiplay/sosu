@@ -6,7 +6,7 @@
       <!-- 리뷰 상세보기 -->   
       <select id="reviewDetail" resultType="hashmap" parameterType="hashmap">
       <![CDATA[
-         SELECT 
+        SELECT 
                R.*, 
                MO.*,
                M.*
@@ -99,15 +99,18 @@
     </select>
    
     <!-- 리뷰작성하기 -->
-    <insert id="insertReview" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RV_IDX">
-       <selectKey keyProperty="RV_IDX" resultType="string" order="BEFORE">
+   <insert id="insertReview" parameterType="hashmap"
+		useGeneratedKeys="true" keyProperty="RV_IDX">
+		<selectKey keyProperty="RV_IDX" order="BEFORE"
+			resultType="int">
          SELECT RV_IDX.NEXTVAL FROM DUAL
       </selectKey>
-       
+       <![CDATA[
        INSERT INTO REVIEW
         (RV_IDX, M_IDX, MO_IDX, RV_CONTENT, RV_REGDATE, RV_TITLE, RV_DEL_YN, RV_STAR)
          VALUES
          (#{RV_IDX}, #{M_IDX}, #{MO_IDX}, #{RV_CONTENT}, sysdate, #{RV_TITLE},'N', #{RV_STAR})
+          ]]>
     </insert>
    
     <!-- 리뷰수정하기 -->
@@ -120,7 +123,6 @@
                RV_CONTENT = #{RV_CONTENT}
         WHERE 
                RV_IDX = #{RV_IDX}
-       
     </update>
     
     <!-- 리뷰삭제하기 -->
