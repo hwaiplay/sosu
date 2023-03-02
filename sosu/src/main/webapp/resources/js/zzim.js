@@ -17,7 +17,8 @@ function MoinsertHeart(mo){
      }  
      if(sess == 0) {
      
-    alert("로그인이 필요한 서비스입니다.");
+    alert("로그인이 필요한 서비스입니다. \n로그인페이지로 이동합니다.");
+    location.href = 'http://localhost:8080/members/loginform.sosu';
   }
 }
 
@@ -49,7 +50,8 @@ function RvinsertHeart(rv){
      }  
      if(sess == 0) {
      
-    alert("로그인이 필요한 서비스입니다.");
+    alert("로그인이 필요한 서비스입니다. \n로그인페이지로 이동합니다.");
+    location.href = 'http://localhost:8080/members/loginform.sosu';
   }
 }
 
@@ -81,7 +83,8 @@ function FrinsertHeart(fr){
      }  
      if(sess == 0) {
      
-    alert("로그인이 필요한 서비스입니다.");
+    alert("로그인이 필요한 서비스입니다. \n로그인페이지로 이동합니다.");
+    location.href = 'http://localhost:8080/members/loginform.sosu';
   }
 }
 

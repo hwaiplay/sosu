@@ -135,7 +135,6 @@ p {
    padding: 4px 8px 4px 8px;
    border-radius: 10px; 
    display:inline;
-   cursor: default;
 }
 .mrgbtn3:hover {
    background-color: #fff;

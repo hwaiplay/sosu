@@ -113,7 +113,28 @@ public class MemberDAO extends AbstractDAO{
          Map<String,Object> partyMoimMember = (Map<String,Object>)selectOne("members.mypageMoimMember",mypageInfo.get(7).get(i).get("MO_IDX"));
          mypageInfo.get(7).get(i).put("MOIMMEMBER", partyMoimMember.get("MOIMMEMBER"));
       }
-      mypageInfo.add(selectList("members.mypageZzimFree",map));
+      
+      mypageInfo.add(selectList("members.mypageZzimFree",map)); //mypageInfo[8]
+      
+      List<Map<String,Object>> imgList = selectList("members.mypageZzimFreeImage",map);
+      
+      for(int i=0 ; i<mypageInfo.get(8).size() ; i++) {
+         int zIdx = Integer.parseInt(mypageInfo.get(8).get(i).get("Z_IDX").toString());
+         for(int j=0 ; j<imgList.size() ; j++) {
+            if(zIdx==Integer.parseInt(imgList.get(j).get("Z_IDX").toString())) {
+               mypageInfo.get(8).get(i).put("FREEIMG", imgList.get(j).get("FREEIMG"));
+            }
+         }  
+      }
+      System.out.println("사진 붙이기 : "+mypageInfo.get(8));
+      
+//      for(int i=0 ; i<mypageInfo.get(8).size() ; i++) {
+//         for(int j=0 ; j<mypageInfo.get(8).get(i).size() ; j++) {
+//            if(mypageInfo.get(i).get(j).get("Z_IDX") == imgList.get(i).)
+//         }
+//      }
+      
+      
       
       //프로필 사진 가져오기
       mypageInfo.add(selectList("members.profileGet",map)); //mypageInfo[9]

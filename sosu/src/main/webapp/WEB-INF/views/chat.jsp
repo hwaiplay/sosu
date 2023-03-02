@@ -185,48 +185,30 @@ $(document).ready(function(){
 
 
 <script type="text/javascript">
-
-
-
-
-
-
    one = document.getElementById("one");
-   /* two = document.getElementById("two"); */
-  
-   
-   document.getElementById("enter").addEventListener("click", function() {
-      //웹 소켓 연결해주는 함수 호출
-      connect();
+   document.getElementById("enter").addEventListener("click", function() {   
+      connect(); //웹 소켓 연결해주는 함수 호출
    });
    document.getElementById("exit").addEventListener("click", function() {
-      //연결을 해제해주는 함수 호출
-      disconnect();
+      disconnect(); //연결을 해제해주는 함수 호출
    });
    document.getElementById("send").addEventListener("click", function() {
-      //전송해주는 함수 호출
-      send();
+      send(); //전송해주는 함수 호출
    });
    document.getElementById("message").addEventListener("keydown", function(event) {
       var keycode = (event.keyCode ? event.keyCode : event.which);
       if (keycode == '13' && !event.shiftKey) {
          event.preventDefault();
-      send();
+          send();
       }
       event.stopPropagation();
    });
-   
    var websocket;
    
-   
-   
-
 //입장 버튼을 눌렀을 때 호출되는 함수
 function connect(){
    MSG_ROOM = document.getElementById("msg_room").value;
    websocket = new WebSocket("ws://localhost:9000/chat-ws?MSG_ROOM="+MSG_ROOM);
-
-
    //웹 소켓에 이벤트가 발생했을 때 호출될 함수 등록
    websocket.onopen = onOpen;
    websocket.onmessage = onMessage;
@@ -239,11 +221,6 @@ function disconnect(){
    websocket.send(msg+"님이 퇴장하셨습니다");
    websocket.close();
 }
-
-
-
-
-
 
 //전송 버튼을 눌렀을 때 호출될 함수
 function send(){
@@ -262,38 +239,23 @@ function send(){
     }
 }
 
-
 //웹 소켓에 연결되었을 때 호출될 함수
 function onOpen(){
    nickname = document.getElementById("nickname").value;
-/*    two = document.getElementById("two");
-   two.style.display='block';
-   two.style.width = '100%';
-   two.style.height = '100%'; */
-   
-/*    if(document.getElementById("creChck") == null){
-      if (self.name != 'reload') {
-           self.name = 'reload';
-           self.location.reload(true);
-       }else {
-          self.name = '';
-       }
-   } */
-   
-   
-   
    chatarea = document.getElementById("chatarea");   
    chatarea.scrollTop = chatarea.scrollHeight;
- 
-/*    var unreadMsg = document.getElementsByClassName("unread-MSG")[0];
-   var zero = "0";
-      unreadMsg.innerText =zero; */
-      
-
-
-      
 }
 
+
+function onClose(){
+   let send_msg = "";
+   msg = document.getElementById("nickname").value;
+   send_msg +=  msg
+   send_msg += "님이 퇴장하셨습니다"
+   chatarea = document.getElementById("chatarea");
+   chatarea.innerHTML = chatarea.innerHTML+ "<br/>"+ send_msg;
+   chatarea.scrollTop = chatarea.scrollHeight;
+}
 
 //웹 소켓에서 메시지를 받아서 돌아가는 함수
 function onMessage(evt){
@@ -303,17 +265,13 @@ function onMessage(evt){
        otherNickVal = otherNick.value;
     } else{
        otherNickVal = null;
+       location.reload();
     }
-    
       var arr = data.split(",");
       for(var  i=0; i<arr.length; i++){
          console.log('arr[' + i + ']' + arr[i]);
       }
       var message = arr[0];
-      var sendId = arr[1];
-      
-      console.log("보낸 사람 번호" + sendId);
-      console.log("채팅하고있는 사람 번호" + sendId);
       
       //시간 구하기
       var today = new Date();
@@ -333,52 +291,28 @@ function onMessage(evt){
             send_msg += message
             send_msg += "</span></p></div>"
             
-         } else if(sendId == otherNickVal) { //메시지를 보낸 사용자가 대화하고 있는 사용자라면 즉, 상대방이 보낸 메시지라면
-            send_msg += "<div id='your-Div'>"
-            send_msg += "<p id='msg-send-time-you'>"
-            send_msg += dateString
-            send_msg += "<span id='yourmessage'>"
-            send_msg += message
-            send_msg += "</span></p></div>"
-            
          } else if(otherNickVal == null){
-            send_msg += "<div id='my-Div'>"
+            send_msg += "<div id='your-Div'>"
             send_msg += "<p id='msg-send-time-my'>"
             send_msg += dateString
-            send_msg += "<span id=mymessage>"
-            send_msg += message
+            send_msg += "<span id='yourmessage'>"
+            send_msg += message + "hihi"
             send_msg += "</span></p></div>"
             location.reload();
-         }
+         }else if(sendId == otherNickVal) { //메시지를 보낸 사용자가 대화하고 있는 사용자라면 즉, 상대방이 보낸 메시지라면
+             send_msg += "<div id='your-Div'>"
+                 send_msg += "<p id='msg-send-time-you'>"
+                 send_msg += dateString
+                 send_msg += "<span id='yourmessage'>"
+                 send_msg += message
+                 send_msg += "</span></p></div>"
+         } 
          
          chatarea = document.getElementById("chatarea");
          chatarea.innerHTML = chatarea.innerHTML+ "<br/>"+ send_msg;
-       chatarea.scrollTop = chatarea.scrollHeight;
-       
-       
-      /*  let msg_final = "";
-       var nowMsg = document.getElementsByClassName("New-MSG")[0];
-       nowMsg.innerText = message; */
-       
-      /* reloadDivArea(); */
-       
-      
+           chatarea.scrollTop = chatarea.scrollHeight;
 }    
 
-function onClose(){
-   let send_msg = "";
-   msg = document.getElementById("nickname").value;
-   send_msg +=  msg
-   send_msg += "님이 퇴장하셨습니다"
-   
-   chatarea = document.getElementById("chatarea");
-      chatarea.innerHTML = chatarea.innerHTML+ "<br/>"+ send_msg;
-    chatarea.scrollTop = chatarea.scrollHeight;
-}
-
-/* function reloadDivArea(){
-   $('#chat_list').load(location.href + ' #chat-one');
-} */
 </script>
 
 

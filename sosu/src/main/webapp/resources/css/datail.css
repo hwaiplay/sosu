@@ -72,7 +72,7 @@ p {
     vertical-align: top;
     font-weight: bold;
     cursor: pointer;
-    padding: 4px 8px 4px 8px;
+    padding: 4px 10px 4px 8px;
     margin-right: 4px;
 }
 
@@ -135,7 +135,6 @@ p {
    padding: 4px 8px 4px 8px;
    border-radius: 10px; 
    display:inline;
-   cursor: default;
 }
 .mrgbtn3:hover {
    background-color: #fff;
@@ -207,7 +206,7 @@ button, input {
    color: #fff;
    font-size: 15px;
    border-radius: 10px; 
-   transform: translate(-1px, -17px);
+   transform: translate(-22px, -17px);
 }
 
 .gbtn2 {
@@ -217,8 +216,8 @@ button, input {
    font-size: 15px;
    border-radius: 14px;
    padding: 4px 8px 4px 8px;
-   transform: translate(-4px, -17px);
    margin-right: 5px;
+   transform: translate(0px, -38px);
 }
 
 /* 참여자 리스트 접었다 펴기 */

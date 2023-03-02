@@ -383,8 +383,15 @@
             <c:forEach begin="0" end="${fn:length(mypageInfo[8])}" items="${mypageInfo[8]}" var="mypage">
                <div class="col-lg-3 menu-item">
                <div class="row gy-5" style="padding-bottom: 80px;">
+               ""
+               <a onclick= "location.href='/freeboard/${mypage.FR_CATEGORY}/${mypage.FR_IDX}.sosu'">
+               <c:if test="${mypage.FREEIMG ne null }">
+                  <img src="${pageContext.request.contextPath}/resources/img/upload/${mypage.FREEIMG}" class="moim-img">
+               </c:if>
+               <c:if test="${mypage.FREEIMG eq null }">
                   <img src="${pageContext.request.contextPath}/resources/img/icons/list.png" class="moim-img">
-                  
+               </c:if>
+               </a>
                   <p class="zzimWriter">
                   <span>
                   <img class="img-pro-free" src="${pageContext.request.contextPath}/resources/img/upload/${mypage.PROFILE}">

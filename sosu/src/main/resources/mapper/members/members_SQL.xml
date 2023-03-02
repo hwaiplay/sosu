@@ -340,7 +340,18 @@
       AND Z.Z_DEL_YN='N'
     ]]>
    </select>
-
+   
+   
+   <select id="mypageZzimFreeImage" resultType="hashmap"
+      parameterType="hashmap">
+      <![CDATA[
+      SELECT F.F_SVNAME AS FREEIMG, Z.Z_IDX
+      FROM FILE_T F, ZZIM Z
+      WHERE F.F_ARTICLE = Z.Z_ARTICLE
+      AND Z.M_IDX=#{M_IDX}
+    ]]>
+   </select>
+   
 
    <!-- 마이페이지 : 모임 찜 개수 -->
    <select id="mypageZzimMoimCount" resultType="hashmap"
@@ -495,7 +506,7 @@ WHERE
                   ROW_NUMBER() OVER (ORDER BY COUNT(R_IDX) DESC) RNUM,
                   M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
               FROM MEMBER M, REPORT R
-                WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='N' AND R.R_DEL_YN='N' AND M.M_TYPE!='A'
+                WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='N' AND R.R_DEL_YN='N' AND M.M_TYPE!='A' 
                 GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
      ]]>
      <include refid="members.pagingPost" />
@@ -508,7 +519,7 @@ WHERE
         SELECT  ROW_NUMBER() OVER (ORDER BY M.M_BAN_DATE DESC) RNUM,
         M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE, COUNT(R_IDX) AS RECOUNT
       FROM MEMBER M, REPORT R
-      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='S' AND M.M_TYPE!='A'
+      WHERE R.R_REPORTEDMEM(+) = M.M_IDX AND M.M_DEL_YN='S' AND M.M_TYPE!='A' AND R.R_DEL_YN(+)!='Y'
       GROUP BY  M.M_IDX, M.M_NAME, M.M_EMAIL, M.M_REGDATE, M.M_NICKNAME, M.M_DEL_YN, M.M_BAN_DATE
         ]]>
         <include refid="members.pagingPost" />

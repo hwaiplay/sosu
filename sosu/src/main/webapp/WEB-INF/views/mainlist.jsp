@@ -208,7 +208,7 @@
             <div class="myhr">
                <hr>
             </div>
-            <c:choose>
+           <c:choose>
                <c:when test="${fn:length(frlist) > 0 }">
                   <p class="ct">
                      자유게시판
@@ -221,12 +221,12 @@
                      <div class="col-lg-3 menu-item"
                          style="cu">
                         <div class="row gy-5" style="padding-left: 11px;" onclick="location.href='/freeboard/${f.FR_CATEGORY}/${f.FR_IDX}.sosu'">
-                           <c:if test="${f.f_svname != null }">
+                           <c:if test="${f.FF_SVNAME != null and f.FF_SVNAME != '0'}">
                               <img class="mimg" style="width: 300px;"
-                                 src="${pageContext.request.contextPath}/resources/assets/img/image/${f.F_SVNAME }"
-                                 alt="${f.f_svname}">
+                                 src="${pageContext.request.contextPath}/resources/img/upload/${f.FF_SVNAME}"
+                                 alt="${f.FF_SVNAME}">
                            </c:if>
-                           <c:if test="${f.f_svname == null }">
+                           <c:if test="${f.FF_SVNAME == '0' }">
                               <img src="/resources/img/icons/list.png" class="mimg"
                                  style="width: 300px;">
                            </c:if>

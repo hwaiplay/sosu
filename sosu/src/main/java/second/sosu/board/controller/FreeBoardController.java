@@ -35,7 +35,7 @@ public class FreeBoardController {
       mv.setViewName("board/freeboard");
       
       mv.addObject("list", list);
-      mv.addObject("session", session.getAttribute("M_IDX"));
+      mv.addObject("sessionss", session.getAttribute("M_IDX"));
       
       return mv; 
    }

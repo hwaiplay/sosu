@@ -135,20 +135,14 @@ public class MoimDao extends AbstractDAO {
 			moimZzim.put("M_IDX", session.getAttribute("M_IDX"));
 			moimZzim.put("MO_IDX", moimDetail.get("MO_IDX"));
 
-			Map<String, Object> reviewYn = new HashMap<>();
-			reviewYn.put("M_IDX", session.getAttribute("M_IDX"));
-			reviewYn.put("MO_IDX", moimDetail.get("MO_IDX"));
-
 			Map<String, Object> moimChamYn = new HashMap<>();
 			moimChamYn.put("M_IDX", session.getAttribute("M_IDX"));
 			moimChamYn.put("MO_IDX", moimDetail.get("MO_IDX"));
 
 			Map<String, Object> zz = (Map<String, Object>) selectOne("moim.moimZzimCheck", moimZzim);
-			Map<String, Object> rvyn = (Map<String, Object>) selectOne("moim.reviewYn", reviewYn);
 			Map<String, Object> cham = (Map<String, Object>) selectOne("moim.moimChamYn", moimChamYn);
 
 			moimDetail.put("MZ_CHECK", zz.get("MZ_CHECK"));
-			moimDetail.put("RV_YN", rvyn.get("RV_YN"));
 			moimDetail.put("CHAMYN", cham.get("CHAMYN"));
 
 			if (Integer.parseInt(String.valueOf(cham.get("CHAMYN"))) != 0) {
@@ -157,9 +151,25 @@ public class MoimDao extends AbstractDAO {
 				partyMemYN.put("M_IDX", session.getAttribute("M_IDX"));
 				partyMemYN.put("MO_IDX", moimDetail.get("MO_IDX"));
 
+				Map<String, Object> reviewYn = new HashMap<>();
+				reviewYn.put("M_IDX", session.getAttribute("M_IDX"));
+				reviewYn.put("MO_IDX", moimDetail.get("MO_IDX"));
+				Map<String, Object> rvyn = (Map<String, Object>) selectOne("moim.reviewYn", reviewYn);
+				moimDetail.put("RV_YN", rvyn.get("RV_YN"));
+				
 				Map<String, Object> mem = (Map<String, Object>) selectOne("moim.partyMemYN", partyMemYN);
 				moimDetail.put("P_FINAL_YN", mem.get("P_FINAL_YN"));
 				moimDetail.put("P_BAN_YN", mem.get("P_BAN_YN"));
+
+				if (Integer.parseInt(String.valueOf(rvyn.get("RV_YN"))) != 0) {
+
+					Map<String, Object> reviewId = new HashMap<>();
+					reviewId.put("M_IDX", session.getAttribute("M_IDX"));
+					reviewId.put("MO_IDX", moimDetail.get("MO_IDX"));
+
+					Map<String, Object> rid = (Map<String, Object>) selectOne("moim.reviewGo", reviewId);
+					moimDetail.put("RV_IDX", rid.get("RV_IDX"));
+				}
 
 			}
 

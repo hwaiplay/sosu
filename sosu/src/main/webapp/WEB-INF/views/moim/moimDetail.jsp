@@ -329,15 +329,14 @@
          <!--====== 버튼들.. ======-->
          <div align="center" id="btndiv" style="display: inline-flex;">
             <!-- 참여 승인이 필요하지 않은 모임 -->
-            <c:if
-               test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'N' and Detail.MO_CLOSE_YN eq 'N'}">
+            <c:if test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'N' and Detail.MO_CLOSE_YN eq 'N'}">
                <form <c:if test = "${Detail.CHAMYN eq '0'}">action="/moim/moimJoin.sosu" onsubmit="return checkJoin();"</c:if>
                <c:if test = "${Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N'}"> action="/moim/moimReJoin.sosu"
                onsubmit = "return confirm('한 번 탈퇴한 모임입니다. \n재참여하시겠습니까?')"</c:if>
                <c:if test = "${Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'Y' and Detail.P_FINAL_YN eq 'Y'}">
-               onclick = "return alert('이미 강퇴당한 모임입니다 \n재참여가 불가능합니다.')"</c:if> 
+               onclick = "return alert('이미 강퇴당한 모임입니다. \n재참여가 불가능합니다.')"</c:if> 
                style="display: inline;">
-                  <c:if test = "${Detail.CHAMYN eq 0 or Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N' 
+                  <c:if test = "${Detail.CHAMYN eq '0' or Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N' 
                   or Detail.CHAMYN ne '0'  and Detail.P_BAN_YN eq 'Y' and Detail.P_FINAL_YN eq 'Y'}">
                   <button class="mrgbtn" type="submit" id="cham1"
                      style="margin-right: 9px;">참여하기</button>
@@ -364,13 +363,14 @@
 
 
             <!-- 참여 승인이 필요한 모임 -->
-            <c:if
-               test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'Y' and Detail.MO_CLOSE_YN eq 'N'}">
-               <form <c:if test = "${Detail.CHAMYN eq '0'}">action="/moim/moimJoinPermit.sosu" onsubmit="return checkJoin2();" </c:if>
-               <c:if test = "${Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N'}"> action="/moim/moimRePermit.sosu"
+            <c:if test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_PERMIT eq 'Y' and Detail.MO_CLOSE_YN eq 'N'}">
+               <form <c:if test = "${Detail.CHAMYN eq '0'}">
+               action="/moim/moimJoinPermit.sosu" onsubmit="return checkJoin2();" </c:if>
+               <c:if test = "${Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N'}"> 
+               action="/moim/moimRePermit.sosu"
                onsubmit = "return confirm('한 번 참여를 취소한 모임입니다. \n재참여하시겠습니까?')"</c:if>
                <c:if test = "${Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'Y' and Detail.P_FINAL_YN eq 'Y'}">
-               onclick = "return alert('이미 강퇴당하거나 승인거부 당한 모임입니다 \n재참여가 불가능합니다.')"</c:if>
+               onclick = "return alert('이미 강퇴당하거나 승인거부 당한 모임입니다. \n재참여가 불가능합니다.')"</c:if>
                    style="display: inline;">
                 <c:if test = "${Detail.CHAMYN eq 0 or Detail.CHAMYN ne '0' and Detail.P_BAN_YN eq 'N' and Detail.P_FINAL_YN eq 'N' 
                   or Detail.CHAMYN ne '0'  and Detail.P_BAN_YN eq 'Y' and Detail.P_FINAL_YN eq 'Y'}">
@@ -407,12 +407,12 @@
                </c:if>
               <c:if test="${sessionss ne null and sessionss ne Detail.M_IDX and Detail.MO_CLOSE_YN eq 'Y' and Detail.RV_YN ne '0'}">
                      <button class="mrgbtn3" id = "reviewWan"
-                     style="margin-right: 9px;">리뷰작성 완료</button>
+                     style="margin-right: 9px;" onclick = "location.href='/review/${MO_CATEGORY}/${Detail.RV_IDX}.sosu'">내가 쓴 리뷰보기</button>
               </c:if>
 
             <!-- 목록으로 버튼 -->
             <button type="button" class="mrgbtn"
-               onclick="location.href='/moim/${MO_CATEGORY}.sosu'">목록으로</button>
+               onclick="javascript:history.back();">목록으로</button>
 
             <!-- 방장일 때 보이는 -->
             <c:if

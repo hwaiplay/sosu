@@ -10,20 +10,21 @@
 		<if test="pageNum != null">
 			<include refid="pagingPre"></include>
 		</if>
-		SELECT ROW_NUMBER() OVER (ORDER BY M.MO_REGDATE DESC)
-		RNUM,
-		M.*,
-		SUBSTR(MO_TITLE,1,16) AS MOTT,
-		NVL(F.F_SVNAME,0) AS MF_SVNAME,
-		MEM.M_NICKNAME
-		FROM MOIM M, FILE_T F, MEMBER MEM
-		WHERE F.F_DEL_YN(+) = 'N'
-		AND F.F_MAIN_YN(+) = 'Y'
-		AND M.MO_DEL_YN = 'N'
-		AND F.F_TABLE(+) = 'M'
-		AND M.M_IDX = MEM.M_IDX
-		AND M.MO_CATEGORY = #{MO_CATEGORY}
-		AND F.F_ARTICLE(+) = M.MO_IDX
+			SELECT ROW_NUMBER() OVER (ORDER BY MO_REGDATE DESC)
+			RNUM,
+			M.*,
+			SUBSTR(MO_TITLE,1,16) AS MOTT,
+			NVL(F.F_SVNAME,0) AS MF_SVNAME,
+			MEM.M_NICKNAME
+			FROM MOIM M, FILE_T F, MEMBER MEM
+			WHERE F.F_DEL_YN(+) = 'N'
+			AND F.F_MAIN_YN(+) = 'Y'
+			AND M.MO_DEL_YN = 'N'
+			AND F.F_TABLE(+) = 'M'
+			AND M.M_IDX = MEM.M_IDX
+			AND M.MO_CATEGORY = #{MO_CATEGORY}
+			AND
+			F.F_ARTICLE(+) = M.MO_IDX
 		<if test="MO_REGION != null">
 			AND M.MO_REGION = #{MO_REGION}
 		</if>
@@ -73,10 +74,11 @@
 		M.*, SUBSTR(MO_TITLE,1,16) AS MOTT,
 		NVL(F.F_SVNAME,0) AS
 		MF_SVNAME,
-		MEM.M_NICKNAME
+		MEM.*
 		FROM MOIM M, FILE_T F, MEMBER MEM
 		WHERE
-		F.F_DEL_YN(+) = 'N'
+		F.F_DEL_YN(+) =
+		'N'
 		AND F.F_MAIN_YN(+) = 'Y'
 		AND M.MO_DEL_YN = 'N'
 		AND
@@ -84,7 +86,8 @@
 		AND F.F_ARTICLE(+) = M.MO_IDX
 		AND MO_CATEGORY =
 		#{MO_CATEGORY}
-		AND M.M_IDX = MEM.M_IDX
+		AND
+		M.M_IDX = MEM.M_IDX
 		<if test="KEYWORD != null">
 			AND M.MO_TITLE LIKE '%'||#{KEYWORD}||'%'
 		</if>
@@ -224,7 +227,7 @@
          ]]>
 	</select>
 
-	<!-- 모임에 한번이라도 참여 했을 때  -->
+	<!-- 모임에 한번이라도 참여 했을 때 -->
 	<select id="partyMemYN" resultType="hashmap"
 		parameterType="hashmap">
          <![CDATA[
@@ -236,9 +239,9 @@
 			 AND M.MO_IDX = #{MO_IDX}
          ]]>
 	</select>
-	
+
 	<!-- 모임 재참여 -->
-	<update id= "moimReJoin" parameterType="hashmap">
+	<update id="moimReJoin" parameterType="hashmap">
        <![CDATA[
       UPDATE PARTYMEM
       SET 
@@ -248,9 +251,9 @@
       AND MO_IDX = #{MO_IDX}
         ]]>
 	</update>
-	
+
 	<!-- 모임 재참여 대기 -->
-	<update id= "moimRePermit" parameterType="hashmap">
+	<update id="moimRePermit" parameterType="hashmap">
        <![CDATA[
       UPDATE PARTYMEM
       SET 
@@ -287,16 +290,22 @@
 	<!-- 리뷰 유무 -->
 	<select id="reviewYn" parameterType="hashmap"
 		resultType="hashmap">
-		
 		SELECT COUNT(*) AS RV_YN
-		FROM REVIEW R, MOIM M, MEMBER MEM,
-		PARTYMEM P
-		WHERE R.MO_IDX = M.MO_IDX
-		AND MEM.M_IDX = P.M_IDX
-		AND P.M_IDX
-		= #{M_IDX}
-		AND M.MO_IDX = #{MO_IDX}
+		FROM REVIEW R
+		WHERE R.M_IDX
+		=
+		#{M_IDX}
+		AND R.MO_IDX = #{MO_IDX}
+	</select>
 
+	<!-- 리뷰 시퀀스 -->
+	<select id="reviewGo" parameterType="hashmap"
+		resultType="hashmap">
+		SELECT R.*
+		FROM REVIEW R
+		WHERE R.MO_IDX = {MO_IDX}
+		AND R.M_IDX
+		= #{M_IDX}
 	</select>
 
 	<!-- 모임 스크랩 수 -->
