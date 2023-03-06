@@ -17,6 +17,9 @@
          id="cate"> 
       <input type="hidden" name="sessionss" value="${sessionss}"
          id="session"> 
+      <input type="hidden" name="WII" value="${Detail.WII}" id="WII"> 
+      <input type="hidden" name="KYUNG" value="${Detail.KYUNG}" id="KYUNG"> 
+      
       <main>
          <div class="detailBody">
             <div class="imgArea">
@@ -127,6 +130,7 @@
                <img src="/resources/img/upload/${Detail.KPROFILE}" class="kingimg">
 
                <!-- 2/14 비회원시 로그인창으로 이동하는 기능 추가 -->
+               <div style="display: inline;">
                <c:if test="${sessionss ne null}">
                   <form action="/members/usermypage.sosu"
                      style="display: inline-block; width: 62px; display: contents;">
@@ -143,10 +147,16 @@
                </c:if>
                <span class="ks"><fmt:formatDate
                      value="${Detail.MO_REGDATE}" pattern="yyyy/MM/dd" /> 개설</span>
+              </div>
             </div>
             <hr>
             <div class="modetail">
                <p class="dtitle">모임소개</p>
+               <c:if test = "${Detail.KM_YN ne 0}">
+               <p>모임장소</p>
+               <div id="map" style="width:500px;height:400px;"></div>
+               </c:if>
+               
                ${Detail.MO_DETAIL}
 
                <p>
@@ -458,5 +468,30 @@ window.onload = () => {
        });
      };
    }
+
+/* 지도 */
+var wii = $('#WII').val();
+var kyung = $('#KYUNG').val();
+var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+var options = { //지도를 생성할 때 필요한 기본 옵션
+	center: new kakao.maps.LatLng(wii, kyung), //지도의 중심좌표.
+	level: 3 //지도의 레벨(확대, 축소 정도)
+};
+
+var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+//지도를 클릭한 위치에 표출할 마커
+var marker = new kakao.maps.Marker({ 
+	// 지도 중심좌표에 마커를 생성
+	position: map.getCenter() 
+}); 
+//지도에 마커를 표시
+marker.setMap(map);
+
+// 인포윈도우로 장소에 대한 설명을 표시
+var infowindow = new kakao.maps.InfoWindow({
+    content: '<div style="width:150px;text-align:center;padding:6px 0;">모임장소</div>'
+});
+infowindow.open(map, marker);
 </script>
 </body>

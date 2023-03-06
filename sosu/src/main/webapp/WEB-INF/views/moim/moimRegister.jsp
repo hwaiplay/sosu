@@ -97,9 +97,9 @@ history.replaceState({}, null, location.pathname);
             <td class="contents" id="agetd" style="padding-bottom: 0px;">
             <div class="age_check_result" id="age_check_result"></div>
                <input type="number" class="form-control" name="MO_MINAGE" id="MO_MINAGE" maxlength="2" oninput="maxLengthCheck(this)"
-                  placeholder="최소(숫자 입력)" style = "margin-right:12px"><span id = "wave" style = "font-weight:bold">~</span>
+                  placeholder="최소 (숫자만 입력해주세요.)" style = "margin-right:12px"><span id = "wave" style = "font-weight:bold">~</span>
                  <input type="number" class="form-control" name="MO_MAXAGE" id="MO_MAXAGE" maxlength="2" oninput="maxLengthCheck(this)"
-                 placeholder="최대(숫자 입력)" style = "margin-left:12px">
+                 placeholder="최대 (숫자만 입력해주세요.)" style = "margin-left:12px">
                 
             </td>
              </tr>   
@@ -115,7 +115,7 @@ history.replaceState({}, null, location.pathname);
             <th class="header"><label for="MO_MAXPEOPLE" >참가 인원</label><span style="color:#fd8731;margin-left:3px;">*</span></th>
             <td class="contents" style="padding-bottom: 0px;">
             <input type="number" class="form-control" name="MO_MAXPEOPLE" id="MO_MAXPEOPLE"
-                  placeholder="최대(본인포함, 숫자입력)" maxlength="100">
+                  placeholder="최대 (본인포함, 숫자만 입력해주세요.)" maxlength="100">
               </td>
          </tr> 
          <tr>
@@ -151,7 +151,19 @@ history.replaceState({}, null, location.pathname);
                <input type="time" class="form-control" name="MO_DEADTIME" id="date2">
             </td>
          </tr>
-            
+         <tr>
+            <th class="header"><label for="MO_MAP" >모임 장소</label></th>
+            <td class="contents">
+               <input type="text" class="form-control" id="MO_MAP" readonly="readonly">
+               <button type="button" class="searchMap"
+                  		onclick="kaMap()">주소 검색</button>
+               <br/>   		
+               <input type="text" id="detailAddress" placeholder="상세주소 입력">
+               <div id="map" style="width:500px;height:400px; margin-top: 10px;"></div>
+               <input type="hidden" name="WII">
+               <input type="hidden" name="KYUNG">
+            </td>
+         </tr>
          <tr>
             <th class="header"><label for="textArea_byteLimit" >내용</label>
             <span style="color:#fd8731;margin-left:3px;">*</span></th>

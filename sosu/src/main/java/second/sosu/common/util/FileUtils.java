@@ -240,8 +240,8 @@ public class FileUtils {
                   listMap.put("F_ARTICLE", map.get("N_IDX"));
                   listMap.put("F_TABLE", "N");
                }
-               System.out.println("파일 이름 : "+multipartFile.getName());
-               //메인 이미지는 이름 mainImage로 ㄱㄱ
+
+               //메인 이미지는 이름 mainIamge로 ㄱㄱ
                if(multipartFile.getName().equals("mainIamge")) {
                   listMap.put("F_MAIN_YN", "Y");
                }else {

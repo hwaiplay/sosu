@@ -88,6 +88,14 @@ public class MoimServiceImpl implements MoimService {
 			throws Exception {
 
 		moimDao.moimRegister(map, session);
+		
+		 try {
+	        map.put("MO_IDX", map.get("MO_IDX"));
+	      	moimDao.moimMapInsert(map);
+	      	
+	       }catch(Exception e) {}
+	       
+		//moimDao.moimMapInsert(map);
 
 		List<Map<String, Object>> list = fileUtils.fileInsert(map, request);
 

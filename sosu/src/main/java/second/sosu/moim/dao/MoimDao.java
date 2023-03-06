@@ -128,6 +128,19 @@ public class MoimDao extends AbstractDAO {
 		Map<String, Object> moimMemCount = (Map<String, Object>) selectOne("moim.moimMemberCount",
 				moimDetail.get("MO_IDX"));
 		moimDetail.put("MOMEM_COUNT", moimMemCount.get("MOMEM_COUNT"));
+		
+		Map<String, Object> KmapYn = (Map<String, Object>) selectOne("moim.moimMapYN",
+				moimDetail.get("MO_IDX"));
+		moimDetail.put("KM_YN", KmapYn.get("KM_YN"));
+		
+		if (Integer.parseInt(String.valueOf(KmapYn.get("KM_YN")))!= 0) {
+			
+			Map<String, Object> kaMap = (Map<String, Object>) selectOne("moim.moimMap",
+			moimDetail.get("MO_IDX"));
+			
+			moimDetail.put("WII", kaMap.get("WII"));
+			moimDetail.put("KYUNG", kaMap.get("KYUNG"));
+		}
 
 		if (session.getAttribute("M_IDX") != null) {
 
@@ -170,9 +183,7 @@ public class MoimDao extends AbstractDAO {
 					Map<String, Object> rid = (Map<String, Object>) selectOne("moim.reviewGo", reviewId);
 					moimDetail.put("RV_IDX", rid.get("RV_IDX"));
 				}
-
 			}
-
 		}
 
 		Map<String, Object> moimZzimCount = (Map<String, Object>) selectOne("moim.moimZzimCount",
@@ -255,6 +266,11 @@ public class MoimDao extends AbstractDAO {
 	// 모임 작성
 	public void moimRegister(Map<String, Object> map, HttpSession seesion) throws Exception {
 		insert("moim.moimRegister", map);
+	}
+	
+	// 모임 지도 insert
+	public void moimMapInsert(Map<String, Object> map) throws Exception {
+	    insert("moim.moimMapInsert", map);
 	}
 
 	// 모임 이미지 등록
